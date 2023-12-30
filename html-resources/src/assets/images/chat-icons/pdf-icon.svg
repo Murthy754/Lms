@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="19" height="23" viewBox="0 0 19 23">
+  <defs>
+    <clipPath id="clip-path">
+      <rect width="19" height="23" fill="none"/>
+    </clipPath>
+  </defs>
+  <g id="Icons_Content_Picker_PDF" data-name="Icons/Content Picker/PDF" clip-path="url(#clip-path)">
+    <g id="PDF" transform="translate(1)">
+      <g id="Rectangle_494_Copy_8_Path_121_Copy_8_Copy_Copy_Copy_Rectangle_928_Copy_Copy_Copy_Copy_Copy_Rectangle_532_Copy_Rectangle_533_Copy_Copy_Copy_Cop" data-name="Rectangle 494 Copy 8 + Path 121 Copy 8 Copy Copy Copy + Rectangle 928 Copy Copy Copy Copy Copy + Rectangle 532 Copy + Rectangle 533 Copy Copy Copy Cop">
+        <g id="Rectangle_494_Copy_8_Path_121_Copy_8_Copy_Copy_Copy_Rectangle_928_Copy_Copy_Copy_Copy_Copy_Rectangle_532_Copy_Rectangle_533_Copy_Copy_Copy_Cop-2" data-name="Rectangle 494 Copy 8 + Path 121 Copy 8 Copy Copy Copy + Rectangle 928 Copy Copy Copy Copy Copy + Rectangle 532 Copy + Rectangle 533 Copy Copy Copy Cop">
+          <g id="Rectangle_494_Copy_8_Path_121_Copy_8_Copy_Copy_Copy_Rectangle_928_Copy_Copy_Copy_Copy_Copy_Rectangle_532_Copy_Rectangle_533_Copy_Copy_Copy_Cop-3" data-name="Rectangle 494 Copy 8 + Path 121 Copy 8 Copy Copy Copy + Rectangle 928 Copy Copy Copy Copy Copy + Rectangle 532 Copy + Rectangle 533 Copy Copy Copy Cop">
+            <g id="Rectangle_494_Copy_8_Path_121_Copy_8_Copy_Copy_Copy_Rectangle_928_Copy_Copy_Copy_Copy_Copy" data-name="Rectangle 494 Copy 8 + Path 121 Copy 8 Copy Copy Copy + Rectangle 928 Copy Copy Copy Copy Copy">
+              <g id="Rectangle_494_Copy_8_Path_121_Copy_8_Copy_Copy_Copy" data-name="Rectangle 494 Copy 8 + Path 121 Copy 8 Copy Copy Copy">
+                <g id="Rectangle_494_Copy_8" data-name="Rectangle 494 Copy 8">
+                  <g id="Rectangle_494_Copy_8-2" data-name="Rectangle 494 Copy 8" transform="translate(0 1)" fill="#fff" stroke-miterlimit="10">
+                    <path d="M 16.5 21.5 L 0.5 21.5 C -0.05139999836683273 21.5 -0.5 21.05139923095703 -0.5 20.5 L -0.5 0.5 C -0.5 -0.05139999836683273 -0.05139999836683273 -0.5 0.5 -0.5 L 12.02787017822266 -0.5 L 12.23579978942871 -0.5 L 12.38241004943848 -0.3525600135326385 L 17.35453987121582 4.647439956665039 L 17.5 4.793710231781006 L 17.5 5 L 17.5 20.5 C 17.5 21.05139923095703 17.05139923095703 21.5 16.5 21.5 Z" stroke="none"/>
+                    <path d="M 0.5 0 C 0.2238597869873047 0 0 0.2238597869873047 0 0.5 L 0 20.5 C 0 20.7761402130127 0.2238597869873047 21 0.5 21 L 16.5 21 C 16.7761402130127 21 17 20.7761402130127 17 20.5 L 17 5 L 12.02787017822266 0 L 0.5 0 M 0.5 -1 L 12.02787017822266 -1 L 12.4437198638916 -1 L 12.7369499206543 -0.7051296234130859 L 17.70907974243164 4.294870376586914 L 18 4.587419509887695 L 18 5 L 18 20.5 C 18 21.32710075378418 17.32710075378418 22 16.5 22 L 0.5 22 C -0.3271007537841797 22 -1 21.32710075378418 -1 20.5 L -1 0.5 C -1 -0.3271007537841797 -0.3271007537841797 -1 0.5 -1 Z" stroke="none" fill="#fff"/>
+                  </g>
+                  <g id="Rectangle_494_Copy_8-3" data-name="Rectangle 494 Copy 8" transform="translate(0 1)" fill="none" stroke-miterlimit="10">
+                    <path d="M0,.5A.5.5,0,0,1,.5,0H12.028L17,5V20.5a.5.5,0,0,1-.5.5H.5a.5.5,0,0,1-.5-.5Z" stroke="none"/>
+                    <path d="M 0.5 0 C 0.2238597869873047 0 0 0.2238597869873047 0 0.5 L 0 20.5 C 0 20.7761402130127 0.2238597869873047 21 0.5 21 L 16.5 21 C 16.7761402130127 21 17 20.7761402130127 17 20.5 L 17 5 L 12.02787017822266 0 L 0.5 0 M 0.5 -1 L 12.02787017822266 -1 L 12.4437198638916 -1 L 12.7369499206543 -0.7051296234130859 L 17.70907974243164 4.294870376586914 L 18 4.587419509887695 L 18 5 L 18 20.5 C 18 21.32710075378418 17.32710075378418 22 16.5 22 L 0.5 22 C -0.3271007537841797 22 -1 21.32710075378418 -1 20.5 L -1 0.5 C -1 -0.3271007537841797 -0.3271007537841797 -1 0.5 -1 Z" stroke="none" fill="#e33d55"/>
+                  </g>
+                </g>
+                <g id="Path_121_Copy_8" data-name="Path 121 Copy 8">
+                  <path id="Path_121_Copy_8-2" data-name="Path 121 Copy 8" d="M1.008,6a1,1,0,0,1-1-1L0,0,6,6Z" transform="translate(12)" fill="none"/>
+                  <path id="Path_121_Copy_8-3" data-name="Path 121 Copy 8" d="M1.008,6a1,1,0,0,1-1-1L0,0,6,6Z" transform="translate(12)" fill="#e33d55"/>
+                </g>
+              </g>
+            </g>
+          </g>
+        </g>
+      </g>
+      <path id="Fill_1" data-name="Fill 1" d="M.873,12H.545A.884.884,0,0,1,.1,11.424c-.021-.089-.047-.179-.072-.266L0,11.057v-.418C.28,9.464,1.244,9.155,2.382,8.9,1.253,9.7.811,10.321.907,10.967c.024-.015.047-.027.069-.039a.391.391,0,0,0,.105-.071A23.888,23.888,0,0,0,5.039,5.4a.386.386,0,0,0-.007-.409A6.647,6.647,0,0,1,4.1,1.334,2.574,2.574,0,0,1,4.375.392.838.838,0,0,1,4.688.114C4.744.078,4.8.04,4.855,0h.382c.067.031.137.061.205.09A2.881,2.881,0,0,1,5.885.31a1.037,1.037,0,0,1,.316,1.4L6.137,1.52,6.132,1.5a3.976,3.976,0,0,0-.186-.489A1.088,1.088,0,0,0,5.635.631a.515.515,0,0,0-.3-.119c-.165,0-.28.127-.317.349A5.543,5.543,0,0,0,5.55,4.214c.022-.067.045-.134.068-.2.055-.16.111-.324.155-.488a6.938,6.938,0,0,0,.162-.742c.027-.17.041-.341.055-.522C6,2.178,6,2.093,6.012,2.006a.9.9,0,0,1,.54.616,2.7,2.7,0,0,1-.083,1.622c-.043.151-.1.3-.155.445-.049.129-.1.262-.14.4a.325.325,0,0,0,.031.274c.425.457.816.856,1.193,1.22a.29.29,0,0,0,.191.053.442.442,0,0,0,.118-.015l.139-.041a7.284,7.284,0,0,1,2.063-.4A1.877,1.877,0,0,1,11.956,7.87a.558.558,0,0,0,.029.1c.005.015.01.029.015.043v.158a2.047,2.047,0,0,0-1.837-.929l-.167,0a11.955,11.955,0,0,0-1.436.108,5.155,5.155,0,0,0,2.792.829c.153,0,.31-.007.465-.02a1,1,0,0,1-.878.857,2.668,2.668,0,0,1-.475.043,2.59,2.59,0,0,1-1.116-.253A18.687,18.687,0,0,1,7.546,7.8a.714.714,0,0,0-.37-.131.585.585,0,0,0-.2.037c-.359.126-.72.25-1.07.37-.531.182-1.077.37-1.611.564a.869.869,0,0,0-.381.3l-.047.065a13.031,13.031,0,0,1-2.032,2.38,4.269,4.269,0,0,1-.654.429c-.1.059-.209.12-.311.183ZM5.71,6.057h0L4.681,7.8l-.046.077L4.619,7.9l1.062-.474.008,0L5.742,7.4l.852-.38-.327-.357-.009-.01-.547-.6Z" transform="translate(3 7)" fill="#e33d55"/>
+    </g>
+  </g>
+</svg>

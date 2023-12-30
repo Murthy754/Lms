@@ -1,0 +1,366 @@
+<style>
+  a,
+  a label {
+    cursor: pointer;
+  }
+</style>
+<!-- top-tabs-menu Start-->
+<div class="container">
+  <div class="row">
+
+    <div class="col-lg-3 col-md-3 my-hidden">
+      <div class="row">
+        <div class="margin-left">
+          <div class="ledt-menu">
+            <div class="categori subsc-poll">
+              <h2>You have
+                <span *ngIf="currentTab==0">{{subscriberlist.length}}</span>
+                <span *ngIf="currentTab==1">{{subscriptions.length}}</span>
+                <span *ngIf="currentTab==2">{{messageRequestList.length}}</span>
+                <span *ngIf="currentTab==0" style="font-size: 14px;color: #656565;"> Subscribers in
+                  <b style="color:#1E1E1E">{{currentCountry}}</b>
+                </span>
+                <span *ngIf="currentTab==1" style="font-size: 14px;color: #656565;"> Subscriptions in
+                  <b style="color:#1E1E1E">{{currentCountry}}</b>
+                </span>
+                <span *ngIf="currentTab==2" style="font-size: 14px;color: #656565;"> Messenger Contacts in
+                  <b style="color:#1E1E1E">{{location}}</b>
+                </span>
+              </h2>
+              <ul>
+                <ul>
+                  <li>
+                    <a (click)="changeSubscribers(0)">Subscribers({{subscriberlist.length}})
+                      <span *ngIf="subscriber_pending_array.length>0"></span>
+                    </a>
+                  </li>
+                  <li>
+                    <a (click)="changeSubscribers(1)">Subscriptions({{subscriptions.length}})</a>
+                  </li>
+                  <li>
+                    <a (click)="changeSubscribers(2)">Messenger Contacts({{messageRequestList.length}})</a>
+                  </li>
+                </ul>
+              </ul>
+            </div>
+          </div>
+          <div class="invite-people">
+            <p>Invite people to Subscribe you.</p>
+            <button type="button" class="sign-in" (click)="trunumsSubscriptions()">Invite Subscriber</button>
+          </div>
+          <div class="clear"></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-2 col-sm-1 col-md-2 col-xs-12">
+      <div class="row">
+        <div class="margin-right">
+          <div class="add-box">
+            <a href="#">
+              <!--<img src="images/add-img.png" alt="add"/>-->
+            </a>
+          </div>
+        </div>
+        <div class="clear"></div>
+      </div>
+    </div>
+
+    <div class="col-lg-7 col-md-7 col-sm-10 col-xs-12">
+      <div class="row">
+        <div class="margin-left-right tabs-menu margin-top-30">
+          <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" id="mypolls" [ngClass]="currentTab === '0'?'active':''">
+              <a (click)="changeSubscribers(0)">SUBSCRIBERS</a>
+            </li>
+            <li role="presentation" [ngClass]="currentTab === '1'?'active':''">
+              <a (click)="changeSubscribers(1)">SUBSCRIPTIONS</a>
+            </li>
+            <li role="presentation" [ngClass]="currentTab === '2'?'active':''">
+              <a (click)="changeSubscribers(2)">MESSENGER CONTACTS</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="clear"></div>
+      <div class="row">
+        <div class="margin-left-right profile-votes">
+          <div id="subscribers" *ngIf="currentTab == '0'">
+            <div class="subscr-search">
+              <input type="search" class="form-control" (input)="serachSubscribers($event.target.value)" placeholder="Search Subscribers"
+                *ngIf="MainSubscriberList.length >= 1">
+              <div class="margin-left-right tabs-menu">
+                <div class="tab-right navbar-right">
+                  <div class="dropdown custom-state-list">
+                    <a data-toggle="dropdown">
+                      <i class="fa fa-angle-down"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                      <li stop-propagation="click">
+                        <input class="form-control" [(ngModel)]="searchKey" (input)="getFilterConutries($event.target.value)" type="text" autocomplete="off"
+                        />
+                        <i class="demo-icon icon-search-1">&#xe803;</i>
+                      </li>
+                      <li>
+                        <ng-container *ngFor="let item of tempCountryList">
+                          <a (click)="locationChange(item.name,0);">{{item.name}}</a>
+                        </ng-container>
+                      </li>
+                    </ul>
+                  </div>
+                  <a id="loc" class="border-rad-left active" [ngClass]="{'active': location !='world' }" (click)="locationChange(currentCountry,0)">{{currentCountry}}</a>
+                  <a id="world" class="world-select active" [ngClass]="{'active': location =='world' }" (click)="locationChange('world',0)"
+                    class="">World</a>
+                </div>
+              </div>
+              <!-- <div class="accept-all" *ngIf="subscriber_pending_array.length!==0">
+                <p>You have {{subscriber_pending_array.length}} new Subscriber requests
+                  <button type="button" class="sign-in"
+                    (click)="acceptSubscribeRequest('ACCEPTED',subscriber.id)">Accept all Requests</button>
+                </p>
+              </div> -->
+            </div>
+            <div class="subscr-search" *ngIf="subscriberlist.length <= 0">
+              No Subscribers
+            </div>
+            <div class="main-poll-sub subscriber-hover-details">
+              <div class="subscr-box containers" *ngFor="let subscriber of subscriberlist;let i = index;">
+                <a (click)="navigateToProfile(subscriber.subscriber.userName)">
+                  <div class="sub-img">
+                    <img src="../../assets/images/profiles.png" alt="" />
+                  </div>
+                  <div class="subscr-cont">
+                    <h4>{{subscriber.subscriber.firstName}} {{subscriber.subscriber.lastName}}
+                      <span *ngIf="subscriber.subscriber.privateSite"> (Private Site User) </span>
+                    </h4>
+                    <p *ngIf="subscriber.subscriber.address">
+                      <img src="../../assets/images/map-icon.png" alt="" />{{subscriber.subscriber.address.country}}</p>
+                  </div>
+                </a>
+                <div *ngIf="subscriber.status === 'PENDING'">
+
+                  <div class="invite-pad" (click)="updateSubscribeStatus('CANCELLED',subscriber,i)">Ignore</div>
+                  <button type="button" class="btn" (click)="acceptSubscribeRequest('ACCEPTED',subscriber.subscriber,subscriber._id)">Accept</button>
+                </div>
+                <div *ngIf="subscriber.status !== 'PENDING'">
+                  <div class="containers subscriber-hover-details">
+                    <div class="dropdown withHover">
+                      <p class="fnt-24p"> ... </p>
+                      <ul class="dropdown-menu">
+                        <div class="drp-btm text-center">
+                          <div *ngIf="subscriber.status === 'ACCEPTED'">
+                            <a (click)="removeModal(subscriber,i)">Remove</a>
+                          </div>
+                        </div>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="subsriptions" *ngIf="currentTab == '1'">
+            <div class="subscr-search">
+              <input type="text" (input)="serachSubscriptions($event.target.value)" class="form-control" placeholder="Search Subscriptions"
+                *ngIf="MainSubscriptionsList.length > 1">
+              <div class="margin-left-right tabs-menu">
+                <div class="tab-right navbar-right">
+                  <div class="dropdown custom-state-list">
+                    <a data-toggle="dropdown">
+                      <i class="fa fa-angle-down"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                      <li stop-propagation="click">
+                        <input class="form-control" type="text" [(ngModel)]="searchKey" (input)="getFilterConutries($event.target.value)" autocomplete="off"
+                        />
+                        <i class="demo-icon icon-search-1">&#xe803;</i>
+                      </li>
+                      <li>
+                        <ng-container *ngFor="let item of tempCountryList">
+                          <a (click)="locationChange(item.name,1);">{{item.name}}</a>
+                        </ng-container>
+                      </li>
+                    </ul>
+                  </div>
+                  <a id="loc" class="border-rad-left active" [ngClass]="{'active': location !== 'world' }" (click)="locationChange(currentCountry,1)">{{currentCountry}}</a>
+                  <a id="world" class="world-select active" [ngClass]="{'active': location === 'world' }" (click)="locationChange('world',1)"
+                    class="">World</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="subscr-search" *ngIf="subscriptions.length == 0">
+              No subscriptions
+            </div>
+            <div class="main-poll-sub subscriber-hover-details" *ngFor="let subscription of subscriptions ; let i = index">
+              <div class="subscr-box containers" *ngIf="subscription.status !== 'UNSUBSCRIBE'">
+                <a (click)="navigateToProfile(subscription.subscribee.userName)">
+                  <div class="sub-img">
+                    <img src="../../assets/images/profiles.png" alt="" />
+                  </div>
+                  <div class="subscr-cont">
+
+                    <h4>{{subscription.subscribee.firstName}} {{subscription.subscribee.lastName}}
+                      <span *ngIf="subscription.subscribee.privateSite"> (Private Site User)</span>
+                    </h4>
+                    <p>
+                      <img src="../../assets/images/map-icon.png" alt="" />{{subscription.subscribee.address.country}}
+                    </p>
+                  </div>
+                </a>
+                <p class="fedd-this" *ngIf="subscription.status !== 'PENDING'">
+                  <label class="feed-switch">
+                    <input type="checkbox" [checked]="subscription.feedoption === 'start'" (change)="changeFeedOption(subscription,i)">
+                    <span class="slider round"></span>
+                  </label>
+                </p>
+                <div *ngIf="subscription.status === 'PENDING'">
+                  <button type="button" class="btn">
+                    <i class="demo-icon icon-ok-circled2"></i>{{subscription.status}}</button>
+                </div>
+                <div *ngIf="subscription.status === 'ACCEPTED'">
+                  <div class="containers subscriber-hover-details">
+                    <div class="dropdown withHover">
+                      <p class="fnt-24p"> ... </p>
+                      <ul class="dropdown-menu">
+                        <div id="unsub-btn" class="drp-btm text-center">
+                          <button id="button-unsubrib" (click)="unsubscribeModal(subscription,i)" type="button" class="btn">UNSUBSCRIBE</button>
+                        </div>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="subscribers" *ngIf="currentTab == '2'">
+            <div class="subscr-search">
+              <input type="search" class="form-control" (input)="serachSubscribers($event.target.value)" placeholder="Search Subscribers"
+                *ngIf="MainMsgRequestList.length >= 1">
+              <div class="margin-left-right tabs-menu">
+                <div class="tab-right navbar-right">
+                  <div class="dropdown custom-state-list">
+                    <a data-toggle="dropdown">
+                      <i class="fa fa-angle-down"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                      <li stop-propagation="click">
+                        <input class="form-control" [(ngModel)]="searchKey" (input)="getFilterConutries($event.target.value)" type="text" autocomplete="off"
+                        />
+                        <i class="demo-icon icon-search-1">&#xe803;</i>
+                      </li>
+                      <li>
+                        <ng-container *ngFor="let item of tempCountryList">
+                          <a (click)="locationChange(item.name,2);">{{item.name}}</a>
+                        </ng-container>
+                      </li>
+                    </ul>
+                  </div>
+                  <a id="loc" class="border-rad-left active" [ngClass]="{'active': location !='world' }" (click)="locationChange(currentCountry,2)">{{currentCountry}}</a>
+                  <a id="world" class="world-select active" [ngClass]="{'active': location =='world' }" (click)="locationChange('world',2)"
+                    class="">World</a>
+                </div>
+              </div>
+
+            </div>
+            <div class="subscr-search" *ngIf="messageRequestList.length <= 0">
+              No Message Requests
+            </div>
+            <div class="main-poll-sub subscriber-hover-details">
+              <div class="subscr-box containers" *ngFor="let subscriber of messageRequestList;let i = index;">
+                <a (click)="navigateToProfile(subscriber.subscriber.userName)">
+                  <div class="sub-img">
+                    <img src="../../assets/images/profiles.png" alt="" />
+                  </div>
+                  <div class="subscr-cont">
+                    <h4>{{subscriber.subscriber.firstName}} {{subscriber.subscriber.lastName}}
+                      <span *ngIf="subscriber.subscriber.privateSite"> (Private Site User) </span>
+                    </h4>
+                    <p>
+                      <img src="../../assets/images/map-icon.png" alt="" />{{subscriber.subscriber.address.country}}</p>
+                  </div>
+                </a>
+                <div *ngIf="subscriber.status === 'PENDING'  && subscriber.requestedBy!==userId">
+
+                  <div class="invite-pad">Ignore</div> 
+                  <!-- Add ignore functionality with updateMessageStatus('CANCELLED',subscriber,i)-->
+                  <button type="button" class="btn" (click)="acceptMessageRequest('ACCEPTED',subscriber.subscriber,subscriber._id)">Accept</button>
+                </div>
+                <div *ngIf="subscriber.status === 'PENDING' && subscriber.requestedBy===userId">
+                  {{subscriber.status}}
+
+                </div>
+                <div *ngIf="subscriber.status !== 'PENDING'">
+                  <div class="containers subscriber-hover-details">
+                    <div class="dropdown withHover">
+                      <p class="fnt-24p"> ... </p>
+                      <ul class="dropdown-menu">
+                        <div class="drp-btm text-center">
+                          <div *ngIf="subscriber.status === 'ACCEPTED'">
+                            <a (click)="removeMessageModal(subscriber,i)">Remove</a>
+                          </div>
+                        </div>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-hidden">
+      <div class="row">
+        <div class="margin-left">
+          <div class="ledt-menu">
+            <div class="categori subsc-poll">
+              <h2>You have
+                <span *ngIf="currentTab==0">{{subscriberlist.length}}</span>
+                <span *ngIf="currentTab==1">{{subscriptions.length}}</span>
+                <span *ngIf="currentTab==2">{{messageRequestList.length}}</span>
+                <span *ngIf="currentTab==0" style="font-size: 14px;color: #656565;"> Subscribers in
+                  <b style="color:#1E1E1E">{{location}} </b>
+                </span>
+                <span *ngIf="currentTab==1" style="font-size: 14px;color: #656565;"> Subscriptions in
+                  <b style="color:#1E1E1E">{{location}}</b>
+                </span>
+                <span *ngIf="currentTab==2" style="font-size: 14px;color: #656565;"> Messenger Contacts in
+                  <b style="color:#1E1E1E">{{location}}</b>
+                </span>
+              </h2>
+              <ul>
+                <ul>
+                  <li>
+                    <a (click)="changeSubscribers(0)">Subscribers({{subscriberlist.length}})
+                      <span *ngIf="subscriber_pending_array.length>0"></span>
+                    </a>
+                  </li>
+                  <li>
+                    <a (click)="changeSubscribers(1)">Subscriptions ({{subscriptions.length}})</a>
+                  </li>
+                  <li>
+                      <a (click)="changeSubscribers(2)">Messenger Contacts ({{messageRequestList.length}})</a>
+                  </li>
+                </ul>
+              </ul>
+            </div>
+          </div>
+          <div class="invite-people">
+            <p>Invite people to Subscribe you.</p>
+            <button type="button" class="sign-in" (click)="trunumsSubscriptions()">Invite Subscriber</button>
+          </div>
+          <div class="clear"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="margin-top-30"></div>
+</div>
+<!-- <div *ngIf="loading" id="loaderDiv">
+  <img src="../../assets/images/loading.gif" class="ajax-loader" />
+</div> -->
+<style>
+  a {
+    cursor: pointer;
+  }
+</style>

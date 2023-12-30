@@ -1,0 +1,359 @@
+<style>
+  a,
+  a label {
+    cursor: pointer;
+  }
+</style>
+<!-- && -->
+<div *ngIf="displayPrivateSiteinProfile">
+  <app-profile></app-profile>
+</div>
+<div *ngIf="!displayPrivateSiteinProfile">
+<div class="container" *ngIf="userDetails &&  virtualData['privateSite'] === false">
+  <div class="row">
+    <div class="col-lg-2 col-sm-1 col-md-2 col-xs-12"></div>
+    <div class="col-lg-7 col-md-7 col-sm-10 col-xs-12">
+      <div class="row">
+        <div class="margin-left-right margin-top-30">
+          <div class="card-main-02" *ngIf="userDetails !== undefined">
+            <div class="profile-pic" *ngIf="user !== userDetails._id">
+              <a ui-sref="root.userprofile({userId: userDetails.userName })">
+                <img src="{{ userDetails.profilePicture }}" *ngIf="
+                    userDetails.profilePicture &&
+                    userDetails.profilePicture !== 'null'
+                  " alt="" />
+                <img src="../../assets/images/noimage.png" *ngIf="
+                    !userDetails.profilePicture ||
+                    userDetails.profilePicture == 'null'
+                  " />
+              </a>
+            </div>
+            <div class="profile-pic" *ngIf="user === userDetails._id">
+              <a>
+                <img src="{{ userDetails.profilePicture }}" *ngIf="
+                    userDetails.profilePicture &&
+                    userDetails.profilePicture !== 'null'
+                  " alt="" />
+                <img src="../../assets/images/noimage.png" *ngIf="
+                    !userDetails.profilePicture ||
+                    userDetails.profilePicture == 'null'
+                  " />
+              </a>
+            </div>
+            <div class="profile-cont">
+              <h2>{{ userDetails.firstName }} {{ userDetails.lastName }}</h2>
+              <ul>
+                <li>
+                  <img src="../../assets/images/map-icon.png" alt="map" />
+                  <span>{{ userDetails.address.country }}</span>
+                </li>
+              </ul>
+              <li class="user-page" >
+                <a data-toggle="dropdown" style="color: rgb(95, 93, 93);" role="button" title="Create Private Site">
+                  <i class='bx bx-lock-alt' style="font-size: 27px;padding-top: 4px;"></i>
+                </a> 
+                <ul style="width: 160px" class="dropdown-menu">
+                  <li class="drop-icon-top-user-profile "></li>
+                  <li  *ngFor="let item of privateSites" >
+                    <div *ngIf="item['settings']['siteName'] !== siteName "style="display: flex;">
+                      <a (click)= "navigateToPrivateSite(item['_id'])">{{ item['settings']['siteName'] }}</a> 
+                    </div>
+                  </li>
+                </ul>
+              </li>
+              <div class="subscribe-new sub-new-one" *ngIf="auth.isLoggedIn() && subscriptionObj === undefined">
+                <button (click)="toSubscribe(userDetails)" type="button" class="subscribe-button"
+                  [ngClass]="{ 'subscribe-div': subscriptionObj === undefined }">
+                  <span>
+                    SUBSCRIBE
+                  </span>
+                </button>
+              </div>
+              <!-- <div class="subscribe-new sub-new-two" *ngIf="auth.isLoggedIn() && msgRequestObj === undefined && isPrivateSite === false" style="right: 37px;
+              top: 95px;"> -->
+               <div class="subscribe-new sub-new-two" *ngIf="auth.isLoggedIn() && msgRequestObj === undefined" style="right: 37px;
+               top: 95px;">
+                  <button (click)="requestMessage(userDetails)" type="button" class="subscribe-button"
+                    [ngClass]="{ 'subscribe-div': msgRequestObj === undefined }">
+                    <span>
+                      Request Messaging
+                    </span>
+                  </button>
+                </div>
+
+                <div class="subscribe-new sub-new-three" *ngIf="auth.isLoggedIn() && msgRequestObj !== undefined" style="top: 20;">
+                    <button type="button" class="subscribe-button" *ngIf="
+                    msgRequestObj.status == 'Subscribe' ||
+                    msgRequestObj.status == 'UNSUBSCRIBE' ||
+                    msgRequestObj.status == 'CANCELLED'
+                      " [ngClass]="{
+                        'subscribe-div':
+                        msgRequestObj.status == 'Subscribe' ||
+                        msgRequestObj.status == 'CANCELLED' ||
+                        msgRequestObj.status == 'UNSUBSCRIBE',
+                        'subscribed-div': msgRequestObj.status == 'Subscribed'
+                      }" (click)="requestMessage(userDetails)">
+                      <span>
+                        Request Messaging
+                      </span>
+                    </button>
+                    <button type="button" class="subscribe-button" *ngIf="msgRequestObj.status == 'PENDING'" [ngClass]="{
+                        'pending-div': msgRequestObj.status == 'PENDING'
+                      }">
+                      <span>
+                        <i class="demo-icon icon-ok-circled2"></i>
+                        PENDING
+                      </span>
+                    </button>
+                    <button type="button" *ngIf="msgRequestObj.status == 'ACCEPTED'" class="subscribed-button" [ngClass]="{
+                        'subscribe-div': msgRequestObj.status == 'UNSUBSCRIBE'
+                      }" (click)="
+                        removeMessageModal(
+                          msgRequestObj
+                        )
+                      ">
+                      <span>
+                        <a type="button" class="btn sbcrbd-div pad-o-btn">
+                          MESSAGEABLE
+                        </a>
+                      </span>
+                    </button>
+
+                    <div class="span-img-cancl" *ngIf="msgRequestObj.status === 'PENDING'" (click)="
+                      removeMessageModal(msgRequestObj)">
+                      Cancel Request
+                    </div>
+                  </div>
+
+              <div class="subscribe-new sub-new-four" *ngIf="auth.isLoggedIn() && subscriptionObj !== undefined" style="top: 22px;
+			  right: 37px;">
+                <button type="button" class="subscribe-button" *ngIf="
+                    subscriptionObj.status == 'Subscribe' ||
+                    subscriptionObj.status == 'UNSUBSCRIBE' ||
+                    subscriptionObj.status == 'CANCELLED'
+                  " [ngClass]="{
+                    'subscribe-div':
+                      subscriptionObj.status == 'Subscribe' ||
+                      subscriptionObj.status == 'CANCELLED' ||
+                      subscriptionObj.status == 'UNSUBSCRIBE',
+                    'subscribed-div': subscriptionObj.status == 'Subscribed'
+                  }" (click)="reSubscribe(subscriptionObj._id,userDetails)">
+                  <span>
+                    SUBSCRIBE
+                  </span>
+                </button>
+                <button type="button" class="subscribe-button" *ngIf="subscriptionObj.status == 'PENDING'" [ngClass]="{
+                    'pending-div': subscriptionObj.status == 'PENDING'
+                  }">
+                  <span>
+                    <i class="demo-icon icon-ok-circled2"></i>
+                    PENDING
+                  </span>
+                </button>
+                <button type="button" *ngIf="subscriptionObj.status == 'ACCEPTED'" class="subscribed-button" [ngClass]="{
+                    'subscribe-div': subscriptionObj.status == 'UNSUBSCRIBE'
+                  }" (click)="
+                    unsubscribednewModal(
+                      subscriptionObj._id,
+                      userDetails.firstName,
+                      userDetails.lastName
+                    )
+                  ">
+                  <span>
+                    <a type="button" class="btn sbcrbd-div pad-o-btn">
+                      SUBSCRIBED
+                    </a>
+                  </span>
+                </button>
+                <!-- <button (click)="requestMessaging(userDetails)">
+                    <span>
+                        <a type="button" class="btn sbcrbd-div pad-o-btn">
+                         Request Message
+                        </a>
+                      </span>
+                </button> -->
+                <div class="span-img-cancl" *ngIf="subscriptionObj.status === 'PENDING'" (click)="
+                    cancelModal(
+                      subscriptionObj._id,
+                      userDetails.firstName,
+                      userDetails.lastName
+                    )
+                  ">
+                  Cancel Request
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="clear"></div>
+        <div class="margin-left-right tabs-menu margin-top-30">
+          <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active">
+              <a href="#home" aria-controls="home" role="tab" data-toggle="tab">TOPICS</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="clear"></div>
+      <div class="row">
+        <div class="margin-left-right profile-votes">
+          <div class="tab-content">
+            <div class="poll-qus margin-top-10" *ngIf="pollsInfo.length === 0">
+              <div class="no-poll-dtls text-center">
+                <img src="../../assets/images/no-polls-details.png" alt="" />
+                <h2>The user has not posted polls</h2>
+              </div>
+            </div>
+            <div role="tabpanel" class="tab-pane active" id="home" *ngIf="pollsInfo.length > 0">
+              <div *ngFor="let pollData of pollsInfo">
+                <app-pollinfo [poll]="pollData" [coutry]="urlCountry" [urlLocation]="urlLocation"></app-pollinfo>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-sm-3 col-md-3 col-xs-12"></div>
+  </div>
+  <div class="margin-top-30"></div>
+</div>
+<div class="container" *ngIf="userDetails && virtualData['privateSite'] === true">
+  <div class="col-lg-2 col-sm-1 col-md-2 col-xs-12"></div>
+  <div class="col-lg-8 col-md-8 col-sm-11 col-xs-13">
+    <div class="row" *ngIf="dispalyPendingView">
+      <div class="margin-left-right margin-top-30">
+          <div class="card-main-02"  *ngIf="userDetails && userDetails !== undefined">
+              <h1 *ngIf="subscriptionObj && subscriptionObj.status && subscriptionObj.status==='PENDING'" style="text-align: center;margin-bottom: 20px" >Waiting for {{ virtualData.settings.siteName }} to accept invitation.</h1>
+              <h1 *ngIf="!subscriptionObj || (subscriptionObj && subscriptionObj.status && subscriptionObj.status==='CANCELLED' || 'UNSUBSCRIBE' && subscriptionObj.status !== 'PENDING')"style="text-align: center;margin-bottom: 20px" >Subscribe {{ virtualData.settings.siteName }} to get more information.</h1>
+              <br>
+
+              <div class="profile-pic" *ngIf="user !== userDetails._id">
+                <a ui-sref="root.userprofile({userId: userDetails.userName })">
+                  <img src="{{ virtualData.settings.siteLogo }}" *ngIf="
+                      virtualData.settings.siteLogo &&
+                      virtualData.settings.siteLogo !== 'null'
+                    " alt="" />
+                  <img src="../../assets/images/noimage.png" *ngIf="
+                      !virtualData.settings.siteLogo ||
+                      virtualData.settings.siteLogo === 'null'
+                    " />
+                </a>
+              </div>
+              <div class="profile-pic" *ngIf="user === userDetails._id">
+                <a>
+                  <img src="{{ virtualData.settings.siteLogo }}" *ngIf="
+                      virtualData.settings.siteLogo &&
+                      virtualData.settings.siteLogo !== 'null'
+                    " alt="" />
+                  <img src="../../assets/images/noimage.png" *ngIf="
+                      !userDetails.profilePicture ||
+                      userDetails.profilePicture == 'null'
+                    " />
+                </a>
+              </div>
+              <div class="profile-cont">
+                <h2>{{ virtualData.settings.siteName }} (Site Admin)</h2>
+                <ul>
+                  <li>
+                    <img src="../../assets/images/map-icon.png" alt="map" />
+                    <span>{{ userDetails.address.country }}</span>
+                  </li>
+                </ul>
+                <div class="subscribe-new sub-button-new" style="top:132px" *ngIf="!auth.isLoggedIn()">
+                  <button (click)="toSubscribe(userDetails)" type="button" class="subscribe-button"
+                    [ngClass]="{ 'subscribe-div': subscriptionObj === undefined }">
+                    <span>
+                      SUBSCRIBE
+                    </span>
+                  </button>
+                </div>
+                <div class="subscribe-new sub-button-new" style="top:132px" *ngIf="auth.isLoggedIn() && subscriptionObj === undefined">
+                  <button (click)="toSubscribe(userDetails)" type="button" class="subscribe-button"
+                    [ngClass]="{ 'subscribe-div': subscriptionObj === undefined }">
+                    <span>
+                      SUBSCRIBE
+                    </span>
+                  </button>
+                </div>
+                <div class="subscribe-new sub-button-new" style="top:106px"  *ngIf="auth.isLoggedIn() && subscriptionObj !== undefined">
+                  <button type="button" class="subscribe-button" *ngIf="
+                      subscriptionObj.status == 'Subscribe' ||
+                      subscriptionObj.status == 'UNSUBSCRIBE' ||
+                      subscriptionObj.status == 'CANCELLED'
+                    " [ngClass]="{
+                      'subscribe-div':
+                        subscriptionObj.status == 'Subscribe' ||
+                        subscriptionObj.status == 'CANCELLED' ||
+                        subscriptionObj.status == 'UNSUBSCRIBE',
+                      'subscribed-div': subscriptionObj.status == 'Subscribed'
+                    }" (click)="reSubscribe(subscriptionObj._id,userDetails)">
+                    <span>
+                      SUBSCRIBE
+                    </span>
+                  </button>
+                  <button type="button" style="bottom:106px" class="subscribe-button" *ngIf="subscriptionObj.status == 'PENDING'" [ngClass]="{
+                      'pending-div': subscriptionObj.status == 'PENDING'
+                    }">
+                    <span>
+                      <i class="demo-icon icon-ok-circled2"></i>
+                      PENDING
+                    </span>
+                  </button>
+                  <button type="button" *ngIf="subscriptionObj.status == 'ACCEPTED'" class="subscribed-button" [ngClass]="{
+                      'subscribe-div': subscriptionObj.status == 'UNSUBSCRIBE'
+                    }" (click)="
+                      unsubscribednewModal(
+                        subscriptionObj._id,
+                        userDetails.firstName,
+                        userDetails.lastName
+                      )
+                    ">
+                    <span>
+                      <a type="button" class="btn sbcrbd-div pad-o-btn">
+                        SUBSCRIBED
+                      </a>
+                    </span>
+                  </button>
+                  <div class="span-img-cancl" *ngIf="subscriptionObj.status === 'PENDING'" (click)="
+                      cancelModal(
+                        subscriptionObj._id,
+                        userDetails.firstName,
+                        userDetails.lastName
+                      )
+                    ">
+                    Cancel Request
+                  </div>
+                </div>
+              </div>
+          </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+  </div>
+  <div class="col-lg-2 col-sm-2 col-md-2 col-xs-11"></div>
+  <ng-container *ngIf="isSubscriber">
+    <app-privatesite-home></app-privatesite-home>
+  </ng-container>
+</div>
+
+<script type="text/ng-template" id="popover.html">
+  <div>
+    <a socialshare socialshare-provider='whatsapp' socialshare-url='{{poll.shareUrl}}' class='whatsapp' (click)="shareOrFollow(poll._id, 'share')">
+        <img src="./../../assets/images/whats-app.svg" alt="whats-app">
+    </a>
+    <a socialshare socialshare-provider='facebook' socialshare-url='{{poll.shareUrl}}' href='' class='face-book' (click)="shareOrFollow(poll._id, 'share')">
+        <img src="./../../assets/images/fb-icon.svg" alt="fb-icon">
+    </a>
+    <a href='' class='face-twitter' socialshare socialshare-provider='twitter' socialshare-url='{{poll.shareUrl}}' (click)="shareOrFollow(poll._id, 'share')">
+        <img src="./../../assets/images/twitter.svg" alt="twitter">
+    </a>
+    <a class='face-envelope' socialshare socialshare-provider='email' socialshare-subject='Check out this Trunums Poll' socialshare-body='{{poll.shareUrl}}' (click)="shareOrFollow(poll._id, 'share')">
+        <img src="./../../assets/images/inbox.png" alt="inbox">
+    </a>
+  </div>
+</script>
+</div>
+
+<!-- <div *ngIf="loading" id="loaderDiv">
+  <img src="../../assets/images/loading.gif" class="ajax-loader" />
+</div> -->

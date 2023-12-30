@@ -1,0 +1,22 @@
+.skltn-item {
+    &__avatar {
+        display: block;
+        width: 60px;
+        height: 60px;
+    }
+    &__title {
+        height: 24px;
+        margin: 24px 0 0;
+    }
+    &__desc {
+        height: 16px;
+        margin: 16px 0 0;
+        &_last {
+            width: 60%;
+        }
+    }
+    &__url {
+        height: 16px;
+        margin: 24px 0 0;
+    }
+}

@@ -1,0 +1,176 @@
+.navbar.navbar-default {
+	background:#FFF;
+	min-height:72px;
+	box-shadow:0 2px 5px 0 rgba(0,0,0,0.1);
+	padding:$padding-10 + 5px 0 0 0;
+		.navbar-header {
+			.navbar-brand {
+				padding:0 0 0;
+				width:194px;
+		}
+		}
+
+		.navbar-collapse {
+
+			.search-top {
+				float:left;
+				width:48%;
+				position:relative;
+				input {
+					background:$input-bg;
+					width:100%;
+					border:$border-color;
+					border-radius:$border-radius;
+					height:42px;
+					line-height:42px;
+					padding:0 $padding-10 0 50px;
+					}
+				.creat-link {
+					position:absolute;
+					top:6px;
+					right:6px;
+					width:98px;
+					text-align:center;
+					height:30px;
+					line-height:30px;
+					border:1px solid #3993C7;
+					border-radius:$border-radius;
+					text-decoration:none;
+					font-size:$fontsize-nav-sml;
+					font-weight:$fontweight-semibold;
+					&hover {
+						text-decoration:none;
+					}
+				}
+.dropdown.search-drop {
+    border-right: $border-color;
+    height: 42px;
+    left: 0;
+    line-height: 42px;
+    position: absolute;
+    text-align: center;
+    top: 0;
+    width: 42px;
+
+	.dropdown-menu {
+		border-top:3px solid #3f93c2;
+		border-radius:0;
+		padding:0;
+		margin-top:0;
+
+		li {
+			margin:0;
+			padding:0;
+				a {
+				padding:10px;
+				line-height:40px;
+				img {
+					display:inline-block;
+					margin-right:10px;
+				}
+				}
+			}
+		}
+}
+
+		}
+		.nav.navbar-nav {
+			padding-top:$padding-10 - 5px;
+
+			li {
+
+
+				a {
+					padding:0;
+					font-size:$fontsize-nav;
+					line-height:30px;
+					color:$txtcolor;
+					font-family:$font-caps;
+					font-weight:$fontweight-semibold;
+					letter-spacing:0.3px;
+					margin:0 0 0 30px;
+
+					&:hover {
+						color:#0093CD;
+					}
+					}
+
+				a.sign-up-btn {
+					border-radius:$border-radius;
+					border:$border-color-dark;
+					padding:0;
+					height:30px;
+					width:82px;
+					text-align:center;
+					line-height:26px;
+
+				}
+				a.sign-in-btn {
+					border-radius:$border-radius;
+					padding:0;
+					margin:0 0 0 $margin;
+					height:30px;
+					width:82px;
+					text-align:center;
+					line-height:26px;
+					background:$btn-bg-dark;
+					color:$text-color-white;
+					border:$border-color-dark;
+				}
+				a.my-poll-pic {
+					margin:0;
+
+					img {
+						margin:-10px 0 0;
+            width: 48px;
+            height: 48px;
+          }
+					}
+
+				}
+			li.active{
+				a {
+					background:none;
+					color:#0093CD;}
+				}
+			li.dropdown {
+				background:none;
+				a {
+					&:hover, &:focus {
+						background:none;
+					}}
+
+				ul.dropdown-menu {
+					margin:14px 0 0;
+					padding:0;
+					left:-77px !important;
+					border-top:3px solid #3F93C2;
+
+					li {
+            margin: 0 !important;
+            font-size: 14px;
+            padding: 5px 0 5px 10px;
+						border-bottom:1px solid #D8D8D8;
+						a {
+							margin:0 !important;
+							font-size:14px;
+							padding:5px 0 5px 10px;
+						}
+						}
+				}
+				}
+			}
+		}
+	}
+.home-page {
+	li {
+		a {
+			margin:0 0 0 30px !important;}
+		}
+	}
+.search-drop {
+	a {
+		position:relative;
+		left:0;
+		}}
+

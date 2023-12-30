@@ -1,0 +1,20 @@
+<div class="popup-header">
+    <button type="button" class="close" (click)="cancel()" style="outline: none;" [disabled]="disableCancel">
+		<i class='bx bx-x' style="font-size: 28px; outline: none"></i>
+    </button>
+</div>
+<div>
+    <div *ngIf="camType==='photo'">
+        <app-camera (pictureTaken)="handleImage($event)"></app-camera>
+        <div class="snapshot" *ngIf="webcamImage">
+            <img [src]="webcamImage.imageAsDataUrl" class="displayPic"/>
+        </div>
+    </div>
+    <div *ngIf="camType==='video' || camType==='audio'" class="videoClass">
+        <record-rtc (videoAudioTaken)="handleVideoAudio($event)" [mediaValues]="camType"></record-rtc>
+    </div>
+    <div class="bottom-ryt videoClass">
+        <button type="button" class="btn btn-common blue-border" (click)="close()" [disabled]="saveValidity">Send</button>
+    </div>
+</div>
+

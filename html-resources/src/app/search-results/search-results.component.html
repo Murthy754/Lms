@@ -1,0 +1,105 @@
+<style>
+  a,
+  a label {
+    cursor: pointer;
+  }
+</style>
+<!-- <div *ngIf="loading" id="loaderDiv">
+  <img src="../../assets/images/loading.gif" class="ajax-loader" />
+</div> -->
+<div class="container">
+  <div class="row">
+    <div class="col-lg-2 col-sm-3 col-md-2 col-xs-hidden" *ngIf="searchType=='poll'">
+      <app-categoies (getData)="getCategories($event)" [urllink]="'/search/poll?query='+searchParam"></app-categoies>
+    </div>
+    <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12" *ngIf="searchType!='poll'">
+      <div class="row"></div>
+    </div>
+    <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12" *ngIf="searchType=='poll' || 'tag'">
+      <div class="row">
+        <h2>Results for
+          <b *ngIf="searchType !== 'tag'">{{searchParam}}</b>
+          <b *ngIf="searchType === 'tag'">#{{searchParam}}</b>
+        </h2>
+      </div>
+      <div class="clear"></div>
+      <div class="m-categ-btn" *ngIf="searchType === 'poll' && searchType !== 'tag'">
+        <a class="sign-in" data-toggle="modal" data-target="#myModal2">Categories ({{Categories.length}})</a>
+      </div>
+      <div class="clear"></div>
+      <div class="poll-qus" style="margin-top: 50px" *ngIf="PollList.length==0">
+        <div class="no-poll-dtls text-center">
+          <img src="../../assets/images/no-polls-details.png" alt="" />
+          <h2 class="nopolls">There are no polls based on search.<br>
+            <a (click)="createPoll()" class="no-position">Create</a>
+            a poll now.</h2>
+        </div>
+      </div>
+      <div class="row">
+        <div class="margin-left-right">
+          <div class="searchcategory" *ngFor="let pollData of PollList">
+            <app-pollinfo [poll]="pollData" [coutry]="country" [urlLocation]="location"></app-pollinfo>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12" *ngIf="searchType=='profile'">
+      <div class="">
+        <h2>Results for
+          <b>{{searchParam}}</b>
+        </h2>
+      </div>
+      <div class="clear"></div>
+      <div class="poll-qus margin-top-10" *ngIf="SearchInfo.length==0">
+        <div class="no-poll-dtls text-center">
+          <img src="../../assets/images/no-polls-details.png" alt="" />
+          <h2 class="nopolls">There are no users based on search.</h2>
+        </div>
+      </div>
+      <div class="row" *ngFor="let user of SearchInfo">
+        <div class="margin-left-right margin-top-30">
+          <div class="card-main-02">
+            <div class="profile-pic">
+              <a (click)="profileRedirect(user._id,user.userName)"><img src="{{user.profilePicture}}"
+                  *ngIf="user.profilePicture && user.profilePicture !== 'null'" alt="" />
+                <img src="../../assets/images/noimage.png"
+                  *ngIf="!user.profilePicture || user.profilePicture=='null'" /></a>
+            </div>
+            <div class="profile-cont">
+              <a (click)="profileRedirect(user._id,user.userName)">
+                <h2>{{user.firstName}}
+                  {{user.lastName}}</h2>
+              </a>
+              <ul>
+                <li><img src="../../assets/images/map-icon.png" alt="map" />
+                  <span>{{user.address.country}}</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-sm-3 col-md-3 col-xs-12"></div>
+  </div>
+</div>
+<div id="myModal2" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" (click)="filterPolls()">&times;</button>
+        <h4 class="modal-title">Categories</h4>
+      </div>
+      <div class="modal-body">
+        <ul>
+          <li *ngFor="let item of Categories">
+            <span>
+              <a [ngClass]="{'active':checkCategory(item)}" (click)="mobilecategoryPolls(item)">
+                {{item}}</a>
+            </span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

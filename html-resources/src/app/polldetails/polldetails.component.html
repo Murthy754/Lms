@@ -1,0 +1,1126 @@
+<style>
+    a,
+    a label {
+        cursor: pointer;
+    }
+
+    body {
+        background-color: #f4f4f4 !important;
+    }
+
+    .bg-white {
+        background-color: #F4F4F4;
+    }
+</style>
+<!-- <div *ngIf="loading" id="loaderDiv">
+    <img src="../../assets/images/loading.gif" class="ajax-loader" />
+</div> -->
+<google-ad [adType]="'home'" *ngIf="displayAds"></google-ad>
+<div class=' bg-white'>
+    <div class="row">
+        <div class="col-lg-2 col-sm-12 col-md-2 col-xs-12">
+            <div class="row">
+                <div class="margin-right margin-top-20" style="padding:10px;padding-right:0px;">
+                    <button style="width:100%;color:white;outline:0;text-align: center" class="btn sign-in"
+                        (click)="closeThisDialog(polldata._id)">
+                        <img style='width:30px;height:18px;' class="pull-left"
+                            src="../../assets/images/left-arrow.png">BACK
+                    </button>
+                </div>
+                <google-ad [adType]="'vertical'" *ngIf="displayAds"></google-ad> 
+                <div class="clear"></div>
+            </div>
+        </div>
+        <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12">
+            <div class="row">
+                <div *ngIf="polldata" class="margin-left-right m-card-box">
+                    <app-pollinfo [poll]="polldata" [coutry]="country" [urlLocation]="location"></app-pollinfo>
+                </div>
+                <div class="m-right-show">
+                    <div class="categori profile-settings" *ngIf="polldata">
+                        <h2>Other Details</h2>
+                        <div class="expend text-center" *ngIf="userId !== polldata.pollster._id">
+                            <p>Topic Expires on</p>
+                            <h2>{{date}}</h2>
+                        </div>
+                        <div class="expend text-center" *ngIf="polldata.pollStatus === 'Expired' ">
+                            <p>Poll Expired on</p>
+                            <h2 *ngIf="isExpiryEditable">{{date}}</h2>
+                        </div>
+                        <div class="expend2 text-center"
+                            *ngIf="userId === polldata.pollster._id && polldata.pollStatus !== 'Expired'">
+                            <p>Topic Expires on</p>
+                            <h2 *ngIf="!isExpiryEditable">{{date}}</h2>
+                            <div *ngIf="isExpiryEditable">
+                                <input class="myinput" style="font-weight: bold" matInput [(ngModel)]="polldata.expires"
+                                    [min]="minDate" [matDatepicker]="myDatepicker">
+                                <mat-datepicker-toggle matSuffix [for]="myDatepicker">
+                                </mat-datepicker-toggle>
+                                <mat-datepicker #myDatepicker></mat-datepicker>
+                            </div>
+                            <button type="button" class="save sign-in margin-top-10"
+                                (click)="extendExpiry()">{{isExpiryEditable && 'SAVE' || 'EXTEND'}}
+                            </button>
+                        </div>
+                        <div *ngIf="userId === polldata.pollster._id">
+                            <h2>Target Country</h2>
+                            <div class="expend world-map text-center">
+                                <a>
+                                    <img src="../../assets/images/map-icon.png"
+                                        alt="country" />{{polldata.country === undefined ? 'no country assigned' : polldata.country }}
+                                </a>
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+                <div class="clear"></div>
+                <div class="margin-left-right tabs-menu margin-top-30">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li role="presentation" [ngClass]="{active : activeTab === 'MORE_INFO'}">
+                            <a (click)="changeTab()">More Info
+                            </a>
+                        </li>
+                        <li role="presentation" [ngClass]="{active : activeTab === 'BROADCAST'}">
+                            <a (click)='changeTab()'>Broadcasts</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="clear"></div>
+            <div class="tab-content new-poll-box" style="background-color: white; padding:30px;margin-top:20px;">
+                <div *ngIf="polldata && activeTab=='MORE_INFO'" class="tab-content new-poll-box">
+                    <div role="tabpanel" class="tab-pane" id="more-infos"
+                        [ngClass]="{active : activeTab === 'MORE_INFO'}">
+                        <div class="poll-qus margin-top-10"
+                            *ngIf="(polldata.articleInfo === null || displayFiles.length === 0 && displayArticleFiles.length === 0)">
+                            <div class="no-poll-dtls text-center">
+                                <img src="../../assets/images/no-polls-details.png" alt="" />
+                                <h2>The user has not posted any additional information on this topic</h2>
+                            </div>
+                        </div>
+                        <div class="row" *ngIf="polldata.articleInfo && displayFiles.length>0">
+                            <ng-container *ngFor="let article of polldata.articleInfo;let index=index">
+                                <div class="margin-left-right profile-votes">
+                                    <div class="poll-qus margin-top-10">
+                                        <div class="add-more-dtls add-img-box">
+                                            <img *ngIf="userId === polldata.pollster._id"
+                                                src="../../assets/images/close_image.png"
+                                                (click)="cleararticleModal(index)" alt="close"
+                                                class="close-btn m-close-btn" />
+                                            <!-- <p>{{article.description}}</p> -->
+                                            <div [innerHtml]="article.description"></div>
+                                            <div class="clear"></div>
+                                            <p class="cptn-tile" *ngIf="article.caption">Caption:
+                                                {{article.caption}}</p>
+                                            <div class="clear"></div>
+                                            <h1 *ngIf="article.description.indexOf('youtu.be')>-1 || article.description.indexOf('youtube.com')>-1">
+                                                <div class="youtube-video" [innerHtml]="article.youtubeUrl">
+                                                </div>                
+                                            </h1>
+                                            <div class="preview clearfix" *ngIf="article.files.length>0">
+                                                <div id="Carousel{{index}}" class="carousel slide" data-interval="false">
+                                                    <div class="carousel-inner">
+                                                        <div class="item"
+                                                            *ngFor="let image of article.files;let i = index"
+                                                            [ngClass]="{'active':i===0}">
+                                                            <img style="max-height: 300px; outline: none; border: none" src="{{image.url}}" alt=" carousel {{i}}"
+                                                                *ngIf="(image.type).indexOf('image')>-1" />
+                                                            <audio controls *ngIf="(image.type).indexOf('audio')>-1">
+                                                                <source src="{{(image.url)}}" type="{{(image.type)}}">
+                                                            </audio>
+                                                            <video style="max-height: 300px; width: 100%" controls *ngIf="(image.type).indexOf('video')>-1"
+                                                                src="{{image.url}}"></video>
+                                                        </div>
+                                                    </div>
+                                                    <a class="left carousel-control" data-slide="prev"
+                                                        href="#Carousel{{index}}">
+                                                        <span class="glyphicon glyphicon-chevron-left"></span>
+                                                    </a>
+                                                    <a class="right carousel-control" data-slide="next"
+                                                        href="#Carousel{{index}}">
+                                                        <span class="glyphicon glyphicon-chevron-right"></span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="clear"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-container>
+                        </div>
+                        <ng-container *ngIf="displayArticleFiles.length > 0">
+                            <div *ngFor="let article of displayArticleFiles">
+                                <div (click)="goToLink(article.url)" class="linksharing">
+                                    <img [src]="article.image" style="width: 100%; height: auto;" alt={{article.title}}>
+                                    <h1>{{ article.title }}</h1>
+                                    <div [innerHtml]="article.description"></div>
+                                    <a *ngIf="article.url">{{ article.url }}</a>
+                                </div>
+                            </div>
+                         </ng-container>
+                        <div class="clear"></div>
+                        <div class="row" id="comment-origin">
+                            <div class="margin-left-right tabs-menu margin-top-30" *ngIf="!polldata.disableComments">
+                                <ul class="nav nav-tabs" role="tablist">
+                                    <li role="presentation" class="active">
+                                        <a aria-controls="home" role="tab" data-toggle="tab">COMMENTS
+                                            ({{polldata.pollCommentCount}})</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                        <div class="margin-left-right">
+                            <div class="comment-main" *ngIf="!polldata.disableComments">
+                                <form class="form-group" [formGroup]="commentForm" name="commentForm"
+                                    (ngSubmit)="addCommentt(polldata._id)" style="position: relative">
+                                    <div class="poll-qus">
+                                        <fieldset>
+                                            <div class="add-more-dtls" id="artcleInfo">
+                                                <textarea class="msd-elastic ng-pristine ng-valid ng-empty ng-touched"
+                                                    placeholder="Add more details, description or comments here"
+                                                    formControlName="homeComment"
+                                                    style="overflow: hidden; overflow-wrap: break-word;height: 50px;resize: none">
+                                                        </textarea>
+                                                <div class="box comment-upload">
+                                                    <input type="file" (change)='onFileChange($event)'
+                                                        class="inputfile-3 file" accept="audio/*,video/*,image/*"
+                                                        name="file" multiple />
+                                                    <label>
+                                                        <img src="../../assets/images/photo-icon.png">
+                                                        <span>Photo/Video/Audio</span>
+                                                    </label>
+                                                </div>
+                                                <div style="float: left;margin-top: 21px;">
+                                                    <p class="qerror" *ngIf="maxFileError">File size should be less than
+                                                        or
+                                                        equal to 500MB
+                                                    </p>
+                                                    <p class="qerror" *ngIf='maxFileCount'>You can add only 10 articles
+                                                        per
+                                                        polldata.</p>
+                                                </div>
+                                                <div *ngIf="urls.length>0" class="preview clearfix">
+                                                    <ul class="previewDatas based-roles comnts-post">
+                                                        <li *ngFor="let data of urls; index as i">
+                                                            <img [src]="data.url" *ngIf="data.type.includes('image')"
+                                                                class="thumb">
+                                                            <audio controls [src]="data.url"
+                                                                *ngIf="data.type.includes('audio')"></audio>
+                                                            <video controls [src]="data.url"
+                                                                *ngIf="data.type.includes('video')" width="150"></video>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                    <input type="submit" class="commentsubmit" value="Submit" />
+                                </form>
+                                <div class="comments-box" *ngIf="polldata.pollCommentCount >= 0">
+                                    <div *ngFor="let comment of Comments" class="comment-view">
+                                        <div class="comment-list margin-top-10">
+                                            <div class="cmnt-pic">
+                                                <a
+                                                    *ngIf="userId !== comment.user._id && comment.user.userStatus !== 'InActive' && comment.user.userStatus !== 'Blocked'">
+                                                    <img
+                                                        [src]=" comment.user.profilePicture && comment.user.profilePicture !== 'null' ? comment.user.profilePicture : '../../assets/images/noimage.png'" />
+                                                </a>
+                                                <a
+                                                    *ngIf="userId == comment.user._id && comment.user.userStatus !== 'InActive' && comment.user.userStatus !== 'Blocked'">
+                                                    <img
+                                                        [src]=" comment.user.profilePicture && comment.user.profilePicture !== 'null' ? comment.user.profilePicture : '../../assets/images/noimage.png'" />
+                                                </a>
+                                                <a
+                                                    *ngIf="comment.user.userStatus === 'InActive' || comment.user.userStatus === 'Blocked'">
+                                                    <img
+                                                        [src]="comment.user.profilePicture && comment.user.profilePicture !== 'null' ? comment.user.profilePicture : '../../assets/images/noimage.png'" />
+                                                </a>
+                                            </div>
+                                            <div class="cmnt-text">
+                                                <a
+                                                    *ngIf="userId !== comment.user._id && comment.user.userStatus !== 'InActive' && comment.user.userStatus !== 'Blocked'">{{comment.user.firstName +" "+ comment.user.lastName}}
+                                                    <span
+                                                        class="cmnt-time delete-icon">{{comment.createdAt | datefromnow}}</span>
+                                                </a>
+                                                <a
+                                                    *ngIf="userId === comment.user._id && comment.user.userStatus !== 'InActive' && comment.user.userStatus !== 'Blocked'">{{comment.user.firstName +" "+ comment.user.lastName}}
+                                                    <span
+                                                        class="cmnt-time delete-icon">{{comment.createdAt | datefromnow}}</span>
+                                                </a>
+                                                <a
+                                                    *ngIf="comment.user.userStatus === 'InActive' || comment.user.userStatus === 'Blocked'">
+                                                    <h4>TruNums user</h4>
+                                                    <span
+                                                        class="cmnt-time delete-icon">{{comment.createdAt | datefromnow}}</span>
+                                                </a>
+                                                <p ng-bind-html="comment.comment | linky:'_blank'"
+                                                    style="white-space: pre-wrap">
+                                                    {{comment.comment}}</p>
+                                                    <h1 *ngIf="comment.comment.indexOf('youtu.be')>-1 || comment.comment.indexOf('youtube.com')>-1">
+                                                            <div class="youtube-video" [innerHtml]="comment.youtubeUrl">
+                                                            </div>                
+                                                        </h1>
+                                                <!-- <youtube-video ng-init="findurl(comment.comment)" video-url="youtubeURL" player-width="'100%'" player-height="'280px'" style="float:left;" *ngIf="(comment.comment).indexOf('youtube')>-1 || (comment.comment).indexOf('youtu.be')>-1">
+                                                        </youtube-video> -->
+                                                <div class="preview clearfix" *ngIf="comment.files.length>0">
+                                                    <ul class="previewDatas based-roles flex-end">
+                                                        <li *ngFor="let article of comment.files;">
+                                                            <img class="img-wdth-hgt"
+                                                                (click)="openImageModal(article.url)"
+                                                                style="vertical-align:middle"
+                                                                *ngIf="article.type === 'image/jpeg' || article.type === 'image/gif' || article.type=='image/jpg' || article.type=='image/png' || article.type=='image/tiff'"
+                                                                src="{{article.url}}" />
+                                                            <audio controls *ngIf="(article.type).indexOf('audio')>-1">
+                                                                <source src="{{(article.url)}}"
+                                                                    type="{{(article.type)}}">
+                                                            </audio>
+                                                            <video controls
+                                                                *ngIf="(polldata.youtube_status!='public' && polldata.youtube_id) || (polldata.youtube_file_isdeleted==true ||  !polldata.youtube_id ) && (polldata.s3_file_isdeleted==false) && article.url!=null && (article.type).indexOf('video')>-1"
+                                                                src="{{(article.url)}}" width="100%"></video>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <a *ngIf="userId == comment.user._id"
+                                                    (click)="deleteCommentModal(comment,polldata)">
+                                                    <span class="cmnt-time">
+                                                        <img src="../../assets/images/deletec.png" />
+                                                    </span>
+                                                </a>
+                                                <div class="clear"></div>
+                                                <div *ngIf="polldata.privacyOptions.comment.preference!=='Private'">
+                                                    <span class="repley-comnent" aria-controls="collapseExampl1"
+                                                        [attr.aria-expanded]="!comment.isCollapsed"
+                                                        (click)="comment.isCollapsed=!comment.isCollapsed;replyCommentData1(comment)">
+                                                        Replies
+                                                    </span>
+                                                </div>
+
+                                                <div class="collapse polinfo-coment-sctn" id="collapseExample1"
+                                                    [ngbCollapse]="comment.isCollapsed"
+                                                    *ngIf="polldata.privacyOptions.comment.preference!=='Private'">
+                                                    <div class="comment-main ">
+                                                        <form class="form-group" [formGroup]="replyForm"
+                                                            name="replyForm"
+                                                            (ngSubmit)="initiatePublicCommentReply(comment,polldata)">
+                                                            <textarea class="form-control msd-elastic commenttext"
+                                                                formControlName="replyComment" placeholder="Reply..."
+                                                                style="overflow: hidden; overflow-wrap: break-word; resize: horizontal; height: 50px;resize: none"></textarea>
+                                                            <!-- FILE UPLOAD FOR REPLIEs -->
+                                                            <div class="box comment-upload">
+                                                                <input type="file"
+                                                                    (change)='onFileChangeReply($event,comment)'
+                                                                    class="inputfile-3 file"
+                                                                    accept="audio/*,video/*,image/*" name="file"
+                                                                    multiple />
+                                                                <label>
+                                                                    <img src="../../assets/images/photo-icon.png">
+                                                                    <span
+                                                                        style="margin-top: 0px;">Photo/Video/Audio</span>
+                                                                </label>
+                                                            </div>
+                                                            <div style="float: left;margin-top: 21px;">
+                                                                <p class="qerror" *ngIf="maxFileError">File size should
+                                                                    be
+                                                                    less than or equal to 500MB
+                                                                </p>
+                                                                <p class="qerror" *ngIf='maxFileCount'>You can add only
+                                                                    10
+                                                                    articles per polldata.
+                                                                </p>
+                                                            </div>
+                                                            <div *ngIf="comment.urls.length>0" class="preview clearfix">
+                                                                <ul class="previewDatas based-roles comnts-post">
+                                                                    <li
+                                                                        *ngFor="let data of comment.urls; index as i">
+                                                                        <img [src]="data.url"
+                                                                            *ngIf="data.type.includes('image')"
+                                                                            class="thumb">
+                                                                        <audio controls [src]="data.url"
+                                                                            *ngIf="data.type.includes('audio')"></audio>
+                                                                        <video controls [src]="data.url"
+                                                                            *ngIf="data.type.includes('video')"
+                                                                            width="150"></video>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                            <input type="submit" value="Submit" class="commentsubmit" />
+                                                        </form>
+                                                    </div>
+                                                    <div class="margin-left-right tabs-menu margin-top-30"
+                                                        *ngIf="comment.replyComments">
+                                                        <ul class="nav nav-tabs" role="tablist">
+                                                            <li class="active">
+                                                                <a aria-controls="home" role="tab" data-toggle="tab">
+                                                                    REPLIES
+                                                                    ({{comment.replyComments.length || 0}})
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                    <ng-container
+                                                        *ngIf="polldata.privacyOptions.comment.preference!=='Private'">
+                                                        <div class="comment-view reply-cmnts"
+                                                            style="float: left;width: 100%"
+                                                            *ngFor="let rcomment of comment.replyComments">
+                                                            <div class="cmnt-pic">
+                                                                <a
+                                                                    *ngIf="userId !== rcomment.user._id && rcomment.user.userStatus !== 'InActive' && rcomment.user.userStatus !== 'Blocked'">
+                                                                    <img
+                                                                        [src]=" rcomment.user.profilePicture && rcomment.user.profilePicture !== 'null' ? rcomment.user.profilePicture : '../../assets/images/noimage.png'" />
+                                                                </a>
+                                                                <a
+                                                                    *ngIf="userId == rcomment.user._id && comment.user.userStatus !== 'InActive' && rcomment.user.userStatus !== 'Blocked'">
+                                                                    <img
+                                                                        [src]=" rcomment.user.profilePicture && rcomment.user.profilePicture !== 'null' ? rcomment.user.profilePicture : '../../assets/images/noimage.png' " />
+                                                                </a>
+                                                                <a
+                                                                    *ngIf="rcomment.user.userStatus === 'InActive' || rcomment.user.userStatus === 'Blocked'">
+                                                                    <img
+                                                                        [src]=" rcomment.user.profilePicture && rcomment.user.profilePicture !== 'null' ? rcomment.user.profilePicture : '../../assets/images/noimage.png' " />
+                                                                </a>
+                                                            </div>
+                                                            <div class="cmnt-text">
+                                                                <a
+                                                                    *ngIf="userId !== rcomment.user._id && rcomment.user.userStatus !== 'InActive' && rcomment.user.userStatus !== 'Blocked'">{{rcomment.user.firstName +" "+ rcomment.user.lastName}}
+                                                                    <span
+                                                                        class="cmnt-time delete-icon">{{rcomment.createdAt | datefromnow}}</span>
+                                                                </a>
+                                                                <a
+                                                                    *ngIf="userId === rcomment.user._id && rcomment.user.userStatus !== 'InActive' && rcomment.user.userStatus !== 'Blocked'">{{rcomment.user.firstName +" "+ rcomment.user.lastName}}
+                                                                    <span
+                                                                        class="cmnt-time delete-icon">{{rcomment.createdAt | datefromnow}}</span>
+                                                                </a>
+                                                                <a
+                                                                    *ngIf="rcomment.user.userStatus === 'InActive' || rcomment.user.userStatus === 'Blocked'">
+                                                                    <h4>TruNums user</h4>
+                                                                    <span
+                                                                        class="cmnt-time delete-icon">{{rcomment.createdAt | datefromnow}}</span>
+                                                                </a>
+                                                                <p>{{rcomment.replycomment}} </p>
+                                                                <h1 *ngIf="rcomment.replycomment.indexOf('youtu.be')>-1 || rcomment.replycomment.indexOf('youtube.com')>-1">
+                                                                        <div class="youtube-video" [innerHtml]="rcomment.youtubeUrl">
+                                                                        </div>                
+                                                                    </h1>
+                                                                <div class="preview clearfix"
+                                                                    *ngIf="rcomment.files && rcomment.files.length>0">
+                                                                    <ul class="previewDatas based-roles flex-end">
+                                                                        <li
+                                                                            *ngFor="let article1 of rcomment.files">
+                                                                            <img class="img-wdth-hgt"
+                                                                                (click)="openImageModal(article1.url)"
+                                                                                style="vertical-align:middle"
+                                                                                *ngIf="(article1.type).indexOf('image')>-1"
+                                                                                src="{{article1.url}}" />
+                                                                            <audio controls
+                                                                                *ngIf="(article1.type).indexOf('audio')>-1">
+                                                                                <source src="{{(article1.url)}}"
+                                                                                    type="{{(article1.type)}}">
+                                                                            </audio>
+                                                                            <video controls
+                                                                                *ngIf="(article1.type).indexOf('video')>-1"
+                                                                                src="{{(article1.url)}}"
+                                                                                width="100%"></video>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                                <a *ngIf="userId == rcomment.user._id"
+                                                                    (click)="deleteReplyModal(rcomment,comment,polldata)">
+                                                                    <span class="cmnt-time">
+                                                                        <img src="../../assets/images/deletec.png" />
+                                                                    </span>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </ng-container>
+                                                </div>
+                                                <div style="top:31px" class="repley-comnent"
+                                                    *ngIf="polldata.privacyOptions.comment.preference==='Private'"
+                                                    (click)="getCommentReplies_pollinfo(comment)">
+                                                    Replies</div>
+                                                <div class="broadcast-collapse comment-polldetails-page collapse"
+                                                    id="collapseExample1" [ngbCollapse]="comment.isCollapsed"
+                                                    *ngIf="polldata.privacyOptions.comment.preference==='Private'">
+                                                    <div class="comment-main" *ngIf="comment.user._id!==userId">
+                                                        <form class="form-group" [formGroup]="replyForm"
+                                                            name="replyForm"
+                                                            (ngSubmit)="initiateCommentReply_pollinfo(comment,polldata)"
+                                                            style="position: relative;margin-top:30px;">
+                                                            <textarea (click)="!auth.isLoggedIn()"
+                                                                *ngIf="userId != polldata.pollster._id && comment.replyComments.length === 0"
+                                                                [readonly]="!auth.isLoggedIn() " focus
+                                                                style="resize: vertical;"
+                                                                class="form-control msd-elastic commenttext"
+                                                                placeholder="Reply to article"
+                                                                formControlName="replyCommentPrivate">
+                                                                      </textarea>
+                                                            <div class="box comment-upload"
+                                                                *ngIf="userId != polldata.pollster._id &&  comment.replyComments.length === 0">
+                                                                <input type="file"
+                                                                    (change)='onFileChangeReply($event,comment)'
+                                                                    class="inputfile-3 file"
+                                                                    accept="audio/*,video/*,image/*" name="file"
+                                                                    multiple />
+                                                                <label>
+                                                                    <img src="../../assets/images/photo-icon.png">
+                                                                    <span
+                                                                        style="margin-top: 0px;">Photo/Video/Audio</span>
+                                                                </label>
+                                                            </div>
+                                                            <div *ngIf="userId != polldata.pollster._id &&  comment.replyComments.length === 0"
+                                                                style="float: left;margin-top: 21px;">
+                                                                <p class="qerror" *ngIf="maxFileError">File size should
+                                                                    be
+                                                                    less than or equal to 500MB
+                                                                </p>
+                                                                <p class="qerror" *ngIf='maxFileCount'>You can add only
+                                                                    10
+                                                                    articles per polldata.
+                                                                </p>
+                                                            </div>
+                                                            <div *ngIf="comment.urls.length>0 && userId != polldata.pollster._id &&  comment.replyComments.length === 0"
+                                                                class="preview clearfix">
+                                                                <ul class="previewDatas based-roles comnts-post">
+                                                                    <li
+                                                                        *ngFor="let data of comment.urls; index as i">
+                                                                        <img [src]="data.url"
+                                                                            *ngIf="data.type.includes('image')"
+                                                                            class="thumb">
+                                                                        <audio controls [src]="data.url"
+                                                                            *ngIf="data.type.includes('audio')"></audio>
+                                                                        <video controls [src]="data.url"
+                                                                            *ngIf="data.type.includes('video')"
+                                                                            width="150"></video>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                            <input type="submit" value="Submit"
+                                                                *ngIf="userId != polldata.pollster._id&&  comment.replyComments.length === 0"
+                                                                class="commentsubmit" />
+                                                        </form>
+                                                    </div>
+                                                    <div class="margin-left-right tabs-menu"
+                                                        *ngIf="comment.replyComments.length > 0">
+                                                        <ul class="nav nav-tabs" role="tablist">
+                                                            <li role="presentation" class="active">
+                                                                <a aria-controls="home" role="tab"
+                                                                    data-toggle="tab">REPLIES
+                                                                    ({{comment.replyComments.length || 0}})
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                    <div class="clear"></div>
+                                                    <div class="br-main margin-left-right">
+                                                        <div class="comment-main" id="comment-main">
+                                                            <div class="comments-box">
+                                                                <div *ngFor="let value of comment.replyCommentsGroup"
+                                                                    class="comment-view">
+                                                                    <div
+                                                                        *ngFor="let rcomment of value.values;let ind=index">
+                                                                        <div class="parent-thread comment-list margin-top-10"
+                                                                            *ngIf="ind === 0">
+                                                                            <div class="cmnt-pic">
+                                                                                <a (click)="navtoUserProfle(rcomment.user)"
+                                                                                    *ngIf="userId !== rcomment.user._id && rcomment.user.userStatus !== 'InActive' && rcomment.user.userStatus !== 'Blocked'">
+                                                                                    <img
+                                                                                        [src]="rcomment.user.profilePicture && rcomment.user.profilePicture !== 'null' ? rcomment.user.profilePicture : '../../assets/images/noimage.png'" />
+                                                                                </a>
+                                                                                <a (click)="navtoMyProfle()"
+                                                                                    *ngIf="userId == rcomment.user._id && rcomment.user.userStatus !== 'InActive' && rcomment.user.userStatus !== 'Blocked'">
+                                                                                    <img
+                                                                                        [src]="rcomment.user.profilePicture && rcomment.user.profilePicture !== 'null' ? rcomment.user.profilePicture : '../../assets/images/noimage.png'" />
+                                                                                </a>
+                                                                                <a
+                                                                                    *ngIf="rcomment.user.userStatus === 'InActive' || rcomment.user.userStatus === 'Blocked'">
+                                                                                    <img
+                                                                                        [src]="rcomment.user.profilePicture && rcomment.user.profilePicture !== 'null' ? rcomment.user.profilePicture : '../../assets/images/noimage.png'" />
+                                                                                </a>
+                                                                            </div>
+                                                                            <div class="cmnt-text">
+                                                                                <a (click)="navtoUserProfle(rcomment.user)"
+                                                                                    *ngIf="userId !== rcomment.user._id && rcomment.user.userStatus !== 'InActive' && rcomment.user.userStatus !== 'Blocked'">{{rcomment.user.firstName +" "+ rcomment.user.lastName}}
+                                                                                    <span
+                                                                                        class="cmnt-time delete-icon">{{rcomment.createdAt | datefromnow}}</span>
+                                                                                </a>
+                                                                                <a (click)="navtoMyProfle()"
+                                                                                    *ngIf="userId === rcomment.user._id && rcomment.user.userStatus !== 'InActive' && rcomment.user.userStatus !== 'Blocked'">{{rcomment.user.firstName +" "+ rcomment.user.lastName}}
+                                                                                    <span
+                                                                                        class="cmnt-time delete-icon">{{rcomment.createdAt | datefromnow}}</span>
+                                                                                </a>
+                                                                                <a
+                                                                                    *ngIf="rcomment.user.userStatus === 'InActive' || rcomment.user.userStatus === 'Blocked'">
+                                                                                    <h4>TruNums user</h4>
+                                                                                    <span
+                                                                                        class="cmnt-time delete-icon">{{rcomment.createdAt | datefromnow}}</span>
+                                                                                </a>
+                                                                                <p>{{rcomment.replycomment}}</p>
+                                                                                <!-- <youtube-video ng-init="findurl(rcomment.replycomment)" video-url="youtubeURL" player-width="'100%'" player-height="'280px'"
+                                                                            style="float:left;" ng-if="(rcomment.replycomment).indexOf('youtube')>-1 || (rcomment.replycomment).indexOf('youtu.be')>-1"></youtube-video> -->
+                                                                                <div class="preview pad-ryt-0 clearfix"
+                                                                                    *ngIf="rcomment.files && rcomment.files.length>0">
+                                                                                    <ul
+                                                                                        class="previewDatas based-roles flex-end">
+                                                                                        <li
+                                                                                            *ngFor="let article of rcomment.files">
+                                                                                            <img class="img-wdth-hgt"
+                                                                                                (click)="openImageModal(article.url)"
+                                                                                                style="vertical-align:middle"
+                                                                                                *ngIf="article.type === 'image/jpeg' || article.type === 'image/gif' || article.type=='image/jpg' || article.type=='image/png' || article.type=='image/tiff'"
+                                                                                                src="{{article.url}}" />
+                                                                                            <audio controls
+                                                                                                *ngIf="(article.type).indexOf('audio')>-1">
+                                                                                                <source
+                                                                                                    src="{{(article.url)}}"
+                                                                                                    type="{{(article.type)}}">
+                                                                                            </audio>
+                                                                                            <video controls
+                                                                                                *ngIf="(polldata.youtube_status!='public' && polldata.youtube_id) || (polldata.youtube_file_isdeleted==true ||  !polldata.youtube_id ) && (polldata.s3_file_isdeleted==false) && article.url!=null && (article.type).indexOf('video')>-1"
+                                                                                                src="{{(article.url)}}"
+                                                                                                width="100%"></video>
+                                                                                        </li>
+                                                                                    </ul>
+                                                                                </div>
+                                                                                <a *ngIf="rcomment.user._id == userId || polldata.pollster._id==userId"
+                                                                                    (click)="deleteCommentReply_pollinfo(comment,rcomment)">
+                                                                                    <span class="cmnt-time2">
+                                                                                        <img
+                                                                                            src="../../assets/images/deletec.png" />
+                                                                                    </span>
+                                                                                </a>
+                                                                            </div>
+                                                                            <div class="clear"></div>
+                                                                        </div>
+                                                                        <!-- ng-if='$index !== 0' -->
+                                                                        <div class="child-thread comment-list margin-top-10"
+                                                                            *ngIf="ind !== 0">
+                                                                            <div class="cmnt-pic">
+                                                                                <a (click)="navtoUserProfle(rcomment.user)"
+                                                                                    *ngIf="userId !== rcomment.user._id && rcomment.user.userStatus !== 'InActive' && rcomment.user.userStatus !== 'Blocked'">
+                                                                                    <img
+                                                                                        [src]="rcomment.user.profilePicture && rcomment.user.profilePicture !== 'null' ? rcomment.user.profilePicture : '../../assets/images/noimage.png'" />
+                                                                                </a>
+                                                                                <a (click)="navtoMyProfle()"
+                                                                                    *ngIf="userId == rcomment.user._id && rcomment.user.userStatus !== 'InActive' && rcomment.user.userStatus !== 'Blocked'">
+                                                                                    <img
+                                                                                        [src]="rcomment.user.profilePicture && rcomment.user.profilePicture !== 'null' ? rcomment.user.profilePicture : '../../assets/images/noimage.png'" />
+                                                                                </a>
+                                                                                <a
+                                                                                    *ngIf="rcomment.user.userStatus === 'InActive' || rcomment.user.userStatus === 'Blocked'">
+                                                                                    <img
+                                                                                        [src]="rcomment.user.profilePicture && rcomment.user.profilePicture !== 'null' ? rcomment.user.profilePicture : '../../assets/images/noimage.png'" />
+                                                                                </a>
+                                                                            </div>
+                                                                            <div class="cmnt-text">
+                                                                                <a (click)="navtoUserProfle(rcomment.user)"
+                                                                                    *ngIf="userId !== rcomment.user._id && rcomment.user.userStatus !== 'InActive' && rcomment.user.userStatus !== 'Blocked'">{{rcomment.user.firstName +" "+ rcomment.user.lastName}}
+                                                                                    <span
+                                                                                        class="cmnt-time delete-icon">{{rcomment.createdAt | datefromnow}}</span>
+                                                                                </a>
+                                                                                <a (click)="navtoMyProfle()"
+                                                                                    *ngIf="userId === rcomment.user._id && rcomment.user.userStatus !== 'InActive' && rcomment.user.userStatus !== 'Blocked'">{{rcomment.user.firstName +" "+ rcomment.user.lastName}}
+                                                                                    <span
+                                                                                        class="cmnt-time delete-icon">{{rcomment.createdAt | datefromnow}}</span>
+                                                                                </a>
+                                                                                <a
+                                                                                    *ngIf="rcomment.user.userStatus === 'InActive' || rcomment.user.userStatus === 'Blocked'">
+                                                                                    <h4>TruNums user</h4>
+                                                                                    <span
+                                                                                        class="cmnt-time delete-icon">{{rcomment.createdAt | datefromnow}}</span>
+                                                                                </a>
+                                                                                <p>{{rcomment.replycomment}}</p>
+                                                                                <!-- <youtube-video ng-init="findurl(rcomment.replycomment)" video-url="youtubeURL" player-width="'100%'" player-height="'280px'" style="float:left;" ng-if="(rcomment.replycomment).indexOf('youtube')>-1 || (rcomment.replycomment).indexOf('youtu.be')>-1"></youtube-video> -->
+                                                                                <div class="preview pad-ryt-0 clearfix"
+                                                                                    *ngIf="rcomment.files && rcomment.files.length>0">
+                                                                                    <ul
+                                                                                        class="previewDatas based-roles flex-end">
+                                                                                        <li
+                                                                                            *ngFor="let article of rcomment.files">
+                                                                                            <img class="img-wdth-hgt"
+                                                                                                (click)="openImageModal(article.url)"
+                                                                                                style="vertical-align:middle"
+                                                                                                *ngIf="article.type === 'image/jpeg' || article.type === 'image/gif' || article.type=='image/jpg' || article.type=='image/png' || article.type=='image/tiff'"
+                                                                                                src="{{article.url}}" />
+                                                                                            <audio controls
+                                                                                                *ngIf="(article.type).indexOf('audio')>-1">
+                                                                                                <source
+                                                                                                    src="{{(article.url)}}"
+                                                                                                    type="{{(article.type)}}">
+                                                                                            </audio>
+                                                                                            <video controls
+                                                                                                *ngIf="(polldata.youtube_status!='public' && polldata.youtube_id) || (polldata.youtube_file_isdeleted==true ||  !polldata.youtube_id ) && (polldata.s3_file_isdeleted==false) && article.url!=null && (article.type).indexOf('video')>-1"
+                                                                                                src="{{(article.url)}}"
+                                                                                                width="100%"></video>
+                                                                                        </li>
+                                                                                    </ul>
+                                                                                </div>
+                                                                                <a *ngIf="rcomment.user._id == userId || polldata.pollster._id==userId"
+                                                                                    (click)="deleteCommentReply_pollinfo(comment,rcomment)">
+                                                                                    <span class="cmnt-time2">
+                                                                                        <img
+                                                                                            src="../../assets/images/deletec.png" />
+                                                                                    </span>
+                                                                                </a>
+                                                                            </div>
+                                                                            <div class="clear"></div>
+                                                                        </div>
+                                                                        <!--user reply-->
+                                                                        <!-- && $index===value.length-1 -->
+                                                                        <div *ngIf='userId && ind==value.values.length-1'
+                                                                            class="child-thread comment-list margin-top-10">
+                                                                            <div class="cmnt-pic">
+                                                                                <a ((click)="navtoMyProfle()">
+                                                                                    <img
+                                                                                        [src]="comment.user.profilePicture && comment.user.profilePicture !== 'null' ? comment.user.profilePicture : '../../assets/images/noimage.png'" />
+                                                                                </a>
+                                                                            </div>
+                                                                            <div class="reply-text">
+                                                                                <div class="reply-text">
+                                                                                    <form class="form-group"
+                                                                                        [formGroup]="replyForm"
+                                                                                        name="replyForm"
+                                                                                        (ngSubmit)="addCommentReplyInThread_pollinfo(comment,polldata,rcomment)"
+                                                                                        style="position: relative">
+                                                                                        <textarea
+                                                                                            class="form-control msd-elastic commenttext"
+                                                                                            formControlName="replyCommentPrivate"
+                                                                                            placeholder="Reply..."
+                                                                                            style="overflow: hidden; overflow-wrap: break-word; height: 50px;resize: none"></textarea>
+                                                                                        <div class="box comment-upload">
+                                                                                            <input type="file"
+                                                                                                (change)='onFileChangeReply($event,comment)'
+                                                                                                class="inputfile-3 file"
+                                                                                                accept="audio/*,video/*,image/*"
+                                                                                                name="file" multiple />
+                                                                                            <label>
+                                                                                                <img
+                                                                                                    src="../../assets/images/photo-icon.png">
+                                                                                                <span
+                                                                                                    style="margin-top: 0px;">Photo/Video/Audio</span>
+                                                                                            </label>
+                                                                                        </div>
+                                                                                        <div
+                                                                                            style="float: left;margin-top: 21px;">
+                                                                                            <p class="qerror"
+                                                                                                *ngIf="maxFileError">
+                                                                                                File
+                                                                                                size should be less than
+                                                                                                or
+                                                                                                equal to 500MB
+                                                                                            </p>
+                                                                                            <p class="qerror"
+                                                                                                *ngIf='maxFileCount'>You
+                                                                                                can
+                                                                                                add only 10 articles per
+                                                                                                polldata.
+                                                                                            </p>
+                                                                                        </div>
+                                                                                        <div *ngIf="comment.urls.length>0"
+                                                                                            class="preview clearfix">
+                                                                                            <ul
+                                                                                                class="previewDatas based-roles comnts-post">
+                                                                                                <li style="width: auto;display:inline-block"
+                                                                                                    *ngFor="let data of comment.urls; index as i">
+                                                                                                    <img [src]="data.url"
+                                                                                                        *ngIf="data.type.includes('image')"
+                                                                                                        class="thumb">
+                                                                                                    <audio controls
+                                                                                                        [src]="data.url"
+                                                                                                        *ngIf="data.type.includes('audio')"></audio>
+                                                                                                    <video controls
+                                                                                                        [src]="data.url"
+                                                                                                        *ngIf="data.type.includes('video')"></video>
+                                                                                                </li>
+                                                                                            </ul>
+                                                                                        </div>
+                                                                                        <input type="submit"
+                                                                                            value="Submit"
+                                                                                            class="replysubmit" />
+                                                                                    </form>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="clear"></div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="clear"></div>
+                                                                <div class="previous-replies">
+                                                                    <!-- && article.limit < article.replyCount (click)="article.limit = article.limit + 1" ({{article.limit}}/{{article.replyCount}}) -->
+                                                                    <a *ngIf="comment.replyCount > 1" class="">View
+                                                                        previous
+                                                                        Replies (2)</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="clear"></div>
+                                        </div>
+                                    </div>
+                                    <!-- <a *ngIf="polldata.pollCommentCount > 2 && Comments.length>1" (click)="nextCommentPage(polldata._id)" class="commen-view-all" scroll-to="i{{$index}}">View previous comments</a>
+                                        <a *ngIf="polldata.pollCommentCount > 2 && polldata.pollCommentCount === Comments.length" class="commen-view-all" scroll-to="f{{$index}}">Write a Comment or Answer the Query</a>
+                                        <span *ngIf="polldata.pollCommentCount > 2 && Comments.length>1">{{comments[polldata._id].length}}/{{polldata.pollCommentCount}}</span> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="polldata && activeTab=='BROADCAST'" class="tab-pane" id="broadcasts"
+                    [ngClass]="{active : activeTab === 'BROADCAST'}">
+                    <div class="row">
+                        <div class="poll-qus add-broadcast" *ngIf="userId === polldata.pollster._id">
+                            <fieldset>
+                                <div class="add-more-dtls" id="artcleInfo">
+                                    <textarea class="msd-elastic" [(ngModel)]="broadcastDescription"
+                                        placeholder="Add more details, description or comments here">
+                                        </textarea>
+                                    <ng-container *ngIf="urls.length>0" class="artcle-file2">
+                                        <div class="artcle-file2">
+                                            <img *ngIf="urls[0].type.includes('video')"
+                                                src="../../assets/images/close-image.png" (click)="clearFiles()"
+                                                alt="close" class="close-btn close articledelete" />
+                                            <div class="prev-image" *ngIf="urls[0].type.includes('video')">
+                                                <video controls [src]="urls[0].url"
+                                                    *ngIf="urls[0].type.includes('video')" height="400"
+                                                    width="100%"></video>
+                                            </div>
+                                        </div>
+                                        <div class="artcle-file">
+                                            <img *ngIf="urls[0].type.includes('image')"
+                                                src="../../assets/images/close-image.png" alt="close"
+                                                class="close-btn close" (click)="clearFiles()" />
+                                            <!---->
+                                            <div class="prev-image">
+                                                <img style="width:258px;" class="thumb" [src]="urls[0].url" />
+                                            </div>
+                                        </div>
+                                    </ng-container>
+                                    <div class="clear"></div>
+                                    <div class="box">
+                                        <input id="dummy-id" type="file" (change)='onFileChange($event)'
+                                            accept="video/*,image/*" class="inputfile inputfile-4" />
+                                        <label for="dummy-id">
+                                            <img src="assets/images/photo-icon.png" />
+                                            <span>Photo/Video</span>
+                                        </label>
+                                    </div>
+                                    <div class="clear"></div>
+                                </div>
+                            </fieldset>
+                            <p class="qerror" *ngIf="maxFileError">File size should be less than or equal to 500MB</p>
+                            <p class="qerror" *ngIf='maxFileCount'>You can add only 10 articles per polldata.</p>
+                            <p class="qerror" *ngIf='broadcastDescription.length===0 && !broadcastSuccess'>Please add
+                                some message</p>
+                            <!-- <p class="qerror" ng-show="maxArticles">You can add only 5 articles per poll.</p> -->
+                            <div class="popup-block">
+                                <div class="broadcast-status">
+                                    <h1 *ngIf='broadcastSuccess && !broadcastError' class="pull-left">
+                                        <i class="fa fa-check green-check" aria-hidden="true"></i> Message Sent!
+                                    </h1>
+                                    <h1 *ngIf='broadcastError != undefined' class="pull-left">
+                                        <i class="fa fa-close red-check" aria-hidden="true"></i> {{broadcastError}}
+                                    </h1>
+                                    <button (click)="popoverControls()" class="sign-in pull-right">Broadcast </button>
+                                </div>
+                                <div class="clear"></div>
+                                <div *ngIf='broadcastPopup' class="popup-broadcast" clickOutside
+                                    (clickOutside)="popoverControls()">
+                                    <div class="popup-content">
+                                        <h3>This Message will be sent to all the users who are following your topic</h3>
+                                        <div class="clear"></div>
+                                        <br />
+                                        <br />
+                                        <br />
+                                        <h3>Do you want to continue ?</h3>
+                                        <br />
+                                        <br />
+                                        <div class="confirm-buttons">
+                                            <button (click)="saveBroadcast()" class="sign-in">YES</button>
+                                            <button (click)="popoverControls()" style="margin-left: 10px;"
+                                                class="sign-in white-btn">NO</button>
+                                        </div>
+                                        <div class="clear"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- !poll.follow && -->
+                        <div class="margin-left-right profile-votes"
+                            *ngIf="!isFollow() && userId !== polldata.pollster._id">
+                            <div class="poll-qus margin-top-10">
+                                <div class="no-poll-dtls text-center">
+                                    <img src="../../assets/images/no-polls-details.png" alt="" />
+                                    <h2>You have no broadcast messages. Follow the topic to receive the latest updates
+                                        and
+                                        information relevent to this poll</h2>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="margin-left-right profile-votes"
+                            *ngIf="isFollow() && userId !== polldata.pollster._id && broadcastInfo.length === 0">
+                            <div class="poll-qus margin-top-10">
+                                <div class="no-poll-dtls text-center">
+                                    <img src="../../assets/images/no-polls-details.png" alt="" />
+                                    <h2>The user has not posted any additional information on this topic</h2>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                        <ng-container
+                            *ngIf="(isFollow() || userId === polldata.pollster._id ) && broadcastInfo && broadcastInfo.length>0">
+                            <div class=" broadcast-replies" *ngFor="let article of broadcastInfo">
+                                <div class="margin-left-right profile-votes">
+                                    <div id='{{article._id}}' class="broadcast-box margin-top-10">
+                                        <div class="add-more-dtls add-img-box">
+                                            <p>
+                                                <strong>{{article.broadcast.description}}</strong>
+                                            </p>
+                                            <div class="clear"></div>
+                                            <img *ngIf="article.broadcast.type  && article.broadcast.type.includes('image')"
+                                                src="{{article.broadcast.url}}" />
+                                            <video controls
+                                                *ngIf="article.broadcast.type && article.broadcast.type.includes('video')"
+                                                src="{{(article.broadcast.url)}}" width="100%"></video>
+                                            <div class="clear"></div>
+                                            <div class="pull-right broadcast-accordion-title"
+                                                *ngIf='userId === polldata.pollster._id'
+                                                (click)="getBroadcastReplies(article);article.isCollapsed = !article.isCollapsed"
+                                                [attr.aria-expanded]="!article.isCollapsed"
+                                                aria-controls="BroadCastisCollapse">View Replies
+                                                ({{article.replyCount || 0}})</div>
+                                            <div class="pull-right broadcast-accordion-title"
+                                                *ngIf='userId !== polldata.pollster._id'
+                                                (click)="getBroadcastReplies(article);article.isCollapsed = !article.isCollapsed"
+                                                [attr.aria-expanded]="!article.isCollapsed"
+                                                aria-controls="BroadCastisCollapse">View Replies</div>
+                                            <div class="clear"></div>
+                                            <div class="broadcast-collapse collapse" id="BroadCastisCollapse"
+                                                [ngbCollapse]="article.isCollapsed">
+                                                <div class="comment-main ">
+                                                    <form class="form-group" name="commentForm"
+                                                        [formGroup]="commentForm"
+                                                        (ngSubmit)="initiateBroadcastReply(article)"
+                                                        style="position: relative">
+                                                        <textarea style="resize: vertical;"
+                                                            class="form-control msd-elastic commenttext"
+                                                            *ngIf="userId != polldata.pollster._id && article.broadcastReplies.length===0"
+                                                            placeholder="Reply to article"
+                                                            formControlName="broadcastComment" required></textarea>
+                                                        <input
+                                                            *ngIf="userId != polldata.pollster._id && article.broadcastReplies.length===0"
+                                                            type="submit" value="Submit" class="commentsubmit" />
+                                                    </form>
+                                                </div>
+                                                <div class="margin-left-right tabs-menu margin-top-30"
+                                                    *ngIf="article.replyCount=== 0">
+                                                    <ul class="nav nav-tabs" role="tablist">
+                                                        <li role="presentation" class="active">
+                                                            <a aria-controls="home"
+                                                                *ngIf='userId !== polldata.pollster.id' role="tab"
+                                                                data-toggle="tab">REPLIES</a>
+                                                            <a aria-controls="home"
+                                                                *ngIf='userId === polldata.pollster.id' role="tab"
+                                                                data-toggle="tab">REPLIES ( {{article.replyCount || 0}}
+                                                                )</a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <div class="clear"></div>
+                                                <div class="comment-main" id="comment-main">
+                                                    <div class="comments-box">
+                                                        <div class="comment-view"
+                                                            *ngFor="let broadGroup of article.broadcastRepliesGroup;let main=index">
+                                                            <div
+                                                                *ngFor="let comment of broadGroup.values;let ind=index">
+                                                                <div *ngIf='ind === 0'
+                                                                    class="parent-thread comment-list margin-top-10">
+                                                                    <div class="cmnt-pic">
+                                                                        <a  (click)="navtoUserProfle(comment.user)"
+                                                                            *ngIf="userId !== comment.user._id && comment.user.userStatus !== 'InActive' && comment.user.userStatus !== 'Blocked'">
+                                                                            <img
+                                                                                [src]=" comment.user.profilePicture && comment.user.profilePicture !== 'null' ? comment.user.profilePicture : '../../assets/images/noimage.png'" />
+                                                                        </a>
+                                                                        <a (click)="navtoMyProfle()"
+                                                                            *ngIf="userId == comment.user._id && comment.user.userStatus !== 'InActive' && comment.user.userStatus !== 'Blocked'">
+                                                                            <img
+                                                                                [src]=" comment.user.profilePicture && comment.user.profilePicture !== 'null' ? comment.user.profilePicture : '../../assets/images/noimage.png'" />
+                                                                        </a>
+                                                                        <a
+                                                                            *ngIf="comment.user.userStatus === 'InActive' || comment.user.userStatus === 'Blocked'">
+                                                                            <img
+                                                                                [src]=" comment.user.profilePicture && comment.user.profilePicture !== 'null' ? comment.user.profilePicture : '../../assets/images/noimage.png'" />
+                                                                        </a>
+                                                                    </div>
+                                                                    <div class="cmnt-text">
+                                                                        <a  (click)="navtoUserProfle(comment.user)"
+                                                                            *ngIf="userId !== comment.user._id && comment.user.userStatus !== 'InActive' && comment.user.userStatus !== 'Blocked'">{{comment.user.firstName +" "+ comment.user.lastName}}
+                                                                            <span
+                                                                                class="cmnt-time delete-icon">{{comment.createdAt | datefromnow}}</span>
+                                                                        </a>
+                                                                        <a (click)="navtoMyProfle()"
+                                                                            *ngIf="userId === comment.user._id && comment.user.userStatus !== 'InActive' && comment.user.userStatus !== 'Blocked'">{{comment.user.firstName +" "+ comment.user.lastName}}
+
+                                                                            <span
+                                                                                class="cmnt-time delete-icon">{{comment.createdAt | datefromnow}}</span>
+                                                                        </a>
+                                                                        <a
+                                                                            *ngIf="comment.user.userStatus === 'InActive' || comment.user.userStatus === 'Blocked'">
+                                                                            <h4>TruNums user</h4>
+                                                                            <span
+                                                                                class="cmnt-time delete-icon">{{comment.createdAt | datefromnow}}</span>
+                                                                        </a>
+                                                                        <p>{{comment.comment}}</p>
+                                                                        <!-- <p ng-bind-html="comment.comment | linky:'_blank'">{{comment.comment}}</p> -->
+                                                                        <a *ngIf="comment.user._id === userId"
+                                                                            (click)="deleteReply(article,comment,main,ind)">
+                                                                            <span class="cmnt-time2">
+                                                                                <img
+                                                                                    src="../../assets/images/deletec.png" />
+                                                                            </span>
+                                                                        </a>
+                                                                    </div>
+                                                                    <div class="clear"></div>
+                                                                </div>
+                                                                <div *ngIf='ind !== 0'
+                                                                    class=" child-thread comment-list margin-top-10">
+                                                                    <div class="cmnt-pic">
+                                                                        <a  (click)="navtoUserProfle(comment.user)"
+                                                                            *ngIf="userId !== comment.user._id && comment.user.userStatus !== 'InActive' && comment.user.userStatus !== 'Blocked'">
+                                                                            <img
+                                                                                [src]=" comment.user.profilePicture && comment.user.profilePicture !== 'null' ? comment.user.profilePicture : '../../assets/images/noimage.png'" />
+                                                                        </a>
+                                                                        <a (click)="navtoMyProfle()"
+                                                                            *ngIf="userId == comment.user._id && comment.user.userStatus !== 'InActive' && comment.user.userStatus !== 'Blocked'">
+                                                                            <img
+                                                                                [src]=" comment.user.profilePicture && comment.user.profilePicture !== 'null' ? comment.user.profilePicture : '../../assets/images/noimage.png'" />
+                                                                        </a>
+                                                                        <a
+                                                                            *ngIf="comment.user.userStatus === 'InActive' || comment.user.userStatus === 'Blocked'">
+                                                                            <img
+                                                                                [src]=" comment.user.profilePicture && comment.user.profilePicture !== 'null' ? comment.user.profilePicture : '../../assets/images/noimage.png'" />
+                                                                        </a>
+                                                                    </div>
+                                                                    <div class="cmnt-text">
+                                                                        <a  (click)="navtoUserProfle(comment.user)"
+                                                                            *ngIf="userId !== comment.user._id && comment.user.userStatus !== 'InActive' && comment.user.userStatus !== 'Blocked'">{{comment.user.firstName +" "+ comment.user.lastName}}
+                                                                            <span
+                                                                                class="cmnt-time delete-icon">{{comment.createdAt | datefromnow}}</span>
+                                                                        </a>
+                                                                        <a (click)="navtoMyProfle()"
+                                                                            *ngIf="userId === comment.user._id && comment.user.userStatus !== 'InActive' && comment.user.userStatus !== 'Blocked'">{{comment.user.firstName +" "+ comment.user.lastName}}
+
+                                                                            <span
+                                                                                class="cmnt-time delete-icon">{{comment.createdAt | datefromnow}}</span>
+                                                                        </a>
+                                                                        <a
+                                                                            *ngIf="comment.user.userStatus === 'InActive' || comment.user.userStatus === 'Blocked'">
+                                                                            <h4>TruNums user</h4>
+                                                                            <span
+                                                                                class="cmnt-time delete-icon">{{comment.createdAt | datefromnow}}</span>
+                                                                        </a>
+                                                                        <p>{{comment.comment}}</p>
+                                                                        <!-- <p ng-bind-html="comment.comment | linky:'_blank'">{{comment.comment}}</p> -->
+                                                                        <a *ngIf="comment.user._id === userId"
+                                                                            (click)="deleteReply(article,comment,main,ind)">
+                                                                            <span class="cmnt-time2">
+                                                                                <img
+                                                                                    src="../../assets/images/deletec.png" />
+                                                                            </span>
+                                                                        </a>
+                                                                    </div>
+                                                                    <div class="clear"></div>
+                                                                </div>
+                                                                <div *ngIf='userId && ind===broadGroup.values.length-1'
+                                                                    class="child-thread comment-list margin-top-10">
+                                                                    <div class="cmnt-pic">
+                                                                        <a>
+                                                                            <img
+                                                                                src=" {{ comment.user.profilePicture && comment.user.profilePicture !== 'null' ? comment.user.profilePicture : '../../assets/images/noimage.png' }}" />
+                                                                        </a>
+                                                                    </div>
+                                                                    <div class="reply-text">
+                                                                        <form class="form-group" [formGroup]="commentForm" name="commentForm"
+                                                                            (ngSubmit)="addBroadcastReplyInThread(article,comment,main)"
+                                                                            style="position: relative">
+                                                                            <textarea style="resize: vertical;"
+                                                                                class="form-control msd-elastic userreplybox"
+                                                                                placeholder="Write a reply"
+                                                                                formControlName="replyBroadcast"
+                                                                                required></textarea>
+                                                                            <input type="submit" value="Submit"
+                                                                                class="replysubmit" />
+                                                                        </form>
+                                                                    </div>
+                                                                    <div class="clear"></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-sm-3 col-md-3 col-sm-hidden">
+            <div class="row">
+                <div class="margin-left margin-top-20">
+                    <div class="ledt-menu margin-top-10">
+                        <div class="categori profile-settings" *ngIf="polldata">
+                            <h2>Other Details</h2>
+                            <div class="expend text-center" *ngIf="userId !== polldata.pollster._id && date !== 'Invalid date'">
+                                <p>Topic Expires on</p>
+                                <h2>{{date}}</h2>
+                            </div>
+                            <div class="expend text-center" *ngIf="userId !== polldata.pollster._id && date === 'Invalid date'">
+                                <p>This topic never expires</p>
+                            </div>
+                            <div class="expend text-center" *ngIf="polldata.pollStatus === 'Expired' ">
+                                <p>Poll Expired on</p>
+                                <h2 *ngIf="isExpiryEditable">{{date}}</h2>
+                            </div>
+                            <div class="expend2 text-center"
+                                *ngIf="userId === polldata.pollster._id && polldata.pollStatus !== 'Expired' && date !== 'Invalid date'">
+                                <p>Topic Expires on</p>
+                                <h2 *ngIf="!isExpiryEditable">{{date}}</h2>
+                                <div *ngIf="isExpiryEditable">
+                                    <input class="myinput" style="font-weight: bold" matInput
+                                        [(ngModel)]="polldata.expires" [min]="minDate" [matDatepicker]="myDatepicker">
+                                    <mat-datepicker-toggle matSuffix [for]="myDatepicker">
+                                    </mat-datepicker-toggle>
+                                    <mat-datepicker #myDatepicker></mat-datepicker>
+                                </div>
+                                <button type="button" class="save sign-in margin-top-10"
+                                    (click)="extendExpiry()">{{isExpiryEditable && 'SAVE' || 'EXTEND'}}
+                                </button>
+                            </div>
+                            <div class="expend2 text-center"
+                                *ngIf="userId === polldata.pollster._id && polldata.pollStatus !== 'Expired' && date === 'Invalid date'">
+                                <p>This topic never expires</p>
+                            </div>
+                            <div *ngIf="userId === polldata.pollster._id">
+                                <h2>Target Country</h2>
+                                <div class="expend world-map text-center">
+                                    <a>
+                                        <img src="../../assets/images/map-icon.png"
+                                            alt="country" />{{polldata.country === undefined ? 'no country assigned' : polldata.country }}
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="margin-top-30"></div>
+</div>

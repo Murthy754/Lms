@@ -1,0 +1,262 @@
+<div class="navbar navbar-default navbar-fixed-top" style="padding-top: 15px" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+          <ul class="display-inline-flex">
+            <li>
+                    <a (click)="navtohome()">{{privateSiteName}}</a>
+            </li>
+            <li>
+                <a (click)="navtohome()"><img [src]="privateSiteLogo" width="40" height="40" alt=""></a>
+            </li>
+            <li>
+                <a (click)="navtomainsite()"> 
+                    Powered By
+                    <span>trunums.com</span>
+                </a>
+            </li>
+          </ul>
+        </div>
+        <div class="navbar-collapse ">
+            <div class="search-top dropdown"
+                *ngIf="router.url !== '/topic/new/start' &&  !router.url.includes('/poll/edit/start') && isAuth()" ngHide="cpoll">
+                <input autocomplete="off" *ngIf="searchType =='poll'" class="dropdown-toggle serc-top"
+                    data-toggle="dropdown" type="text" (click)="onClickForSearchInput()" (blur)="onBlur()" (input)="changeInSearchText($event.target.value)" (ngModel)="searchtext"
+                    name="search" placeholder="Search {{privateSiteName}} OR Ask a question" />
+                <input autocomplete="off" (click)="onClickForSearchInput()" (blur)="onBlur()" *ngIf="searchType !=='poll'" class="serc-top dropdown-toggle"
+                    data-toggle="dropdown" type="text" (input)="changeInSearchText($event.target.value)" (ngModel)="searchtext"
+                    name="search" placeholder="Search for trunums profiles" />
+                <br />
+                <!-- <button type="submit" class="creat-link" *ngIf="disableCreateTopic" (click)="createTopicModal()">Create Topic</button> -->
+                <button type="submit" class="creat-link" (click)="createTopicModal()">Create Topic</button>
+                <ul [ngStyle] ="{'display' : styleBlock ? 'block' : 'none'}" class="search-dropdown dropdown-menu" *ngIf = "searchtext.length > 0">
+                    <ng-container *ngIf="searchType === 'poll'">
+                        <li *ngFor="let poll of SearchInfo">
+                            <a (click)="searchPoll(searchType,poll)">{{poll.question}}</a>
+                        </li>
+                    </ng-container>
+                    <ng-container *ngIf="searchType === 'profile'">
+                        <li *ngFor="let user of SearchInfo">
+                            <a (click)="naviateToMyProfile(searchType,user)" *ngIf="user._id === userId">
+                                <div class="img-round">
+                                    <img src="{{user.profilePicture}}"
+                                        *ngIf="user.profilePicture && user.profilePicture !== 'null'" />
+                                    <img src="../../assets/images/noimage.png"
+                                        *ngIf="!user.profilePicture || user.profilePicture === 'null'" />
+                                </div>
+                                <span>{{user.firstName}}
+                                    {{user.lastName}}</span>
+                            </a>
+                            <a (click)="naviateToProfile(searchType,user)" *ngIf="user._id !== userId">
+                                <div class="img-round">
+                                    <img src="{{user.profilePicture}}"
+                                        *ngIf="user.profilePicture && user.profilePicture !== 'null'" />
+                                    <img src="../../assets/images/noimage.png"
+                                        *ngIf="!user.profilePicture || user.profilePicture === 'null'" />
+                                </div>
+                                <span>{{user.firstName}}
+                                    {{user.lastName}}</span>
+                            </a>
+                        </li>
+                    </ng-container>
+                    <li *ngIf="searchtext.length !== 0 && SearchInfo.length > 0" class="search-last">
+                        <a (click)="searchResult(searchType,searchtext)" *ngIf="!tagSearch">
+                            <i class="demo-icon icon-search-1">&#xe803;</i> {{searchtext}}</a>
+                        <a (click)="searchResult('tag',searchtext)" *ngIf="tagSearch">
+                            <i class="demo-icon icon-search-1">&#xe803;</i> {{searchtext}}</a>
+                    </li>
+                    <li *ngIf="SearchInfo.length === 0" class="search-no-res">No Results Found
+                    </li>
+                </ul>
+                <div role="presentation" class="dropdown search-drop">
+                    <a class="my-poll-pic dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                        aria-expanded="false">
+                        <img src="{{searchType === 'profile' && '../../assets/images/profiles.png' || '../../assets/images/polls.png'}}"
+                            alt="my-poll" /></a>
+                    <ul class="dropdown-menu">
+                        <li class="drop-icon-top"></li>
+                        <li>
+                            <a (click)="changeInSearchCategory('poll')"><img src="../../assets/images/polls.png"
+                                    alt="polls" />Topics</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a (click)="changeInSearchCategory('profile')"><img src="../../assets/images/profiles.png"
+                                    alt="profiles" />Profiles</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <ul class="nav navbar-nav pull-right home-page" id="dropdownMenuLink" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                <li *ngIf="isAuth() && isSubscriber" class="setting-page" >
+					<a data-toggle="dropdown" role="button" title="Create Private Site">
+						<i class='bx bx-lock-alt' style="font-size: 27px;padding-top: 4px;"></i>
+					</a> 
+					<ul class="dropdown-menu">
+						<li class="drop-icon-top"></li>
+						<li *ngFor="let item of privateSites" >
+							<div *ngIf="item['settings']['siteName'] !== siteName "style="display: flex;">
+								<a (click)= "navToAnotherPrivateSite(item['_id'])">{{ item['settings']['siteName'] }}</a> 
+							</div>
+						</li>
+					</ul>
+				</li>
+                <li *ngIf="isAuth() && isSubscriber" class="dropdown">
+					<a (click)="markAllAsViewed()" data-toggle="dropdown" role="button" aria-haspopup="true"
+						aria-expanded="false">
+						<img src="../../assets/images/notification.svg" alt="notifications-icon" />
+
+                        <!-- <span *ngIf="newNotifications" class="notif-span">{{unreadCount}}</span> -->
+                        <span *ngIf="newNotifications" class="notif-span"></span>
+					</a>
+					<ul class="dropdown-menu my-new-alert">
+						<li class="drop-icon-top"></li>
+						<li>
+							<div class="alt-title" *ngIf="unreadCount==1">{{unreadCount}} notification</div>
+							<div class="alt-title" *ngIf="unreadCount!==1">{{unreadCount}} notifications</div>
+							<div scroller class="alts-all">
+								<ul>
+									<li class='notification-box'
+										[ngClass]="notification.isRead ? 'read-notification':'unread-notification'"
+										(click)="goToLink(notification,$event,ind)"
+										*ngFor="let notification of notifications;let ind=index">
+										<div class="alt-img">
+											<img *ngIf="notification.type === 'COMMENT' || notification.type === 'COMMENT_REPLY'"
+												src="../../assets/images/comment-circle.png" />
+											<img *ngIf="notification.type === 'BROADCAST' || notification.type === 'BROADCAST_REPLY'"
+												src="../../assets/images/broadcast-circle.png" />
+											<span
+												*ngIf="notification.type === 'POLL_FOLLOWER' || notification.type === 'SUBSCRIBE' || notification.type === 'MESSAGE_REQUEST' || 'ADMIN' || notification.type === 'MESSAGE' || notification.type==='YOUTUBE'">
+												<img *ngIf="notification.createdBy.profilePicture"
+													src="{{notification.createdBy.profilePicture}}" alt="profiles" />
+												<img *ngIf="!notification.createdBy.profilePicture"
+													src="../../assets/images/noimage.png" alt="profiles" />
+											</span>
+
+											<!--<img src="images/profiles.png" alt="profiles"/>-->
+										</div>
+										<div class="alt-text">
+											<p *ngIf="notification.type === 'COMMENT'">
+												<strong>{{notification.createdBy.firstName}}
+													{{notification.createdBy.lastName}}</strong> has commented on your
+												article
+											</p>
+											<p *ngIf="notification.type === 'YOUTUBE'">
+												<strong>{{notification.createdBy.firstName}}
+													{{notification.createdBy.lastName}}</strong>
+												{{notification.message}}
+                                            </p>
+                                            <p *ngIf="notification.type === 'ADMIN'">
+												<strong>{{notification.createdBy.firstName}}
+													{{notification.createdBy.lastName}}</strong> has made you admin
+											</p>
+											<p *ngIf="notification.type === 'BROADCAST'">
+												<strong>{{notification.createdBy.firstName}}
+													{{notification.createdBy.lastName}}</strong> has posted new
+												broadcast message
+											</p>
+											<p *ngIf="notification.type === 'BROADCAST_REPLY'">
+												<strong>{{notification.createdBy.firstName}}
+													{{notification.createdBy.lastName}}</strong> has Replied to your
+												broadcast message
+											</p>
+											<p *ngIf="notification.type === 'COMMENT_REPLY'">
+												<strong>{{notification.createdBy.firstName}}
+													{{notification.createdBy.lastName}}</strong> has Replied to your
+												comment message
+											</p>
+											<p *ngIf="notification.type === 'POLL_FOLLOWER'">
+												<strong>{{notification.createdBy.firstName}}
+													{{notification.createdBy.lastName}}</strong> Started following
+												yourtopic
+											</p>
+											<p *ngIf="notification.type === 'SUBSCRIBE' || notification.type === 'MESSAGE' || notification.type === 'MESSAGE_REQUEST'">
+												<strong>{{notification.createdBy.firstName}}
+													{{notification.createdBy.lastName}}</strong>
+												{{notification.message}}
+											</p>
+											<span>{{notification.createdAt|datefromnow}}</span>
+										</div>
+										<!-- {{notification.isRead}} -->
+										<!-- {{!notification.isRead}} -->
+										<span class="alt-redmark" *ngIf='!notification.isRead'
+											(click)="markOneAsRead(notification,ind,$event)">Mark
+											as read</span>
+									</li>
+									<li class='text-center' *ngIf="notifications.length == 0">
+										You Don't have Notifications yet
+									</li>
+
+								</ul>
+							</div>
+							<div class="alt-title text-center" style="border:0;">
+								<a (click)="navToNotifications()">See All Notifications</a></div>
+						</li>
+
+					</ul>
+				</li>
+                <li>
+                    <a *ngIf="!isAuth()" class="sign-up-btn" (click)="openModalWithComponent(true)">Sign
+                        Up</a>
+                </li>
+                <li>
+                    <a *ngIf="!isAuth()" class="sign-in-btn" (click)="openModalWithComponent(false)">Sign
+                        In</a>
+                </li>
+                <!-- File-sharing icon starts -->
+				<li *ngIf="isAuth() && hasFileAccess && isSubscriber">
+                	<img (click)="navToDrive()" src="../../assets/images/folder-icon.svg" alt="folder icon" class="folder" style="padding-top: 6px;
+					padding-left: 20px; outline: none;"/>
+				</li>
+				<!-- File-sharing icon ends -->
+                <li *ngIf="isSubscriber && isAuth()">
+                        <a (click)="navtomessages()"><img src="../../assets/images/messages-ic.svg" /></a>
+                </li>
+                <li *ngIf="isAuth() && isSubscriber" role="presentation" class="dropdown">
+                    <a (click)="openProfilePage(privateSiteName)" class="my-poll-pic" role="button">
+                        <div (click)="openProfilePage(privateSiteName)" class="img-round">
+                            <img src="{{userData.profilePicture}}"
+                                *ngIf="userData.profilePicture && userData.profilePicture !== 'null'" />
+                            <img src="../../assets/images/noimage.png"
+                                *ngIf="!userData.profilePicture || userData.profilePicture === 'null'" />
+                        </div>
+                    </a>
+                </li>
+                <li class="setting-page" *ngIf="isAuth()">
+                    <a data-toggle="dropdown" role="button">
+                        <img src="../../assets/images/icon-settings.svg" alt="icon-settings" />
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="drop-icon-top"></li>
+                        <li (click)='openSettings()' *ngIf="isOwner === true || isAdmin">
+                            <a>Settings</a>
+                        </li>
+                        <li (click)='aboutWebsite()' *ngIf="isOwner === false">
+                            <a>
+                                About This Private Website
+                            </a>
+                        </li>
+                        <li (click)='aboutWebsite()' *ngIf="isOwner === true">
+                            <a>
+                                About Myown Website
+                            </a>
+                        </li>
+                        <li (click)='conatctInfo()'>
+                            <a>Contact Us</a>
+                        </li>
+                        <li *ngIf="isAuth()">
+                            <a (click)="logout()">Sign Out</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+</div>
+
+<style>
+    a {
+        cursor: pointer;
+    }
+</style>

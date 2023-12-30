@@ -1,0 +1,12 @@
+<h1 mat-dialog-title class="text-center mb-20">New folder</h1>
+<div mat-dialog-content>
+  <mat-form-field style="width: 100%;">
+    <input matInput placeholder="Enter folder name" [(ngModel)]="folderName">
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <div class="text-center footer-btn mt-10">
+	<button type="button" class="btn btn-danger" (click)="onNoClick()">Cancel</button>
+    <button type="submit" class="btn btn-primary" cdkFocusInitial (click)="onCreateClick()">Create</button>
+  </div>
+</div>

@@ -1,0 +1,89 @@
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700);
+@import url(https://fonts.googleapis.com/css?family=Raleway:400,300,600,700);
+
+
+// @font-face {
+//       font-family: 'fontello';
+//       src: url('../fonts/fontello.eot?6742619');
+//       src: url('../fonts/fontello.eot?6742619#iefix') format('embedded-opentype'),
+//            url('../fonts/fontello.woff?6742619') format('woff'),
+//            url('../fonts/fontello.ttf?6742619') format('truetype'),
+//            url('../fonts/fontello.svg?6742619#fontello') format('svg');
+//       font-weight: normal;
+//       font-style: normal;
+//     }
+@import "scss-css/_base";
+@import "scss-css/_common";
+// @import "scss-css/_header";
+// @import "scss-css/_card";
+// @import "scss-css/_left-menu";
+// @import "scss-css/_modals";
+@import "scss-css/_sign-up";
+// @import "scss-css/_create-poll";
+// @import "scss-css/_profile";
+// @import "scss-css/_forgot-pws";
+// @import "scss-css/_forgot-pws";
+// @import "scss-css/_404-error";
+// @import "scss-css/_user-management";
+
+
+
+.tabs-menu {
+	position:relative;
+	.nav-tabs {
+		border-bottom:1px solid #D8D8D8;
+		li {
+			padding:0;
+			margin-right:$margin + 30px;
+			a {
+				background:none;
+				padding:$padding-10 0;
+				border:0;
+				font-size:14px;
+				font-weight:$fontweight-semibold;
+				font-family:$font-caps;
+				letter-spacing:$letter-spacing;
+				color:$txtcolor;
+				border-bottom:1px solid #D8D8D8;
+			&:hover {
+				background:none;
+				border:none;
+				color:#1E1E1E;
+				}
+
+
+				}
+			}
+
+			li.active {
+				a {
+				color:#1E1E1E;
+				background:none;
+				border:0;
+				border-bottom:$border-blur;
+			}
+
+		}
+	}
+	/*-------nav-tabs close------------*/
+	.tab-right {
+		position:absolute;
+		top:-10px;
+		right:0;
+		width:auto;
+		background:$bg-color-white;
+		border-radius:$border-radius + 13;
+
+		input {
+			width:220px;
+			padding:5px 20px 5px 43px;
+			border-radius:20px;
+			box-shadow:none;
+			border:$border-color;
+			line-height:25px;
+			background: url(../../images/search.png) no-repeat 16px center;
+		}
+
+		}
+
+}

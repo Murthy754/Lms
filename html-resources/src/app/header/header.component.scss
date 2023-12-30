@@ -1,0 +1,32 @@
+.my-modal {
+    border: solid 4px blue !important;
+}
+
+.my-modal .modal-header {
+    background-color: lime !important;
+}
+
+.my-modal .modal-body {
+    background-color: orange !important;
+}
+.my-modal .fade .in {
+   background-color: transparent !important;
+}
+@media screen and (max-width:768px){
+    li.dropdown.notif {
+        margin-right: -15px;
+		position: relative;
+		z-index: 1;
+    }
+    li.folde {
+        margin-right: 4px;
+    }
+}
+
+span.close-icon {
+    position: absolute;
+    top: 7px;
+    right: 115px;
+    font-size: 22px;
+	cursor: pointer;
+}

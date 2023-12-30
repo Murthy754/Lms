@@ -1,0 +1,88 @@
+.create-poll-main {
+	float:left;
+	background:$bg-color-white;
+	border:$border-color;
+	box-shadow:$box-shadow;
+	width:100%;
+	
+	h3 {
+		color:$txtcolor;
+		margin-top:5px;
+	}
+		.question {
+			float:left;
+			padding:43px 40px;
+			width:100%;
+			border-bottom:$border-color;
+			
+			.poll-qus {
+
+				padding:0 120px 0 0;
+				.add-more-dtls.add-img-box {
+					
+				}
+			}
+			
+			.bottom {
+				float:left;
+				width:100%;
+				
+					.sign-in {
+						font-family:$font-caps;
+						text-align:center;
+						line-height:40px;
+						}
+				}
+		}
+		
+		.bg-colo-dark {
+			background:$body-bg;
+			}
+	}
+	 
+	.edit-text-box {
+		width:100%;
+		float:left;
+		h3 {
+			font-size:18px;
+			margin-bottom:20px;
+		}
+		textarea {
+			line-height:24px;
+			border-radius:0;
+			min-height:192px;
+	}
+		}
+.range-sld {
+    float: left;
+    margin: 10px 0;
+}
+	.low-high {
+    float: left;
+    margin-left: 26px;
+    position: relative;
+    width: 100%;
+	
+	input {
+    border: 0 none !important;
+    padding: 0 !important;
+    width: 40px !important;
+}
+.edit-btn {
+    width: 90px;
+	a {
+    float: left;
+    position: relative !important;
+    top: 0 !important;
+} 
+}
+}
+
+.img-comment {
+.cont-bg-color {
+	float:left;
+	padding:0 10px;
+	background:#F1F1F1;
+	}
+}
+

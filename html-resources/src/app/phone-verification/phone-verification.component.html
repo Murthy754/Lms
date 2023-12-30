@@ -1,0 +1,56 @@
+<!-- OTP content starts -->
+<div class="otp-form" *ngIf="!phone || !verificationSent || !verificationPending">
+  <div  *ngIf="!phone && !verificationSent" class="phone-verfied">
+    <div class="form-group">
+      <label>Please verify your phone number</label>
+      <mat-form-field [formGroup]="contactForm">
+        <input class="form-control input-two"
+          matInput
+          ng2TelInput
+          [ng2TelInputOptions]="{initialCountry: 'us'}"
+          formControlName="formControlPhone"
+          (hasError)="hasError($event)"
+          (countryChange)="countryChange($event)" />
+        <mat-error
+          *ngIf="
+          !contactForm.get('formControlPhone').valid &&
+          contactForm.get('formControlPhone').touched">
+          This is an <strong>invalid</strong> phone number.
+        </mat-error>
+      </mat-form-field>
+      <mat-error *ngIf="error" style="text-align: center;">{{ error }}</mat-error>
+    </div>
+    <div class="text-center"><button (click)="sendOtp()"  class="btn btn-primary">Send OTP</button></div>
+  </div>
+  <div *ngIf="phone && !verificationSent" class="phone-not-verified">
+    <div class="form-group">
+      <label>Please enter code sent to {{ phoneNumber }}</label>
+      <otp [setting]="settings"  (onValueChange)="onOtpChange($event)"></otp>
+      <mat-error *ngIf="error">{{ error }}</mat-error>
+    </div>
+    <div class="text-center">
+      <button type="submit" (click)="verifyOtp()" class="btn btn-primary">Verify OTP</button>
+    </div>
+  </div>
+</div>
+<!-- OTP content ends -->
+
+<div class="container" *ngIf="phone && verificationSent && verificationPending">
+  <div class="row">
+    <div class="verified text-center">
+      <img src="../../assets/images/verified.png" alt="verified"/>
+      <h3>THANK YOU FOR VERIFYING</h3>
+      <p>Please
+        <a (click)="navToCreateTopic()" style="cursor: pointer;">click here</a>
+        to create your topic with phone verified vote.</p>
+    </div>
+  </div>   
+</div>
+
+
+
+<!-- Loader div starts -->
+<!-- <div *ngIf="loading" id="loaderDiv">
+	<img src="../../assets/images/loading.gif" class="ajax-loader" />
+</div> -->
+<!-- Loader div ends -->

@@ -1,0 +1,67 @@
+a,
+a label {
+    cursor: pointer;
+}
+textarea {
+    resize: none;
+}
+.create-poll-main .question {
+    float: left;
+    padding: 43px 40px;
+    width: 100%;
+    border-bottom: 1px solid #D8D8D8;
+}
+
+.date-fixed-on {
+    border: 1px solid #D8D8D8;
+    border-radius: 2px;
+    width: 100%;
+
+}
+
+.myinput {
+    border: none;
+    padding: 0 10px;
+}
+
+select::-ms-expand {
+    display: block;
+}
+
+.country-size {
+    width: 273px !important;
+}
+
+.ngx-toolbar {
+    font-size: 1.5rem !important;
+}
+
+.ngx-editor-grippie {
+
+    height: 0px !important;
+    position: unset !important;
+    cursor: unset !important;
+    border: none !important;
+    border-top: none !important;
+
+}
+.inputcustom2{  
+    width: 50% !important;  
+    margin-left: 2px !important;
+  }
+.low-high {
+    margin-left: 22px !important;
+    width: 98% !important;
+}
+.pull-left
+{
+    margin-left: 10px !important;
+}
+.back2
+{
+  background-color: red;  
+}
+.back1
+{
+  background-color: red;  
+}

@@ -1,0 +1,279 @@
+<app-userprofile *ngIf="isSubscriber === false"></app-userprofile>
+<google-ad [adType]="'home'" *ngIf="displayAds"></google-ad>
+<div class="container" *ngIf="isSubscriber === true" id="scroller">
+        <div class="row" (scroll)="onScroll($event)"> 
+          <div class="col-lg-2 col-sm-3 col-md-2 col-xs-hidden">
+                <div class="row">
+                  <div style="min-height: 86vh; vertical-align: top; width: 100%;">
+                    <div id="sidebar2" class="" [ngClass]="{'width-wrapper':isWrapperStiky}">
+                      <div class="margin-right margin-top-30">
+                        <div class="ledt-menu">
+                          <div class="categori catagori-new">
+                            <h2>Categories</h2>
+                            <div class="cata-search">
+                              <input type="text" (input)="SearchPolls($event.target.value)" placeholder="Search" />
+                              <i class="demo-icon icon-search-1">&#xe803;</i>
+                            </div>
+                            <div class="cata-second">
+                              <ul>
+                                <li *ngFor="let item of categoryfilter;let i = index">
+                                  <a>
+                                    {{item.name}}
+                                    <i (click)="removecategoryPolls(item,i)" class="demo-icon icon-cancel-1">&#xe802;</i>
+                                  </a>
+                                </li>
+                              </ul>
+                            </div>
+                            <ul style="max-height:400px;overflow:auto">
+                              <li *ngFor="let item of categoryInfo;let i = index">
+                                <a tabindex="0" (click)="filterPolls(item,i)">
+                                  {{item.name}}</a>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="clear"></div>
+                </div>
+
+          </div>
+          <div class="col-lg-7 col-md-7 col-sm-9 col-xs-12">
+            <div class="row">
+              <div class="margin-left-right tabs-menu">
+                <ul class="nav nav-tabs" role="tablist">
+                  <li role="presentation" id="top">
+                    <a [ngClass]="{tabactiveclass : currentTab === 'top'}" (click)="onChangeTab(0)">
+                      Top <span class="forResponsive"> Topics</span></a>
+                  </li>
+                  <li role="presentation" id="trending">
+                    <a [ngClass]="{tabactiveclass : currentTab === 'trending'}" (click)="onChangeTab(1)">
+                      Trending <span class="forResponsive"> Topics</span> </a>
+                  </li>
+                  <li role="presentation" id="recent">
+                    <a [ngClass]="{tabactiveclass : currentTab === 'recent'}" (click)="onChangeTab(2)">Recent <span class="forResponsive"> Topics</span></a>
+                  </li>
+                  <!-- <li> -->
+                    <form *ngIf="currentTab != 'top'" class=" calender-box-resp" [formGroup]="dateForm">
+                      <mat-form-field class="example-full-width" appearance="fill">
+                        <mat-label>From</mat-label>
+                        <input matInput #ref  formControlName="fromDate" (dateChange) = "onDateChage('min')" [max]="dateForm.controls.toDate.value"  [matDatepicker]="fromPicker">
+                        <mat-datepicker-toggle style="color: #f1933a;" matSuffix [for]="fromPicker"></mat-datepicker-toggle>
+                        <mat-datepicker #fromPicker></mat-datepicker>
+                      </mat-form-field>
+            
+                      <mat-form-field class="example-full-width" appearance="fill">
+                        <mat-label>To</mat-label>
+                        <input matInput #ref formControlName = "toDate" (dateChange) = "onDateChage('max')" [max]="today"  [min]="dateForm.controls.fromDate.value" [matDatepicker]="toPicker">
+                        <mat-datepicker-toggle style="color: #f1933a;" matSuffix [for]="toPicker"></mat-datepicker-toggle>
+                        <mat-datepicker #toPicker></mat-datepicker>
+                      </mat-form-field>
+                       <!-- <button mat-raised-button (click)="filterPollsAccordingToDate()" color="primary">Filter</button>  -->
+                    </form> 
+                  <!-- </li> -->
+                </ul>
+                <div class="tab-right navbar-right">
+                  <div class="dropdown custom-state-list">
+                    <a data-toggle="dropdown">
+                      <i class="fa fa-angle-down" ></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li stop-propagation="click">
+                            <input class="form-control" type="text" [(ngModel)]="searchKey"(input)="getFilterConutries($event.target.value)"  autocomplete="off" />
+                            <i class="demo-icon icon-search-1">&#xe803;</i>
+                        </li>
+                      <li>
+                        <ng-container *ngFor="let item of tempCountryList">
+                        <a (click)="locationChange(item.name)">{{item.name}}</a>
+                      </ng-container>
+                      </li>
+                    </ul>
+                  </div>
+                  <a id="loc" class="border-rad-left" [ngClass]="{'active': location !='world' }"
+                    (click)="locationChange(country)">{{country}}</a>
+                  <a id="world" class="world-select" [ngClass]="{'active': location =='world' }" (click)="
+                    locationChange('world')" class="">World </a>
+                </div>
+              </div>
+            </div>
+            <div class="m-categ-btn">
+              <a href="#" class="sign-in" data-toggle="modal" data-target="#myModal2">Categories
+                (21)</a>
+            </div>
+            <!-- <app-pollinfo [poll]="PollList"></app-pollinfo> -->
+            <div class="clear"></div>
+            <div *ngIf="currentTab !== 'livestream'">
+              <div class="poll-qus margin-top-10" *ngIf="PollList.length<1 && !skeletonLoading">
+                <div class="no-poll-dtls text-center">
+                  <img src="../../assets/images/no-polls-details.png" alt="" />
+                  <h2 class="nopolls">There are no topics here yet.
+                    <br>
+                    <!-- <a (click)="createNewTopic()" class="no-position">Create</a>
+                    a topic now. -->
+                  </h2>
+                </div>
+              </div>
+            </div>
+            <!-- <div class="row infinitetest" *ngIf="currentTab !== 'livestream'">
+              <div class="margin-left-right inifinite-box">
+                <div *ngFor="let pollData of PollList">
+                  <app-pollinfo [poll]="pollData" [coutry]="country" [urlLocation]="location"></app-pollinfo>
+                </div>
+
+              </div>
+            </div> -->
+            
+
+            <ng-container >
+              <ul style="margin-top: 10px;" class="private-list">
+                <div *ngIf="PollList.length>0">
+                  <li
+                  *ngFor="let pollData of PollList;  let index=index;">
+                  <app-pollinfo [poll]="pollData" [coutry]="country" [urlLocation]="location"></app-pollinfo>
+                  <google-ad [adType]="'feed'" *ngIf="placeInFeedAd(index+1) && displayAds"></google-ad>
+                </li>
+               
+                </div>
+                <li>
+                  <app-skeleton-loading *ngIf="skeletonLoading && !pollCountExceede" [topicsPerPage] = "topicsPerPage" ></app-skeleton-loading>
+                 </li>
+                <br>
+              </ul>
+            </ng-container>
+          </div>
+          <div class="col-lg-3 col-sm-hidden col-md-3">
+            <div class="row">
+              <form *ngIf="currentTab != 'top'" class="calender-box" [formGroup]="dateForm">
+                <mat-form-field class="example-full-width" appearance="fill">
+                  <mat-label>From Date</mat-label>
+                  <input matInput #ref  formControlName="fromDate" (dateChange) = "onDateChage('min')" [max]="dateForm.controls.toDate.value"  [matDatepicker]="fromRespPicker">
+                  <mat-datepicker-toggle style="color: #f1933a;" matSuffix [for]="fromRespPicker"></mat-datepicker-toggle>
+                  <mat-datepicker #fromRespPicker></mat-datepicker>
+                </mat-form-field>
+      
+                <mat-form-field class="example-full-width" appearance="fill">
+                  <mat-label>To Date</mat-label>
+                  <input matInput #ref formControlName = "toDate" (dateChange) = "onDateChage('max')" [max]="today"  [min]="dateForm.controls.fromDate.value" [matDatepicker]="toRespPicker">
+                  <mat-datepicker-toggle style="color: #f1933a;" matSuffix [for]="toRespPicker"></mat-datepicker-toggle>
+                  <mat-datepicker #toRespPicker></mat-datepicker>
+                </mat-form-field>
+                <!-- <button mat-raised-button (click)="filterPollsAccordingToDate()" color="primary">Filter</button> -->
+              </form> 
+              <div style="position: relative; vertical-align: top; width: 100%;" [ngClass]="{'wrapper-sticky': isWrapperStiky}">
+                <div id="sidebar" >
+                  <div class="margin-left margin-top-30">
+                    <div *ngIf="currentTab !== 'recent'" class="ledt-menu">
+                      <div class="categori right-cat">
+                        <h2>Recent</h2>
+                        <ul *ngIf="recent.length>0">
+                          <li *ngFor="let poll of recent">
+                            <a (click)="pollOverlay(poll._id,'MORE_INFO')">{{poll.question}}</a>
+                          </li>
+                        </ul>
+                        <div class="poll-qus margin-top-10" *ngIf="recent.length === 0">
+                          <div class=" text-center">
+                            <img src="../../assets/images/polls.png" alt="" />
+                            <h2 class="nopolls">No topics to show.
+                              <br>
+                            </h2>
+                          </div>
+                        </div>
+                        <a *ngIf="recent.length>0 && recent.length>3" class="more-link" (click)="onChangeTab(2)">
+                          More</a>
+                      </div>
+                    </div>
+                    <div *ngIf="currentTab !== 'top'" class="ledt-menu">
+                      <div class="categori right-cat">
+                        <h2>Top Topics</h2>
+                        <ul *ngIf="top.length>0">
+                          <ul>
+                            <li *ngFor="let poll of top">
+                              <!--<a ui-sref="root.pollDetails({pollId: poll._id })">{{poll.question}}</a>-->
+                              <a (click)="pollOverlay(poll._id,'MORE_INFO')">{{poll.question}}</a>
+                            </li>
+                          </ul>
+                        </ul>
+                        <div class="poll-qus margin-top-10" *ngIf="top.length === 0">
+                          <div class="text-center">
+                            <img src="../../assets/images/polls.png" alt="" />
+                            <h2 class="nopolls">No topics to show.
+                              <br>
+                            </h2>
+                          </div>
+                        </div>
+                        <a *ngIf="top.length>0 && top.length>3" class="more-link" (click)="onChangeTab(0)">
+                          More</a>
+                      </div>
+                    </div>
+                    <div *ngIf="currentTab !== 'trending'" class="ledt-menu">
+                      <div class="categori right-cat">
+                        <h2>Trending Topics</h2>
+                        <ul *ngIf="trending.length>0">
+                          <ul>
+                            <li *ngFor="let poll of trending">
+                              <!--<a ui-sref="root.pollDetails({pollId: poll._id })">{{poll.question}}</a>-->
+                              <a (click)="pollOverlay(poll._id,'MORE_INFO')">{{poll.question}}</a>
+                            </li>
+                          </ul>
+                        </ul>
+                        <div class="poll-qus margin-top-10" *ngIf="trending.length === 0">
+                          <div class="text-center">
+                            <img src="../../assets/images/polls.png" alt="" />
+                            <h2 class="nopolls">No topics to show.
+                              <br>
+                            </h2>
+                          </div>
+                        </div>
+                        <a *ngIf="trending.length>0 &&trending.length>3" class="more-link" (click)="onChangeTab(1)">
+                          More</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+</div>
+
+<!-- <div *ngIf="isLogOut">
+  <li>
+    <a class="sign-in-btn" (click)="openModalWithComponent(false)" style="display: flex;
+    justify-content: center;
+    margin-top: 150px;
+    font-size: large;">
+      LOGIN TO VIEW PRIVATE SITE CONTENT
+    </a>
+  </li>
+</div> -->
+
+
+<div id="myModal2" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" (click)="getTopics(1);getCount();">&times;</button>
+        <h4 class="modal-title">Categories</h4>
+      </div>
+      <div class="modal-body">
+        <ul>
+          <li *ngFor="let item of categoryInf">
+            <span>
+              <a [ngClass]="{'active':checkCategory(item.name)}" tabindex="0" (click)="mobilecategoryPolls(item.name)">
+                {{item.name}}</a>
+            </span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<style>
+  a {
+    cursor: pointer !important;
+  }
+</style>

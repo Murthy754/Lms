@@ -1,0 +1,83 @@
+<div class="back-arrow">
+	<i class='bx bx-arrow-back' (click)="onClose()" matTooltip="Close preview"></i>
+ 	 <p>{{ file.name }}</p>
+</div>
+<div class="back-arrow" style="right: 20px; left: auto;" matTooltip="Download file">
+	<i class='bx bx-download'(click)="download()"></i>
+</div>
+
+<div class="left-arrow" matTooltip="Previous" matTooltipPosition="right" *ngIf="!hidePrevious" (click)="previousFile()">
+	<i class='bx bx-chevron-left'></i>
+</div>
+<div class="left-arrow right-arr" matTooltip="Next" matTooltipPosition="left" *ngIf="!hideNext" (click)="nextFile()">
+	<i class='bx bx-chevron-right'></i>
+</div>
+
+
+<!-- Picture preview starts -->
+<div mat-dialog-container *ngIf="file.type === 'image'">
+  <img [src]="file.source" (loadstart)="loading = true" (load)="loaded()" (error)="loadError()"
+  style="max-height: 550px;width: 100%;"/>
+</div>
+<!-- Picture preview ends -->
+
+<!-- Video preview starts -->
+<div mat-dialog-container *ngIf="file.type === 'video'">
+  <video controls [src]="file.source" style="max-height: 300px; outline: none; border: none; width: 100%; height: 360px;"
+  (loadstart)="loading = true"
+  (loadeddata)="loaded()"
+  (error)="loadError()"
+  autoplay="autoplay"></video>
+</div>
+<!-- Video preview ends -->
+
+<!-- Audio preview starts -->
+<div mat-dialog-container *ngIf="file.type === 'audio'">
+  <audio controls style="width: 550px;"
+  (loadstart)="loading = true"
+  (loadeddata)="loaded()"
+  (error)="loadError()"
+  autoplay="autoplay">
+  <source [src]="file.source">
+</audio>
+</div>
+<!-- Audio preview starts -->
+
+<!-- PDF preview starts -->
+<div mat-dialog-content *ngIf="file.type === 'pdf'">
+  <div style="overflow-y: hidden;">
+    <pdf-viewer [src]="file.source"
+    [autoresize]="true"
+    [show-borders]="true"
+    [fit-to-page]="true"
+    [original-size]="true"
+    (on-progress)="onProgress($event)"
+    style="display: block;max-height: 550px;width: 100%;"
+    ></pdf-viewer>
+  </div>
+  
+</div>
+<!-- PDF preview starts -->
+
+<!-- No preview starts -->
+<div mat-dialog-container *ngIf="file.type === ''">
+  <div class="no-preview-text" style="width: 100%;">
+    <p>No preview available</p>
+    <button (click)="download()" matTooltip="Download file" class="btn"><i class='bx bx-download'></i>Download</button>
+  </div>
+</div>
+<!-- No preview ends -->
+
+<!-- No preview starts -->
+<div mat-dialog-container *ngIf="file.type === 'error'">
+  <div class="no-preview-text">
+    <p>Sorry, couldn't load file preview</p>
+    <button (click)="download()" matTooltip="Download file" class="btn"><i class='bx bx-download'></i>Download</button>
+  </div>
+</div>
+<!-- No preview ends -->
+
+<!-- <div *ngIf="loading" id="loaderDiv">
+  <img src="../../../../assets/images/loading.gif" class="ajax-loader" />
+</div> -->
+

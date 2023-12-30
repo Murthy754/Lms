@@ -1,0 +1,152 @@
+.promoted-hover-details {
+	.dropdown {
+		button {
+		  background: none;
+		}
+		span {
+		  padding-left: 20px;
+		  text-decoration: underline;
+		  color: #5293BD;
+		  font-size: 12px;
+		}
+		.dropdown-menu {
+		  display: none;
+		}
+		&:hover .dropdown-menu {
+		  display: block;
+		  &::after {
+			content: '';
+			position: absolute;
+			border-width: 5px;
+			margin-left: -5px;
+			border-style: solid;
+			top: -13px;
+			left: 35px;
+			border-color: transparent transparent #5293BD transparent;
+		  }
+		}
+		.dropdown-toggle {
+			width:200px;
+			float: left;
+		}
+	  }
+
+	  .dropdown-menu {
+		position: absolute;
+		top: 33px;
+		left: 58px;
+		display: none;
+		border: none;
+		border-top: 3px solid #5293BD !important;
+		padding: 5px 0 0 0;
+		border-radius: 0;
+	  }
+
+	  .drp-hder {
+		width: 250px;
+		padding: 20px;
+		float: left;
+	  }
+
+	  .drpdwn-img {
+		float: left;
+        text-align: center;
+        img {
+            width:50px;
+            height:50px;
+        }
+	  }
+
+	  .dpr-text {
+		float: left;
+		padding: 0 0 0 16px;
+		p {
+		img {
+			width: 16px;
+			height: 15px;
+			border-radius: 0;
+		}
+
+	  }
+	}
+
+	  h4 {
+		color: #5293BD;
+		font-weight: 400;
+		margin: 0;
+		font-size: 14px;
+	  }
+
+	  .drp-btm {
+		background: #F6F6F6;
+		padding: 10px 17px 7px 0;
+		text-align: right;
+		.btn {
+		  background: #FF810A;
+		  color: #FFF;
+		  text-transform: uppercase;
+		  font-weight: 300;
+		  border-radius: 2px;
+		  outline: none;
+		  font-size: 11px;
+		  width: 88px;
+		  height: 24px;
+		  line-height: 14px;
+		  padding: 5px 10px;
+		  letter-spacing: 1px;
+		}
+	  }
+
+	  p {
+		font-weight: 500;
+		font-size: 12px;
+		text-transform: capitalize;
+		font-weight: 400;
+		padding-top: 8px;
+		color: #1E1E1E;
+	  }
+
+	  .p-top {
+		padding-top: 14px;
+	  }
+}
+
+.file-content {
+    width: 100%;
+    padding: 20px 280px 0 280px;
+    background: #FFF;
+}
+
+.otp-form {
+	width: 450px;
+	margin: 10% auto 0;
+	padding: 30px;
+	background: #FFF;
+	border:1px solid #eee;
+	border-radius: 10px;
+	box-shadow: 0 0 15px 0px rgba(0, 0, 0, 0.1);
+	.form-group {
+		.iti, .mat-form-field {
+			width: 100%;
+		}
+		label {
+			font-weight: 600;
+			display: block;
+			text-align: center;
+		}
+		.form-control {
+			border:1px solid #D8D8D8;
+			padding: 5px 10px;
+			&.input-two {
+				padding-left:50px;
+			}
+		}
+		.mat-form-field-underline {
+			display: none;
+		}
+	}
+
+	.text-center button {
+		margin: 10px;
+	}
+}

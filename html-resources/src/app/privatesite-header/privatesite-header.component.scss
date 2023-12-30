@@ -1,0 +1,49 @@
+.display-inline-flex{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-right: 10px;
+    li{
+        padding: 0 10px;
+        a{
+            color: #656565;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        img{
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+        &:last-child{
+            a{
+                span{
+                    display: block;
+                    font-size: 12px;
+                    font-weight: 400;
+                }
+            }
+        }
+    }
+}
+
+.sign-in-btn {
+    border-radius: 3px;
+    padding:0;
+    margin:0 0 0 10px;
+    height:30px;
+    width:82px !important;
+    text-align:center;
+    line-height:26px;
+    background:#656565;
+    color:#FFF;
+    border:1px solid #656565;
+}
+
+.dropdown:hover .search-dropdown{
+    display: block;
+}
+.search-dropdown{
+    margin-top: 0;
+}

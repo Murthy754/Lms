@@ -1,0 +1,52 @@
+<div class="poll-privacy-start">
+    <div class="modal-header">
+        <button type="button" class="close" (click)="closePrivacyModal()"><img src="../../assets//images/canceld.png"
+                alt="" srcset=""></button>
+        <h4 class="modal-title">Specific Subscribers</h4>
+    </div>
+    <div class="modal-body">
+        <div class="tab-content">
+            <div id="home" class="tab-pane fade in active">
+                <div class="mg-lft">
+                    <input (input)="subscribersearch($event.target.value)" type="text" placeholder="Search a Subscriber">
+                </div>
+                <div class="brdr-btms"></div>
+                <ul class="mdl-ul">
+                    <li class="round" *ngFor="let subscriber of tempSubscribersList;index as i">
+                        <input *ngIf="subscriber.ischecked" type="checkbox" [checked]='subscriber.ischecked'
+                            (change)="detectChanges1(i)" />
+                        <label *ngIf="subscriber.ischecked"></label>
+                        <div *ngIf="subscriber.ischecked" class="mdl-img">
+                            <img src="../../assets/images/mdl-pfle.png" alt="">
+                        </div>
+                        <div *ngIf="subscriber.ischecked" class="mdl-text-one">
+                            <p>{{subscriber.userdata.firstName}} {{subscriber.userdata.lastName}}</p>
+                            <p class="clr"><img src="../../assets/images/lctnd.png" alt="" srcset="">
+                                {{subscriber.userdata.address.country}}</p>
+                        </div>
+                    </li>
+                </ul>
+                <p class="mdl-bg-li">Subscribers</p>
+                <ul class="mdl-ul">
+                    <li class="round" *ngFor="let subscriber of tempSubscribersList;index as i">
+                        <input type="checkbox" [checked]='subscriber.ischecked' (change)="detectChanges1(i)" />
+                        <label></label>
+                        <div class="mdl-img">
+                            <img src="../../assets/images/mdl-pfle.png" alt="">
+                        </div>
+                        <div class="mdl-text-one">
+                            <p>{{subscriber.userdata.firstName}} {{subscriber.userdata.lastName}}</p>
+                            <p class="clr"><img src="../../assets/images/lctnd.png" alt="" srcset="">
+                                {{subscriber.userdata.address.country}}</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">'
+        <button type="button" class="btn btn-default" (click)="closePrivacyModal()">CANCEL</button>
+        <button type="submit" class="btn btn-info btn-blue" 
+            (click)="close()">SAVE</button>
+    </div>
+</div>

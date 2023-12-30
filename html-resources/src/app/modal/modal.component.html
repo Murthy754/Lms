@@ -1,0 +1,19 @@
+<div class="modal-header mod-header text-center">
+  <h2>{{alertTitle || "Alert" }}</h2>
+</div>
+<div class="modal-body">
+  <div class="mod-body-cont" style="margin-bottom: 50px;">
+    {{content}}
+  </div>
+  <div class="clear"></div>
+  <div class="clear"></div>
+ <div class="text-center">
+	<button *ngIf="isCancel" type="button submit" (click)="cancel()"
+    class="sign-in btn-bg-white" >OK</button>
+  <button *ngIf="!isCancel" type="button submit" (click)="cancel()"
+    class="sign-in" >No</button>
+  <button *ngIf="!isCancel" type="button" (click)="yesButtonClick('yes')"
+    class="sign-in btn-bg-white" >Yes</button>
+ </div>
+  <div class="clear"></div>
+</div>

@@ -1,0 +1,235 @@
+.trunums-invitation-subscriptons {
+    .modal-dialog {
+        max-width: 600px;
+
+        .modal-content {
+            border-radius: 0;
+
+            .modal-header {
+                text-align: center;
+                // padding: 29px 16px;
+                padding: 24px 0px 10px 0;
+                background: #F4F4F4;
+
+                h4 {
+                    color: #1E1E1E;
+                    font-size: 16px;
+                    font-weight: 500;
+                }
+
+                .close {
+                    opacity: 1;
+                }
+            }
+
+            .modal-body {
+                padding: 0px;
+                float: left;
+                width: 100%;
+                clear: both;
+
+                .nav-tabs {
+                    padding-left: 20px;
+                    width: 100%;
+                    background: #fff;
+
+                    li {
+                        a {
+                            cursor: pointer;
+                            border: none;
+                            font-size: 12px;
+                            color: #1E1E1E;
+                            font-weight: 500;
+                            text-transform: uppercase;
+
+                            &hover {
+                                background: none;
+                            }
+                        }
+
+                        &.active {
+                            border-bottom: 2px solid #5293BD;
+                        }
+                    }
+                }
+
+                .tab-content {
+                    .tab-pane {
+                        padding: 10px 0 10px 0;
+                        float: left;
+                        width: 100%;
+                        background: #fff;
+
+                        .mg-lft {
+                            margin-left: 20px;
+
+                            input {
+                                width: 95%;
+                                height: 48px;
+                                padding: 7px 15px;
+                                font-size: 16px;
+                                color: #868686;
+                            }
+                        }
+                    }
+
+                    .emailerrormsg {
+                        padding-top: 13px;
+                        padding-left: 22px;
+                        color: red;
+                        font-size: 16px;
+                    }
+
+                    .brdr-btms {
+                        border-bottom: 1px solid #E6E6E6;
+                        margin: 12px 0 14px 0;
+                        float: left;
+                        width: 100%;
+                    }
+
+                    .mdl-ul {
+                        list-style-type: none;
+                        float: left;
+                        width: 100%;
+                        margin: 0;
+                        padding: 0;
+                        max-height: 180px;
+                        overflow: auto;
+                        position: relative;
+
+                        li {
+                            padding: 10px 0 8px 25px;
+                            float: left;
+                            width: 100%;
+
+                            .mdl-img {
+                                float: left;
+                            }
+
+                            input {
+                                position: absolute;
+                                right: 0px;
+                                opacity: 0;
+                                cursor: pointer;
+                                height: 56px;
+                                width: 100%;
+                            }
+
+                            .mdl-text-one {
+                                float: left;
+                                padding-left: 16px;
+
+                                p {
+                                    margin: 0;
+                                    padding: 1px;
+                                    font-size: 14px;
+                                    color: #1E1E1E;
+                                    text-transform: capitalize;
+                                }
+
+                                .clr {
+                                    font-size: 12px;
+                                }
+                            }
+
+                            &hover {
+                                background: #F0F6F9;
+                            }
+                        }
+
+                        .mdl-bg-li {
+                            &hover {
+                                background: none;
+                            }
+                        }
+                    }
+                }
+            }
+
+            .modal-footer {
+                text-align: center;
+                clear: both;
+
+                .btn {
+                    width: 172px;
+                    height: 46px;
+                    font-size: 14px;
+                    font-weight: 400px;
+                    margin: 7px;
+                }
+
+                .btn-info {
+                    background: #A8C9DE;
+                    color: #FFF;
+                    border: 2px solid #83AECB;
+                    border-radius: 3px;
+                }
+
+                .btn-blue {
+                    background: #5293BD !important;
+                }
+
+                .btn-default {
+                    border: 1px solid #83AECB;
+                    color: #5293BD;
+                    border-radius: 3px;
+
+                    &hover {
+                        background: none;
+                    }
+                }
+            }
+        }
+    }
+
+    .trunum-selected-items {
+        margin: 0;
+        padding: 0;
+        list-style-type: none;
+        // border: 1px solid #c6c6c6;
+        border-radius: 50px;
+        // width: 164px;
+        // height: 32px;
+        line-height: 32px;
+        display: inline-block;
+        margin-bottom: 20px;
+        margin-right: 20px;
+        margin-left: 20px;
+
+        li {
+            float: left;
+            border: 1px solid #c6c6c6;
+            border-radius: 50px;
+            margin-top: 16px;
+            margin-right: 10px;
+
+            img {
+                float: left;
+                padding-top: 3px;
+                width: auto;
+                height: 33px;
+                margin-left: 3px;
+            }
+
+            .text {
+                font-size: 12px;
+                color: #1E1E1E;
+                font-weight: 400;
+                padding-left: 10px;
+            }
+
+            .right {
+                float: right;
+                margin: 0 12px 0 0;
+
+                a {
+                    font-size: 24px;
+                    text-decoration: none;
+                    color: #c6c6c6;
+                    font-weight: 300;
+                    padding-left: 30px;
+                }
+            }
+        }
+    }
+}

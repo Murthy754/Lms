@@ -1,0 +1,45 @@
+@media (min-width:768px) and (max-width: 1023px) {
+	.navbar.navbar-default .navbar-collapse .search-top {
+    width: 40%;
+}
+	
+	.navbar.navbar-default .navbar-collapse .nav.navbar-nav li a {
+		 margin: 0 0 0 10px !important;}
+	.card-box .img-left .Arthur-box .votes-main .yes-vote a {
+		padding: 0 5px;
+	}
+	.card-box .img-left .Arthur-box .votes-main .yes-vote {
+		 margin-right: 5px;
+		}
+	.card-box .card-bott .left-foot {
+		margin-left:0;
+		
+		ul{
+			li{
+				margin-right:5px;
+				a {
+					font-size:8px;
+					padding:0 5px;
+				}
+			}}
+	}
+	
+	.card-box .card-bott .comment-main {
+		margin: 10px 0 0;
+		}
+	
+	.card-main-02 .profile-pic a img {
+    border-radius: 50%;
+    height: 70px;
+    width: 70px;
+}
+.ledt-menu .profile-settings ul li a {
+	font-size:12px;
+}
+	}
+
+@media screen and (max-width: 767px) {}
+
+@media screen and (max-width: 479px) {}
+
+

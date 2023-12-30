@@ -1,0 +1,638 @@
+/* Scss Document */
+@import "../scss-css/modals";
+
+.my-dialog-centered {
+    position: absolute !important;
+    left: 50% !important;
+    top: 50% !important;
+    transform: translate(-50%, -50%) !important;
+}
+
+.card-box {
+    background: $text-color-white;
+    border-radius: $border-radius;
+    border: $border-color;
+    float: left;
+    width: 100%;
+    box-shadow: $box-shadow;
+    position: relative;
+
+    .img-left {
+        float: left;
+        width: 85%;
+        padding: $padding-10 + 6px 0 0 $padding-10 + 5;
+
+        .img-round {
+            float: left;
+            width: 45px;
+            margin-right: 20px;
+        }
+
+        .Arthur-box {
+            float: left;
+            width: 85%;
+
+            .votes-main {
+                width: 100%;
+                float: left;
+                // margin-top:$margin + 10px;
+
+                .yes-vote {
+                    float: left;
+                    margin-right: 15px;
+
+                    a {
+                        padding: 0 3px;
+                        border: $border-color;
+                        line-height: 24px;
+                        height: 26px;
+                        font-size: 11px;
+                        font-weight: $fontweight-semibold;
+                        color: $primary-color;
+                        float: left;
+                        font-family: $font-caps;
+                        letter-spacing: $letter-spacing;
+                        border-radius: $border-radius;
+
+                        &:hover {
+                            border: $border-color-dark;
+                        }
+
+                        i {
+                            float: left;
+                            margin-top: 5px;
+                            margin-right: 5px;
+                            margin-left: 0;
+                            color: #d8d8d8;
+                            line-height: 12px;
+                            font-size: 14px;
+
+                        }
+                    }
+
+                    a.active {
+                        background: $blue-color;
+                        color: $text-color-white;
+                        border-color: $blue-color;
+
+                        &:hover {
+                            border-color: $blue-color;
+                        }
+
+                        i {
+                            color: $text-color-white;
+                        }
+                    }
+
+                    p {
+                        float: left;
+                        padding-top: 6px;
+                        font-size: 12px;
+                        color: $txtcolor;
+                    }
+                }
+            }
+        }
+    }
+
+    /*------------ img-left css End -------------*/
+
+    .card-right {
+        width: 13%;
+        float: right;
+        padding: $padding-10 + 15px 0 0 0;
+        margin-bottom: 15px;
+        margin-right: 1%;
+
+        .flog-top {
+            text-align: right;
+            float: left;
+            margin-left: -260%;
+            position: relative;
+            width: 360%;
+
+            a {
+                span {
+                    float: right;
+                    border: 1px solid $txtcolor;
+                    font-size: 10px;
+                    background: #FFF;
+                    padding: 0 10px;
+                    line-height: 20px;
+                    color: $txtcolor;
+                    border-radius: $border-radius;
+                    text-transform: uppercase;
+                }
+            }
+
+            a {
+                i {
+                    color: $dark-color;
+
+                }
+            }
+        }
+
+        .vote-total {
+            float: left;
+            width: 100%;
+            border: 1px dashed lighten($blue-color, 22%);
+            border-radius: $border-radius;
+            text-align: center;
+            margin-top: $margin + 13px;
+            padding: $padding-10 - 5px 0 0;
+
+            h4 {
+                font-weight: $fontweight-bold;
+            }
+
+            p {
+                font-weight: $fontweight-semibold;
+                font-size: 12px;
+            }
+        }
+    }
+
+    .card-bott {
+        float: left;
+        width: 100%;
+        background: #F4F4F4;
+        padding: 0;
+        border-radius: 0 0 3px 3px;
+
+        .left-foot {
+            float: left;
+            width: 51%;
+            margin-left: 0;
+            padding: 10px 0 10px 20px;
+
+            ul {
+                margin: 0;
+                padding: 0;
+                list-style: none;
+                float: left;
+
+                li {
+                    float: left;
+                    margin-right: 5px;
+
+                    a {
+                        background-color: $bg-green;
+                        padding: 0 $padding-10;
+                        float: left;
+                        font-size: $fontsize-nav-sml - 1px;
+                        font-family: $font-caps;
+                        font-weight: $fontweight-semibold;
+                        height: 20px;
+                        color: $primary-color;
+                        line-height: 20px;
+                        letter-spacing: 0.3px;
+                        border-radius: 10px;
+                        cursor: default;
+                    }
+
+                    &:nth-child(2n) {
+                        a {
+                            background-color: $bg-blue;
+                        }
+                    }
+
+                    &:nth-child(3n) {
+                        a {
+                            background-color: $bg-lit-blue;
+                        }
+                    }
+
+                    &:nth-child(4n) {
+                        a {
+                            background-color: $bg-pink;
+                        }
+                    }
+                }
+
+            }
+        }
+
+        /*------------------- right-foot start-----------------*/
+        .right-foot {
+            float: right;
+            text-align: right;
+            padding: 0;
+
+            a {
+                color: #656565;
+                margin: 0;
+                padding: 10px 10px;
+                float: left;
+                min-height: 40px;
+
+                &:hover {
+                    background: #5293BD;
+                    color: #FFF;
+                }
+            }
+
+            .card-comment {
+                float: left;
+
+                margin-top: 1px;
+
+                a {
+                    float: left;
+                    font-family: $font-caps;
+                    color: #656565;
+
+
+                    span {
+                        float: left;
+
+                        font-size: 12px;
+                    }
+
+                    .pls99-icon {
+                        background: url(/assets/images/99pls-icon.png) no-repeat 0 0;
+                        text-align: center;
+                        line-height: 16px;
+                        width: 26px;
+                        font-size: 11px;
+                        font-weight: 600;
+                        color: #656565;
+                        height: 20px;
+                    }
+
+                    &:hover .pls99-icon {
+                        background: url(/assets/images/99pls-icon-hover.png) no-repeat 0 0;
+                        color: #FFF;
+                    }
+                }
+            }
+
+            .card-follow {
+                float: left;
+                margin-right: 0;
+
+                /*a {
+					float:left;
+					color:#656565;
+					margin-right:24px;
+					font-family:$font-caps;
+
+					span {
+						float:left;
+						border:1px solid $txtcolor;
+						font-size:10px;
+						background:#FFF;
+						padding:0 10px;
+						line-height:20px;
+						color:$txtcolor;
+						border-radius:$border-radius;
+                      text-transform: uppercase;
+					}
+					img {
+						float:left;
+
+						margin-top:2px;
+					}
+
+					}*/
+            }
+
+        }
+
+        /*------------------- collapse comment-foot start-----------------*/
+        .comment-main {
+            margin: 10px 10px 10px 24px;
+
+            .msd-elastic {
+                line-height: 24px;
+                min-height: 34px;
+            }
+        }
+
+
+    }
+
+}
+
+
+
+.popover {
+    background: #FFF !important;
+    border: 0 !important;
+    display: block !important;
+
+    .arrow {
+        border: 0 !important;
+    }
+
+    .popover-title {
+        background: none;
+        border-bottom: 0;
+        text-align: center;
+        padding-bottom: 0;
+        font-size: 16px;
+        font-weight: $fontweight-semibold;
+        letter-spacing: 0.8px;
+        font-family: $font-caps;
+        color: $blue-color;
+    }
+
+    .popover-content {
+        text-align: center;
+        font-size: 14px;
+        font-family: $font-caps;
+        font-weight: 400;
+
+        a {
+            width: 31px;
+            height: 31px;
+            line-height: 30px;
+            text-align: center;
+            margin: 0 5px 0 !important;
+            float: left;
+            padding: 0 !important;
+            min-height: 10px !important;
+
+            img {
+                width: 24px;
+                height: auto;
+            }
+
+            &:hover {
+                background: transparent !important;
+            }
+        }
+    }
+}
+
+.popover.bottom .arrow::after {
+    margin-left: 0 !important;
+}
+
+.popover.bottom {
+    width: 250px;
+}
+
+.categori.right-cat .popover.bottom {
+    width: 170px;
+    left: 140px !important;
+}
+
+.categori.right-cat .popover.bottom h3 {
+    float: none;
+}
+
+.categori ul li .popover.bottom,
+.expend2 .popover.bottom {
+    width: 150px;
+}
+
+.categori ul li .popover.bottom h3,
+.expend2 .popover.bottom h3 {
+    float: none;
+}
+
+.polledit {
+    background: #656565 none repeat scroll 0 0;
+    border-radius: 3px;
+    color: #fff;
+    padding: 3px 5px;
+    margin-right: 5px;
+}
+
+.polledit:hover {
+    color: #FFF;
+}
+
+.ledt-menu .categori.catagori-new {
+    padding: 0;
+
+    h2 {
+        margin-left: 15px;
+    }
+
+    ul {
+        padding: 0 15px;
+
+        li {
+            margin: 3px 0;
+        }
+    }
+
+    .cata-second {
+        padding: 10px 0;
+
+        ul li {
+            background: #f0f0f0 none repeat scroll 0 0;
+            border-radius: 3px;
+            float: left;
+            margin: 0 5px 5px 0;
+            padding: 3px;
+            width: auto;
+
+            a {
+                font-weight: 600;
+
+                i {
+                    color: #656565;
+                }
+            }
+        }
+    }
+}
+
+.m-categ-btn {
+    display: none;
+    left: 10px;
+    position: absolute;
+    top: 43px;
+
+    a {
+        float: left;
+        font-size: 10px;
+        font-weight: 600;
+        height: 24px;
+        line-height: 19px;
+        width: auto;
+
+    }
+}
+
+.comment-view.ng-scope {
+    width: 100%;
+    float: left;
+}
+
+.card-box.poll-expired {
+    background: #f4f4f4 !important;
+    pointer-events: none !important;
+}
+
+.card.poll-expired {
+    background: #f4f4f4 !important;
+    pointer-events: none !important;
+}
+
+.searchcategory {
+    margin-top: 30px;
+}
+
+.promoted-home {
+    background: #bce7ff none repeat scroll 0 0;
+    float: left;
+    padding: 6px 10px;
+    text-align: center;
+    width: 65px;
+
+    a {
+        color: #525252;
+        float: left;
+        line-height: 14px;
+
+        span {
+            font-size: 8px;
+            font-weight: bold;
+        }
+
+        .demo-icon.icon-ok-circled2 {
+            color: $blue-color;
+        }
+    }
+}
+
+.pollnoedit {
+    background: $body-bg !important;
+    pointer-events: none !important;
+}
+
+
+.date-time-new {
+    font-size: 10px;
+    color: #656565;
+    font-weight: 600;
+    float: left;
+    margin: 2px 0 5px;
+    width: 100%;
+}
+
+.img-fxd-sze {
+    .box-live {
+        position: relative;
+
+        img {
+            height: 150px;
+            width: 250px;
+            padding: 0;
+            background: #DDD;
+            line-height: 150px;
+            text-align: center;
+        }
+
+        .lv-ds {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 57px;
+            line-height: 27px;
+            height: 28px;
+            text-align: center;
+            background: $bg-color-white;
+            border-radius: 2px;
+            padding-left: 6px;
+            color: $btn-bg-dark;
+
+            &::before {
+                content: "";
+                display: inline-block;
+                width: 7px;
+                left: 7px;
+                position: absolute;
+                background: #E43E3B;
+                height: 7px;
+                border-radius: 50%;
+                top: 11px;
+            }
+        }
+    }
+}
+
+.fr-vido::-webkit-media-controls-mute-button {
+    display: none;
+}
+
+// .fr-vido::-webkit-media-controls-current-time-display{
+// display: none;
+// }
+
+.chat-container {
+    max-height: 480px;
+    overflow: auto;
+    -webkit-transform: rotate(180deg);
+    transform: rotate(180deg);
+    direction: rtl;
+}
+
+.chat-container .message {
+    -webkit-transform: rotate(180deg);
+    transform: rotate(180deg);
+    direction: ltr;
+}
+
+// repley comment styles
+
+.reply-cmnts {
+    margin: 5px 0 0;
+
+    .cmnt-pic {
+        width: 26px !important;
+
+        img {
+            height: 25px !important;
+            width: 25px !important;
+        }
+    }
+
+    .cmnt-text {
+        width: 92% !important;
+        padding: 5px 10px !important;
+    }
+}
+
+.repley-comnent {
+    position: absolute;
+    top: 15px;
+    right: 18px;
+    font-size: 12px;
+    background: #3F93C2;
+    color: #FFF !important;
+    padding: 3px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.fr-rply-cmnt {
+    right: 100px !important;
+}
+
+// pollinfo comments
+.polinfo-coment-sctn {
+    float: left;
+    width: 100%;
+
+    .margin-left-right {
+        margin: 0;
+
+        ul {
+            float: left;
+            width: 100%;
+
+            li {
+                width: 100%;
+
+                a {
+                    width: 100% !important;
+                }
+            }
+        }
+    }
+}

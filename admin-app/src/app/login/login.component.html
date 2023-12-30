@@ -1,0 +1,30 @@
+<div class="forgot-bg">
+    <div class="forgot-page">
+        <div class="forgt-logo">
+        <a href="#"><img src="../../assets/images/Overlay_Logo.png" alt="logo"/></a>
+        </div>
+        <div class="clear"></div>
+        <div class="frgt-form">
+        <form name="signIn" [formGroup]="SignInForm" (ngSubmit)="login()" novalidate>
+            <!-- <div ng-messages="signIn.$error" class="text-center" role="alert"> -->
+                <!-- <p ng-if="signIn.$submitted && !loginError " style="color:#DF6164" ng-message="required">Please enter Username/Email and Password</p> -->
+            <!-- </div> -->
+
+            <div class="form-group margin-top-10" ng-class="{'has-error':signIn.email.$invalid && signIn.email.$dirty}">
+                <input class="form-control" placeholder="Username/Email" ng-model="email" formControlName="email" name="email" required/>
+            </div>
+            <div class="form-group" ng-class="{'has-error':signIn.password.$invalid && signIn.password.$dirty}">
+                <input type="password" class="form-control" placeholder="Password" ng-model="password" formControlName="password"  name="password" required/>
+            </div>
+            <a ui-sref="forgot.main" class="pull-right" [routerLink]="['/forgot']">Forgot Password?</a>
+            <div *ngIf="loginError">
+                {{ loginError }}
+            </div>
+            <div class="clear"></div>
+            <div class="text-center margin-top-30">
+                <button (click)="login()" type="button submit" class="sign-in">SIGN IN</button>
+            </div>
+        </form>
+        </div>
+    </div>
+</div>

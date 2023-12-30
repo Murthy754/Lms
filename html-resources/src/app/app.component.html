@@ -1,0 +1,39 @@
+<!-- <app-header
+    *ngIf="((!router.url.includes('/signup/') &&
+     router.url !== '/privacy-policy'
+      &&!router.url.includes('/forgot')&&
+         !router.url.includes('/recoverPassword')
+          && !router.url.includes('/emailVerify' )) && isPrivateSite !== 'Yes') || router.url.includes('/home/')">
+</app-header> -->
+<!-- <app-privatesite-header *ngIf="isPrivateSite === 'Yes' && !router.url.includes('/home/')" ></app-privatesite-header> -->
+<!-- <app-header *ngIf="isPrivateSite === 'No' || !router.url.includes('/privatesites') || router.url !== '/forgot' || router.url !== '/recoverPassword' || router.url !== '/signup/' || router.url !== '/emailVerify' || router.url !== '/privacy-policy'"></app-header> -->
+<app-header *ngIf="((!router.url.includes('/signup/') &&
+    router.url !== '/privacy-policy'
+    &&!router.url.includes('/forgot')&&
+    !router.url.includes('/recoverPassword')
+     && !router.url.includes('/emailVerify' )) && isPrivateSite !== 'Yes') || router.url.includes('/home/')"></app-header>
+<app-privatesite-header *ngIf="isPrivateSite === 'Yes' || router.url.includes('/privatesites')"></app-privatesite-header>
+
+<app-sigupheader
+    *ngIf="isPrivateSite!=='Yes' && (router.url === '/signup' || router.url.includes('/emailVerify' ) 
+    || router.url === '/signup/social'|| router.url === '/privacy-policy' || router.url === '/signup/complete') 
+    && !router.url.includes('/forgot') && !router.url.includes('/recoverPassword')">
+</app-sigupheader>
+<div *ngIf="!router.url.includes('/messages')"
+    [ngClass]=" {'container margin-top-100': (router.url !== '/settings' && !router.url.includes('/forgot') && !router.url.includes('/recoverPassword'))}">
+    <div [hidden]="!isLoading" id="loaderDiv">
+        <img src="../../assets/images/loading.gif" class="ajax-loader" />
+    </div>
+    <div style="margin-left: 0px" *ngIf="!loading">
+        <router-outlet></router-outlet>
+    </div>
+</div>
+<div class="chat-wrapper" *ngIf="router.url.includes('/messages')">
+    <div [hidden]="!isLoading"  id="loaderDiv">
+        <img src="../../assets/images/loading.gif" class="ajax-loader" />
+    </div>
+    <div style="margin-left: 0px" *ngIf="!loading">
+        <router-outlet></router-outlet>
+    </div>
+</div>
+<app-footer *ngIf="router.url.includes('/home')"></app-footer>

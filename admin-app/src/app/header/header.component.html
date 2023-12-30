@@ -1,0 +1,43 @@
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
+      <a class="navbar-brand" ui-sref="root.users({tab:'all'})" [routerLink]="['/user-management']"><img src="../../assets/images/logo.png" alt="TruNams"/></a> </div>
+    <div class="navbar-collapse collapse">
+
+      <ul class="nav navbar-nav pull-right home-page">
+        <li [ngClass]="{active: router.url === '/user-management'}"><a [routerLink]="['/user-management']">USER MANAGEMENT</a></li>
+        <!-- <li><a>TOPIC MANAGEMENT</a></li> -->
+        <li [ngClass]="{active: router.url === '/invite'}"><a [routerLink]="['/invite']">INVITE USERS</a></li>
+        <!-- <li><a>PROMOTED TOPICS</a></li> -->
+        <li [ngClass]="{active: router.url === '/broadcast'}"><a [routerLink]="['/broadcast']">BROADCAST EMAIL</a></li>
+        <li [ngClass]="{active: router.url === '/configurations'}"><a [matMenuTriggerFor]="configurationsmenu">CONFIGURATIONS</a></li>
+        <mat-menu #configurationsmenu="matMenu">
+          <button mat-menu-item [routerLink]="['global/configurations']">Global</button>
+          <button mat-menu-item disabled>Private Site</button>
+        </mat-menu>
+        <li role="presentation" class="dropdown">
+          <a class="my-poll-pic dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+            <div class="img-round">
+              <img src="{{profilePic}}" *ngIf="profilePic"/>
+              <img src="../../assets/images/noimage.png" *ngIf="!profilePic || profilePic === ''"/>
+            </div>
+          </a>
+          <ul class="dropdown-menu">
+            <li (click)="logout()">
+              logout
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="main-wrapper">
+	<router-outlet></router-outlet>
+	<div class="clear"></div>
+	<!-- <div *ngIf="isLoading" id="loaderDiv"> -->
+		<!-- <img class="spinner-width" src="../assets/loader.gif"> -->
+	<!-- </div> -->
+</div>

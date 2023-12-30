@@ -1,0 +1,431 @@
+<div class="row">
+    <form formGroup [formGroup]="CreatePollForm" name="passwordForm">
+        <div class="create-poll-main">
+            <div class="question">
+                <!-- <div [ngClass]="{'back1': loading===true, 'back2':loading==false }">
+                <p>OkOK</p>
+            </div> -->
+            </div>
+            <div class="question" [ngClass]="{'bg-colo-dark': editquestion == false}">
+                <div class="col-lg-3 col-sm-3 col-md-3 col-xs-12">
+                    <div class="row">
+                        <h3>QUESTION *</h3>
+                    </div>
+                </div>
+                <div class="col-lg-9 col-sm-9 col-md-9 col-xs-12">
+                    <div class="row">
+                        <div class="poll-qus">
+                            <div class="m-poll-qus">
+                                <span>Q.</span>
+                                <textarea class="editquestion msd-elastic" name="question" type="text" placeholder="Enter your question here" formControlName="question" [readonly]="!editquestion" (input)="UpdateWordLength($event.target.value)" ng-trim="false" maxlength="250" required></textarea>
+                            </div>
+                            <a class="edit-link" (click)="editQuestionToggle()" >
+                                <img src="../../assets/images/edit-icon.png" alt="edit" *ngIf="!editquestion"/>
+                                <img src="../../assets/images/editsave.png" *ngIf="editquestion" alt="edit"/>
+                            </a>
+                        </div>
+                        <p *ngIf="editquestion" class="pull-right commet-color">
+                            <span ng-style="squestion.WordLengthStyle">{{WordLength}}</span>
+                            <span class="color-drk">/250 max
+                            </span>
+                        </p>
+                         <div *ngIf="CreatePollForm.controls['question'].errors?.required" class="qerror">Question is required</div>
+
+                    </div>
+                </div>
+
+            </div>
+            <div class="question" [ngClass]="{'bg-colo-dark': pollCastCount > 0}">
+                <div class="col-lg-3 col-sm-3 col-md-3 col-xs-12">
+                    <div class="row">
+                        <h3>CHOOSE ANSWER TYPE * </h3>
+                    </div>
+                </div>
+                <div class="col-lg-9 col-sm-9 col-md-9 col-xs-12">
+                    <div class="row">
+                        <div class="poll-qus">
+                            <div class="edit-buttons">
+                                <ul>
+                                    <li>
+                                        <div class="reg">
+                                            <bdo>
+                                                <input type="radio" formControlName="pollOptionsType" value="Choice"
+                                                    name="pollOptionsType">
+                                                <span></span>
+                                            </bdo>
+                                        </div>
+                                    </li>
+                                    <li class="poll-emoji-box edit-poll-emoji">
+                                        <input id="emojionearea11" [formControlName]="'Text1'" data-emojiable="true" maxlength="15" />
+                                        <div class="edit-btn">
+                                            <a click="edit1()" [ngClass]="{active : activeMenu === 'option1'}">
+                                                <img src="../../assets/images/edit-btn.png" alt="edit" />
+                                            </a>
+                                        </div>
+                                        <div ng-hide="option1true">
+                                            <p class="pull-right commet-color">
+                                                <span id='wlen1' ng-style="poption1.WordLengthStyle1">{{WordLength1}}</span>
+                                                <span class="color-drk">/15 max
+                                                </span>
+                                            </p>
+                                        </div>
+                                    </li>
+                                    <li class="poll-emoji-box edit-poll-emoji">
+                                        <input id="emojionearea22" [formControlName]="'Text2'" maxlength="15" />
+                                        <div class="edit-btn">
+                                            <a [ngClass]="{active : activeMenu === 'option2'}" click="edit2()">
+                                                <img src="../../assets/images/edit-btn.png" alt="edit" />
+                                            </a>
+                                        </div>
+                                        <div ng-hide="option2true">
+                                            <p class="pull-right commet-color">
+                                                <span id="wlen2" ng-style="poption2.WordLengthStyle2">{{WordLength2}}</span>
+                                                <span class="color-drk">/15 max
+                                                </span>
+                                            </p>
+                                        </div>
+                                    </li>
+                                    <li class="poll-emoji-box edit-poll-emoji">
+                                        <input id="emojionearea33"  name="option1" required type="text" [formControlName]="'Text3'" maxlength="15" />
+                                        <div class="edit-btn">
+                                            <a [ngClass]="{active : activeMenu === 'option3'}" ng-click="edit3()">
+                                                <img src="../../assets/images/edit-btn.png" alt="edit" />
+                                            </a>
+                                        </div>
+                                        <div ng-hide="option3true">
+                                            <p class="pull-right commet-color">
+                                                <span id='wlen3' >{{WordLength3}}</span>
+                                                <span class="color-drk">/15 max
+                                                </span>
+                                            </p>
+                                        </div>
+                                    </li>
+                                </ul>
+
+                                <!-- <ul>
+                                    <li>
+                                        <div class="reg">
+                                            <bdo>
+                                                <input type="radio" value="Slider" name="pollOptionsType"
+                                                    formControlName="pollOptionsType">
+                                                <span></span>
+                                            </bdo>
+                                            <div class="range-sld">
+                                                <div class="mrgn-lft">
+                                                    <img style="padding-left: 20px" src="../../assets/images/range-sld.png" alt="range" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="clear"></div> -->
+                                        <!-- <div class="mrgn-lft">
+                                            <div class="low-high">
+                                                <div class="pull-left">
+                                                    <input class="inputcustom2" (input)="UpdateWordLength4($event.target.value)" name="sliderOption1" type="text" [formControlName]="'Text4'" maxlength="15" ng-readonly="soption1true" required />
+                                                    <div class="edit-btn">
+                                                        <a [ngClass]="{active : activeMenu === 'soption1'}" (click)="sedit1()">
+                                                            <img src="../../assets/images/edit-btn.png" alt="edit" />
+                                                        </a>
+                                                        <div ng-hide="soption1true">
+                                                            <p class="pull-right commet-color">
+                                                                <span ng-style="sliderOption1.WordLengthStyle4">{{WordLength4}}</span>
+                                                                <span class="color-drk">/15 max
+                                                                </span>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="pull-right">
+                                                    <input class="inputcustom2" (input)="UpdateWordLength5($event.target.value)" name="sliderOption2" type="text" [formControlName]="'Text5'" maxlength="15" ng-readonly="soption2true" required />
+                                                    <div class="edit-btn">
+                                                        <a [ngClass]="{active : activeMenu === 'soption2'}" (click)="sedit2()">
+                                                            <img src="../../assets/images/edit-btn.png" alt="edit" />
+                                                        </a>
+                                                        <div ng-hide="soption2true">
+                                                            <p name="" class="pull-right commet-color">
+                                                                <span ng-style="sliderOption2.WordLengthStyle5">{{WordLength5}}</span>
+                                                                <span class="color-drk">/15 max
+                                                                </span>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div> -->
+                                    <!-- </li>
+                                </ul> -->
+                                <ng-container *ngIf="CreatePollForm.controls['pollOptionsType'].value==='Choice'">
+                                    <div id="err1" class="qerror"></div>
+                                    <div id="err2" class="qerror"></div>
+                                    <div id="err3" class="qerror"></div>
+                                </ng-container>
+                                <div *ngIf="(CreatePollForm.controls['Text4'].touched ||  CreatePollForm.controls['Text5'].touched ) && CreatePollForm.controls['pollOptionsType'].value==='Slider'"
+                                    style="padding: 10px;">
+                                    <div *ngIf="CreatePollForm.controls['Text4'].errors?.required || CreatePollForm.controls['Text5'].errors?.required"
+                                        class="qerror">Slider Options are required</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="question">
+                <div class="col-lg-3 col-sm-3 col-md-3 col-xs-12">
+                    <div class="row">
+                        <h3>COUNTRY OF TARGET</h3>
+                    </div>
+                </div>
+                <div class="col-lg-9 col-sm-9 col-md-9 col-xs-12 country-size">
+                    <div class="row">
+                        <ng-select [items]="countries" style="font-weight: bold" bindLabel="name" formControlName='country' placeholder="Country">
+                        </ng-select>
+                    </div>
+                    <div class="row">
+                        <div>
+                            <mat-error *ngIf="!CreatePollForm.get('country').valid">
+                                <strong>Country</strong> field cannot be left empty
+                            </mat-error>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="question">
+                <div class="col-lg-3 col-sm-3 col-md-3 col-xs-12">
+                    <div class="row">
+                        <h3>TOPIC EXPIRY DATE *</h3>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-3 col-md-3 col-xs-12">
+                    <div class="row">
+                        <div class="date-fixed-on">
+                            <input class="myinput" style="font-weight: bold" matInput formControlName="expires" [min]="minDate" [matDatepicker]="myDatepicker">
+                            <mat-datepicker-toggle matSuffix [for]="myDatepicker">
+                            </mat-datepicker-toggle>
+                            <mat-datepicker #myDatepicker></mat-datepicker>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="row">
+                        <div class="checkbox">
+                          <label><input type="checkbox" formControlName="topicExpiration">Never expire the topic</label>
+                        </div>
+                      </div>
+                </div>
+            </div>
+            <div class="question">
+                <div class="col-lg-3 col-sm-3 col-md-3 col-xs-12">
+                    <div class="row">
+                        <h3>TOPIC PRIVACY</h3>
+                    </div>
+                </div>
+                <div class="col-lg-9 col-sm-9 col-md-9 col-xs-12">
+                    <div class="row">
+                        <div class="poll-qus">
+                            <div class="pos-rel">
+                                <div class="select-style">
+                                    <select class="form-control" formControlName="pollstatus" name="Select Topic Privacy">
+                                        <option value="Public">Public</option>
+                                        <option value="Subscribers">Subscribers Only</option>
+                                        <option value="Specific_Subscribers">Specific Subscribers</option>
+                                        <option value="Private">Private</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="CreatePollForm.controls['pollstatus'].value === 'Specific_Subscribers'" class="pull-left select-subz">
+                            {{selectedsubscriberssNames}}
+                        </div>
+                        <div class="pull-left">
+                            <a (click)="addsubscribers()" *ngIf="CreatePollForm.controls['pollstatus'].value === 'Specific_Subscribers'" class="sign-in add-sub pull-right">Add Subscribers</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="question">
+                <div class="col-lg-3 col-sm-3 col-md-3 col-xs-12">
+                    <div class="row">
+                        <h3>COMMENT PRIVACY</h3>
+                    </div>
+                </div>
+                <div class="col-lg-9 col-sm-9 col-md-9 col-xs-12">
+                    <div class="row">
+                        <div class="poll-qus">
+                            <div class="pos-rel">
+                                <div class="select-style">
+                                    <select class="form-control" formControlName="commentstatus" name="Select Topic Privacy">
+                                        <option value="Public">Public</option>
+                                        <option value="Subscribers">Subscribers Only</option>
+                                        <option value="Specific_Subscribers">Specific Subscribers</option>
+                                        <option value="Private">Private</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div *ngIf="CreatePollForm.controls['commentstatus'].value === 'Specific_Subscribers'" class="pull-left select-subz">
+                            {{selectedsubscriberss_commentNames}}
+                        </div>
+                        <div class="pull-left">
+                            <a (click)="addcommentsubscribers()" *ngIf="CreatePollForm.controls['commentstatus'].value === 'Specific_Subscribers'" class="sign-in add-sub pull-right">Add Subscribers</a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="checkbox">
+                            <label><input type="checkbox" formControlName="disableComments">Disable Comments</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="question">
+                <mat-checkbox #myCheckBox (change)="onVerificationOptionChange($event)" class="myCheckBox checkboxTwo">PHONE VERIFICATION REQUIRED TO VOTE THIS TOPIC</mat-checkbox>
+            </div>
+            <div class="question">
+                <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                    <div class="row">
+                        <div class="poll-qus">
+                            <p class="color-blu">Adding Categories and tags to your topic makes them easy to find and also increases the number of responses that you get</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="question">
+                <div class="col-lg-3 col-sm-3 col-md-3 col-xs-12">
+                    <div class="row">
+                        <h3>CATEGORIES *</h3>
+                    </div>
+                </div>
+                <div class="col-lg-9 col-sm-9 col-md-9 col-xs-12">
+                    <div class="row">
+
+                        <div class="col-lg-9 col-sm-9 col-md-9 col-xs-12">
+                            <div class="row">
+                                <div *ngIf="CreatePollForm.controls['selectedCategories'].value.length==0" style="padding: 10px;">
+                                    <div *ngIf="CreatePollForm.controls['selectedCategories'].value.length==0" class="cqerror">Please choose
+                                        category of the poll</div>
+                                </div>
+                                <tag-input formControlName="selectedCategories" [maxItems]="1" placeholder="+ Category" [onlyFromAutocomplete]="true">
+                                    <tag-input-dropdown [showDropdownIfEmpty]="true" [focusFirstElement]="true" [displayBy]="'value'"
+                                    [identifyBy]="'id'" [autocompleteItems]="autocompleteItems">
+                                </tag-input-dropdown>
+                                </tag-input>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="question">
+                <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                    <div class="row">
+                        <div class="poll-qus">
+                            <p class="color-blu">Add Articles, Videos and images relevant to your question here. This can help the users understand the context better
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="question">
+                <div class="col-lg-3 col-sm-3 col-md-3 col-xs-12">
+                    <div class="row">
+                        <h3>ARTICLES</h3>
+                    </div>
+                </div>
+
+                <div class="col-lg-9 col-sm-9 col-md-9 col-xs-12">
+                    <fieldset class="pstn-relative" *ngFor="let data of ArticleInfo;let i=index">
+                        <img src="../../assets/images/close-model.png" (click)="cleararticleModal(i)" alt="close" class="close-btn close" />
+                        <div class="row" style="margin-bottom: 15px; border: 1px solid #999; padding: 9px 10px;">
+                            <h4 style="font-size:14px;padding: 15px 11px;color:#656565">Description</h4>
+                            <app-ngx-editor [config]="editorConfig" value="data.description" [ngModelOptions]="{standalone: true}" [(ngModel)]="data.description"></app-ngx-editor>
+                            <!-- <text-angular ng-model="htmlVariable"></text-angular> -->
+                            <div class="preview clearfix">
+                                <ul class="previewDatas clearfix">
+                                    <li *ngFor="let files of data.urls;let newfilesindex=index">
+                                        <img src="{{files.url}}" *ngIf="(files.type).indexOf('image')>-1">
+                                        <audio controls *ngIf="(files.type).indexOf('audio')>-1">
+
+                                            <source src="{{(files.url)}}" type="{{(files.type)}}">
+
+                                        </audio>
+                                        <video controls *ngIf="(files.type).indexOf('video')>-1" src="{{(files.url)}}" width="150"></video>
+                                        <div class="previewControlss">
+                                            <span (click)="removeFileFromSaved(data,i,newfilesindex)" class="circle remove">
+                                                <i class="fa fa-close" style="top: -4px;left: 6px;"></i>
+                                            </span>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="box comment-upload">
+
+                                <input type="file" accept="audio/*,video/*,image/*" (change)='onFileChange($event,i)' max-size="max_file_size" max-files="10" class="inputfile-3 file" name="file" multiple />
+                                <label>
+
+                                    <img src="../../assets/images/photo-icon.png">
+                                    <span>Photo/Video/Audio</span>
+                                </label>
+
+                            </div>
+                            <p class="qerror" style="margin-top: 20px" *ngIf="maxFileError">File size should be less than or equal to 500MB</p>
+                            <p class="qerror" style="margin-top: 20px" *ngIf='maxFileCount'>You can add only 10 articles per poll.</p>
+
+                            <div class="preview clearfix">
+                                <ul class="previewDatas clearfix">
+                                    <li *ngFor="let previewdata of data.tempurls; index as ind">
+
+                                        <img [src]="previewdata.url" *ngIf="previewdata.type.includes('image')" class="thumb">
+                                        <audio controls [src]="previewdata.url" *ngIf="previewdata.type.includes('audio')"></audio>
+                                        <video controls [src]="previewdata.url" *ngIf="previewdata.type.includes('video')" width="150"></video>
+                                        <div class="previewControlss">
+                                            <span (click)="removeFile(i,ind)" class="circle remove">
+                                                <i class="fa fa-close"></i>
+                                            </span>
+                                        </div>
+                                    </li>
+                                </ul>
+                                <div class="col-lg-9 col-sm-9 col-md-9 col-xs-12">
+                                    <div class="row">Caption
+                                        <input type="text" [(ngModel)]="data.caption" value="" [ngModelOptions]="{standalone: true}" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <!-- <p class="qerror" ng-show="maxArticles">You can add only 5 articles per poll.</p> -->
+                    <div class="art-txt">
+                        <button type="button" (click)="addNewArticle()" class="sign-in btn-bg-white pull-right margin-top-20">ADD
+                            ANOTHER</button>
+                    </div>
+                </div>
+            </div>
+            <div class="question">
+                <div class="col-lg-3 col-sm-3 col-md-3 col-xs-12">
+                    <div class="row">
+                        <h3>TAGS</h3>
+                    </div>
+                </div>
+                <div class="col-lg-9 col-sm-9 col-md-9 col-xs-12">
+                    <div class="row">
+
+                        <div class="col-lg-9 col-sm-9 col-md-9 col-xs-12">
+                            <div class="row">
+                                <tag-input [(ngModel)]="tags" formControlName="tags" [maxItems]="3" [ripple]="false" placeholder="+ Tag">
+                                    <tag-input-dropdown [showDropdownIfEmpty]="true" [focusFirstElement]="true" [displayBy]="'value'" [identifyBy]="'id'" [autocompleteItems]="tags">
+                                    </tag-input-dropdown>
+                                </tag-input>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12" style="text-align: center">
+                <div class="bottom margin-top-100 margin-btm-100">
+                    <button (click)="saveTopicPoll()" class="sign-in">SUBMIT</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<!-- <div *ngIf="loading" id="loaderDiv">
+    <img src="../../assets/images/loading.gif" class="ajax-loader" />
+</div> -->

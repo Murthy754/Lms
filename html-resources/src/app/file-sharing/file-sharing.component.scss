@@ -1,0 +1,152 @@
+.foot-respon {
+	position: fixed;
+    bottom: 0;
+    width: 100%;
+	display: none;
+    padding: 0 20px;
+    left: 0;
+	border-top: 1px solid #ccc;
+	.storeg-box {
+		display: flex;
+		position: relative;
+
+		.add-file {
+			position: absolute;
+			top: -45px;
+			right: -2px;
+			width: 35px;
+		}
+		h2 {
+			text-align: center;
+		}
+	}
+	.mat-progress-bar {
+		margin: 14px 0 0;
+		height: 8px;
+
+	}
+	p
+		{
+			float: left;
+			position: absolute;
+			width: 100%;
+			left: 37px;
+			text-align: center;
+			top: 25px;
+		}
+
+}
+.bottomlist-ul{
+	display: flex;
+	li.bottom-list-items {
+		padding: 10px 0px 5px 2px;
+		span{  
+				padding: 0px 5px 0px 0px;
+			}
+	}
+}
+
+.main-wrap-file-sharing-responsive {
+	display: none;
+}
+
+// modal popup styles start
+.modal-bottom {
+	.modal-dialog{
+	  position: absolute;
+	  bottom: 0;
+	  left: 0;
+	  right: 0;
+	  max-width: 100% !important;
+	  width:100%;
+	  margin: 0;
+	  .modal-content{
+	  border-radius: 16px 16px 0px 0px;
+	  }
+	}
+	}
+	.modal-p-bottom {
+	 .modal-dialog{
+	  position: absolute;
+	  bottom: auto;
+	  left: 0;
+	  right: 0;
+	  max-width: 100% !important;
+	  width: 100%;
+	  margin: 0;
+	  transform:translateY(100%) !important;
+	  .modal-content{
+	  border-radius: 16px 16px 0px 0px;
+	  }
+	}
+	
+	&.show{
+	  overflow: hidden;
+	  .modal-dialog{
+	  transform:translateY(0%) !important;
+	  }
+	  
+	}
+	}
+	
+  //   modal popup ends
+
+// modal data styles
+.modal{
+.bottomsheet {
+    ul{
+        li.list-items { 
+            padding: 18px 0px 10px 10px; 
+            font-size: 14px;
+            font-weight: 400; 
+            span{
+                img {
+                    padding: 0px 8px 2px 5px;
+                }
+            }
+        }
+    }
+}
+}
+@media (max-width:768px) {
+	.main-wrap-file-sharing-responsive {
+		display: block !important;
+	}
+}
+@media screen and (max-width:768px) {
+	#modalPBottom{
+		.modal-dialog{
+			width: 100%;
+		.modal-content{
+			margin: 100px 0px 0px 0px;
+		}
+	}
+	}
+	#modalUploadBottom{
+		.modal-dialog{
+			width: 100%;
+		.modal-content{
+			margin: 200px 0px 0px 0px;
+		}
+	}
+	}
+}
+@media screen and (min-width:769px){
+	.desk-top-ver{
+		display: block;
+	}
+	.files-list.res-files-list{
+		display: none;
+	}
+}
+@media screen and (max-width:769px){
+	.desk-top-ver{
+		display: none;
+	}
+	.files-list.res-files-list{
+		display: block;
+	}
+	.desk-myfiles{
+		display: none !important;
+	}
+}

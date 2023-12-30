@@ -1,0 +1,317 @@
+
+.card-main-02 {
+	width: 100%;
+	padding: 20px;
+	position: relative;
+	float: left;
+ background:$text-color-white;
+ border-radius:$border-radius;
+ border:$border-color;
+ box-shadow:$box-shadow;
+ .profile-pic {
+ float:left;
+ width:20%;
+ a {
+ img {
+ border-radius: 50%;
+ height: 105px;
+ width: 105px;
+}
+}
+}
+.profile-cont {
+	float: left;
+	width: 44%;
+	margin-left: 6%;
+ h2 {
+ margin:0;
+ font-size:18px;
+ color:$blue-color;
+}
+
+
+
+.edit-link {
+	position: absolute;
+	right: 0;
+	top: 0;
+ background:$blue-color;
+	text-align: center;
+	padding: 10px;
+ border-radius:$border-radius;
+ &:hover {
+ background:$blue-color;
+}
+}
+ul {
+	float: left;
+	width: 100%;
+	margin-top: 15px;
+	margin-bottom: 0;
+ li {
+ float:left;
+ width:100%;
+ margin-bottom:10px;
+ img {
+ width:17px;
+ height:auto;
+ margin-right:10px;
+}
+ span {
+ font-size:14px;
+ color:$primary-color;
+ font-weight:$fontweight-semibold;
+}
+}
+}
+}
+
+
+.polls-votes {
+	float:right;
+	width:30%;
+
+	.vote-total {
+		border: 1px dashed #94c3dd;
+    border-radius: 3px;
+    float: left;
+    margin: 0 1%;
+    padding: 5px 0 0;
+    text-align: center;
+    width: 48%;
+		}
+	.flag-box {
+		width:100%;
+		float:left;
+		margin-top:28px;
+		span {
+			font-size:12px;
+			font-weight:700;
+			line-height:26px;
+		}
+
+		}
+	}
+}
+/*--------------- card-main-02 -----------------*/
+.profile-votes {
+ .card-box {
+ .img-left {
+ .Arthur-box {
+ max-width:490px;
+}
+}
+ .card-bott {
+ .left-foot {
+ margin-left:0;
+}
+}
+}
+}
+.ledt-menu {
+ .profile-settings {
+ ul {
+ margin-bottom:5px;
+ li {
+ a {
+ padding:4px 0;
+ font-size:14px;
+}
+ &:hover {
+ a {
+ color:$blue-color;
+ font-weight:$fontweight-semibold;
+}
+}
+}
+}
+ .collapse {
+ .form-for-pswd {
+ padding-bottom:20px;
+ .save {
+ width:100px;
+}
+}
+}
+}
+}
+/*--------------------- onoffswitch ---------------------*/
+
+.onoffswitch {
+	position: relative;
+	float: right;
+	width: 64px;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+ .onoffswitch-checkbox {
+ display: none;
+}
+.onoffswitch-label {
+	display: block;
+	overflow: hidden;
+	cursor: pointer;
+	border: 1px solid #d8d8d8;
+	border-radius: 20px;
+ .onoffswitch-inner {
+ display: block;
+width: 200%;
+margin-left: -100%;
+ transition: margin 0.3s ease-in 0s;
+ &:before, &:after {
+ box-sizing: border-box;
+ color: white;
+ display: block;
+ float: left;
+ font-family: 'Open Sans', sans-serif;
+ font-size: 12px;
+ font-weight: 600;
+ height: 24px;
+ line-height: 24px;
+ padding: 0;
+ width: 60px;
+}
+ &:before {
+ content: "ON";
+ padding-left: 10px;
+ background-color: #FFF;
+color: #6893b5;
+}
+ &:after {
+ content: "OFF";
+ padding-right: 6px;
+ background-color: #fff;
+color: #656565;
+ text-align: right;
+}
+}
+.onoffswitch-switch {
+	display: block;
+	width: 26px;
+	margin: 0;
+	height: 26px;
+	background: #656565;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	right: 37px;
+	border: none;
+	border-radius: 20px;
+	transition: all 0.3s ease-in 0s;
+}
+}
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
+	margin-left: 0;
+}
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
+	right: 0px;
+	background:#5f93b9;
+}
+}
+.expend {
+ background:$body-bg;
+	padding: 16px 10px;
+	border-radius: 5px;
+	margin: 10px 0;
+ h2 {
+ font-size:14px;
+}
+
+a {
+	display: inline-block;
+	margin: 40px 0;
+ color:$primary-color;
+	font-size: 16px;
+ img {
+ margin-right:10px;
+}
+
+}
+
+}
+.expend.world-map {
+	background:url(../assets/images/map-world.png) no-repeat center 0;
+	}
+.main-my-votes {
+	background:url(../assets/images/line-hor.png) repeat-y center 0;
+	margin-top: 30px;
+    padding: 0 0 20px;
+
+	.days-box {
+		float: left;
+		text-align: center;
+		width:100%;
+
+		span {
+			width: 142px;
+			display:inline-block;
+			background:#d8d8d8;
+			font-family:$font-caps;
+			border-radius: 3px;font-size: 14px;
+			font-weight: 700;
+			line-height: 29px;
+			color: #fff;
+			}
+}
+}
+.poll-edit-main {
+	background:$bg-poll-edit;
+	.profile-cont {
+		.edit-link {
+			color: #fff;
+    height: 36px;
+    line-height: 16px;
+    width: 91px;
+		}
+
+.form-edit-poll {
+	width:100%;
+	float:left;
+
+	.form-group {
+    float: left;
+    margin: 0 2% 10px 0;
+    width: 48%;
+	 .form-control {
+		 height:35px;
+		 line-height:35px;
+		}
+	.form-control.land-mark {
+		background:#FFF url(../assets/images/map-icon.png) no-repeat 5px 5px;
+		padding-left:29px;
+
+		option {
+			padding:3px 5px 3px 10px;
+			}
+		}
+
+	.Zebra_DatePicker_Icon_Wrapper, .Zebra_DatePicker_Icon_Wrapper > input  {
+		width:100% !important;
+	}
+
+	.Zebra_DatePicker_Icon_Wrapper > input {
+		padding:0 0 0 42px !important;
+		height:35px;
+	}
+	button.Zebra_DatePicker_Icon_Inside_Right {
+		left:10px!important;
+		top:5px !important;}
+	}
+	ul {
+		margin:0 !important;
+	}
+}}
+
+}
+
+.no-poll-dtls {
+	width:80%;
+	float:left;
+	margin:80px 10% 40px;
+
+	h2 {
+		font-size:20px;
+		margin-top:50px;
+		color:#8A8A8A;
+		}
+	}

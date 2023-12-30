@@ -1,0 +1,304 @@
+/* Scss Document */
+
+.card-box {
+	background:$text-color-white;
+	border-radius:$border-radius;
+	border:$border-color;
+	float:left;
+	width:100%;
+	box-shadow:$box-shadow;
+	
+	.img-left {
+		float:left;
+		width:78%;
+		padding:$padding-10 + 6px 0 0 $padding-10 + 5; 
+		.img-round {
+			float:left;
+			width:45px;
+			margin-right:20px;
+		}
+		
+		.dwon-up-arw {
+			float:left;
+			width:45px;
+			margin-right:20px;
+				a {
+					min-width:31px;
+					height:46px;
+					background:#D8D8D8;
+					text-align:center;
+					line-height:46px;
+					float:left;
+					margin-bottom:2px;
+					&:hover {
+						background:#3F93C2;
+						}
+					}
+			}
+		.Arthur-box {
+			float:left;
+			width:83%;
+			
+			.votes-main {
+				width:100%;
+				float:left;
+				margin-top:$margin + 10px;
+				.yes-vote {
+					float:left;
+					margin-right:$margin + 8px;
+						a {
+							padding:0 12px;
+							border:$border-color;
+							line-height:24px;
+							height:26px;
+							font-size:$fontsize-nav-sml + 1px;
+							font-weight:$fontweight-semibold;
+							color:$primary-color;
+							float:left;
+							font-family:$font-caps;
+							letter-spacing:$letter-spacing;
+							border-radius:$border-radius;
+							&:hover {
+								border:$border-color-dark;
+								}
+								
+							i {
+								float:left;
+								margin-top:5px;
+								margin-right:9px;
+								color:#d8d8d8;
+								line-height:12px;
+								font-size:14px;
+
+							}
+							}
+							a.active {
+								background:$blue-color;
+								color:$text-color-white;
+								border-color:$blue-color;
+								&:hover{
+									border-color:$blue-color;
+									}
+								i {
+									color:$text-color-white;
+								}
+								}
+							p{
+								float:left;
+								padding-top:$padding-10;
+								font-size:12px;
+								color:$txtcolor;
+							}
+					}
+				}
+			}
+		}
+	
+	/*------------ img-left css End -------------*/
+	
+	.card-right {
+		width:22%;
+		float:right;
+		padding:$padding-10 + 6px $padding-10 + 5 0 0; 
+		
+		.flog-top {
+			text-align:right;
+			float:left;
+			width:100%;
+			span {
+				font-size:$fontsize-nav-sml;
+				}
+			a {
+				img {
+				 margin:0 5px 0 15px;
+
+				}
+			}
+		}
+		.vote-total {
+			float:left;
+			width:100%;
+			border:1px dashed lighten($blue-color,22%);
+			border-radius:$border-radius;
+			text-align:center;
+			margin-top:$margin + 13px;
+			padding:$padding-10 - 5px 0 0;
+			h4 {
+				font-weight:$fontweight-bold;
+				}
+			p{
+				font-weight:$fontweight-semibold;
+				}
+			}
+		}
+	
+	.card-bott	{
+		float:left;
+		width:100%;
+		background:#F4F4F4;
+		padding:$padding-10 $padding-10 + 5px 10px;
+		border-radius: 0 0 3px 3px;
+		
+		.left-foot {
+			float:left;
+			width:auto;
+			margin-left:65px;
+				ul {
+					margin:0;
+					padding:0;
+					list-style:none;
+					float:left;
+					
+					 li {
+						 float:left;
+						 margin-right:5px;
+						 	
+							a {
+								background-color:$bg-green;
+								padding: 0 $padding-10;
+								float:left;
+								font-size:$fontsize-nav-sml - 1px;
+								font-family:$font-caps;
+								font-weight:$fontweight-semibold;
+								height:20px;
+								color:$primary-color;
+								line-height:20px;
+								letter-spacing:0.3px;
+								border-radius:10px;
+							}
+							&:nth-child(2n) {
+							 a {
+								 background-color:$bg-blue;}
+							 }
+							&:nth-child(3n) {
+							 a {
+								 background-color:$bg-lit-blue;}
+							 }
+							 &:nth-child(4n) {
+							 a {
+								 background-color:$bg-pink;}
+							 }
+						 }
+					.top-number {
+						font-size: 12px;
+    font-weight: 600;
+    margin-right: 15px;
+    margin-top: -8px;
+						}
+						  
+				}
+			}
+		/*------------------- right-foot start-----------------*/
+		.right-foot {
+			float:right;
+			text-align:right;
+			
+			.card-comment {
+				float:left;
+				margin-right:10px;
+					button {
+						float:left;
+						margin-right:10px;
+					}
+				
+				a {
+					float:left;
+					font-family:$font-caps;
+					color:$dark-color;
+					
+					span {
+						float:left;
+						margin-right:5px;
+						font-size:12px;
+					}
+					}
+				}
+			
+			.card-follow {
+				float:left;
+				margin-right:10px;
+				
+				a {
+					float:left;
+					color:$dark-color;
+					font-family:$font-caps;
+					
+					span {
+						float:left;
+						border:1px solid $txtcolor;
+						font-size:10px;
+						background:#FFF;
+						padding:0 10px;
+						line-height:20px;
+						color:$txtcolor;
+						border-radius:$border-radius;
+					}
+					img {
+						float:left;
+						margin-right:5px;
+						margin-top:2px;
+					}
+					
+					}
+			}
+			a {
+				text-decoration:underline;}
+		}
+		/*------------------- collapse comment-foot start-----------------*/
+		.comment-main {
+			margin:10px 0 0 65px;
+		}
+		
+		
+	}
+	
+}
+
+.popover {
+	background:#FFF !important;
+	border:0 !important;
+ .arrow {border:0 !important;}
+ 
+ .popover-title {
+	 background:none;
+	 border-bottom:0;
+	 text-align:center;
+	 padding-bottom:0;
+	 font-size:16px;
+	 font-weight:$fontweight-semibold;
+	 letter-spacing:0.8px;
+	 font-family:$font-caps;	 
+	 color:$blue-color;
+	}
+ .popover-content {
+	 float:left;
+	 text-align:center;
+	 font-size:14px;
+	  font-family:$font-caps;	 
+	 font-weight:400;
+		a {
+			width:31px;
+			height:31px;
+			background:#3B5998;
+			color:#FFF !important;
+			line-height:30px;
+			text-align:center;
+			margin:0 5px 0;
+			float:left;
+	}
+		.face-twitter {
+			background:#1DA1F2;
+			}
+		.google {background:#DD4B39;}
+		.face-envelope {background:#449A88;}
+	 }
+}
+
+
+
+
+
+
+
+
+

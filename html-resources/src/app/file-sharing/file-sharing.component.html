@@ -1,0 +1,1069 @@
+<!-- File sharing content starts -->
+<div *ngIf="authorized" class="main-wrap-file-sharing">
+  <!-- Left side menu starts -->
+  <div class="left-side-menu user-left-side-panel">
+    <mat-tab-group (selectedTabChange)="tabClick($event)">
+      <mat-tab label="My Files" style="color:white">
+        <!-- My files starts -->
+        <div class="file-name">
+          <ul>
+            <li [ngClass]="{'bg-colo-grey': (Header === 'My Files')}">
+              <div (click)="getMyFilesTabData()">
+                <img src="../../assets/images/files-icon.svg" alt="File" style="margin: 0 8px;"/>
+							  <span style="color:white">Files</span>
+              </div>
+            </li>
+            <li [ngClass]="{'bg-colo-grey': (Header === 'Shared with me')}">
+              <div (click)="getSharedFiles()">
+                <img src="../../assets/images/chat-icons/shared-icon.svg" alt="Shared with me" style="margin: 0 8px;"/>
+							  <span style="color:white">Shared with me</span>
+              </div>
+            </li>
+            <li [ngClass]="{'bg-colo-grey': (Header === 'Trash')}">
+              <div (click)="getTrashData()">
+                <img src="../../assets/images/chat-icons/trash-icon.svg" alt="Trash" style="margin: 0 9px;"/>
+							  <span style="color:white">Trash</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <!-- My files ends -->
+        <div class="total-items">
+          {{ totalItems }} items
+        </div>
+      </mat-tab>
+      <mat-tab label="People's Files" style="color:white">
+        <!-- Groups files starts -->
+        <div class="user-group">
+          <h4>Groups</h4>
+          <ul>
+            <li *ngFor="let group of groupsList; let i = index"
+            [ngClass]="{'bg-colo-grey': (group._id === selectedGroupId)}">
+              <div (click)="getFilesInGroup(group._id)">
+                <img src="{{group.groupIcon}}" *ngIf="group.groupIcon && group.groupIcon !== 'null'" alt=""/>
+							  <img src="../../assets/images/noimage.png" *ngIf="!group.groupIcon || group.groupIcon=='null'"/>
+							  <span style="color:white"> {{group.groupName | titlecase}} </span>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <!-- Groups files ends -->
+
+        <!-- People's files starts -->
+        <div class="user-group">
+          <h4>People</h4>
+          <ul>
+            <li *ngFor="let user of peoplesList; let i = index"
+            [ngClass]=" {'bg-colo-grey': (user._id === selectedUserId)}">
+              <div (click)="getFilesBetweenUsers(user)" *ngIf="user._id !== loginUser">
+                <img src="{{user.profilePicture}}"
+								*ngIf="user.profilePicture && user.profilePicture !== 'null'" alt="" />
+                <img src="../../assets/images/noimage.png"
+                  *ngIf="!user.profilePicture || user.profilePicture === 'null'" />
+                <span style="color:white"> {{user.firstName | titlecase}} {{user.lastName | titlecase}} </span>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <!-- People's files ends-->
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+  <!-- Left side menu ends -->
+  <!-- File content starts -->
+  <div class="file-content-drive" (drop)="onDrop($event)" (dragenter)="onDragEnter($event)" (dragover)="onDragOver($event)" (dragend)="onDragEnd($event)" (dragleave)="onDragLeave($event)">
+    <!-- Drag and drop upload container starts -->
+	  <div *ngIf="dragover" class="drop-files-hear" (drop)="onDrop($event)">
+      <div class="drop-box">
+        <div class="">
+          <i class='bx bxs-cloud-upload'></i>
+          <p>Drop Files to instantly upload them to : </p>
+          <h5>{{ Header }}</h5>
+        </div>
+      </div>
+	  </div>
+    <!-- Drag and drop upload container ends -->
+    <div *ngIf="!dragover">
+      <div>
+
+        <h2 class="pull-left mt-2 text-capitalize">
+			<a class="lap-displat-none back-arrow" (click)="goToHomeScreen()" ><i class='bx bx-arrow-back'></i></a>
+			<img *ngIf="Header !== 'My Files' && Header !== 'Shared with me' && Header !== 'Trash' && Header !== 'Peoples Files'"
+          (click)="goToPreviousFolder()" src="../../assets/images/back-arrow.svg" style="margin-right: 10px; cursor: pointer;"> {{ Header }} </h2>
+      <!-- <div class="sort-icon">
+      <button type="button">Sort <img src="../../assets/images/sort-icon.svg" alt=""></button>
+    </div> -->
+      <div class="search-list">
+        <input type="text" label="search" placeholder="search" (input)="onSearchValueChange($event.target.value)"/>
+      </div>
+
+      </div>
+      <!-- My Files tab content starts -->
+      <div  class="files-list desk-top-ver">
+      <!-- <div class="files-list"> -->
+        <ul class="file-list-title">
+          <li>
+            Name
+          </li>
+          <li>
+            Owner
+          </li>
+          <li>
+            Last Modified
+          </li>
+          <li>
+            File Size
+          </li>
+        </ul>
+
+        <!-- Display folders start -->
+        <ul *ngFor="let folder of folders" [ngClass]="{'selection': (selected && selectedId === folder.folderId)}">
+          <li (click)="getFoldersData(folder)" (click)="onSelect(folder.folderId)">
+        <div class="file-icons"><img src="../../assets/images/files-icons/research-icon.svg"/></div>
+          <span matTooltip="{{ folder.folderName }}">{{ folder.folderName }}</span>
+          </li>
+          <li (click)="getFoldersData(folder)" (click)="onSelect(folder.folderId)">
+            {{ folder.folderOwner }}
+          </li>
+          <li (click)="getFoldersData(folder)" (click)="onSelect(folder.folderId)">
+            {{ folder.folderTime | date }}
+          </li>
+          <li (click)="getFoldersData(folder)" (click)="onSelect(folder.folderId)">
+            {{ folder.folderSize }}
+          </li>
+          <li class="text-right"> <a data-toggle="dropdown" role="button" *ngIf="(folder.folderType !== 'message' && Header !== 'Shared with me')">...</a>
+            <ul class="dropdown-menu photo-drop-down">
+              <li (click)="openShareModal(folder, 'folder')">
+                <a class="openbtn"><img src="../../assets/images/action-icons/share.svg"/>Share</a>
+              </li>
+              <li (click)="openMoveToModal(folder, 'folder')">
+                <a class="openbtn"><img src="../../assets/images/action-icons/move.svg"/>Move To</a>
+              </li>
+              <li (click)="rename(folder, 'folder')">
+                <a class="openbtn"><img src="../../assets/images/action-icons/rename.svg"/>Rename</a>
+              </li>
+              <!-- <li>
+                <a class="openbtn"><img src="../../assets/images/action-icons/download.svg"/>Download</a>
+              </li> -->
+              <li>
+                <a class="openbtn" *ngIf="!folder.folderDeleted" (click)="removeFolder(folder)"><img src="../../assets/images/action-icons/remove.svg"/>Remove</a>
+              </li>
+              <li>
+                <a class="openbtn" *ngIf="folder.folderDeleted" (click)="restoreFolder(folder)"><img src="../../assets/images/action-icons/link.svg"/>Restore</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+        <!-- Display folders end -->
+
+        <!-- Display files start -->
+        <ul *ngFor="let file of files; let i = index" [ngClass]="{'selection': (selected && selectedId === file.fileId)}">
+          <li (click)="previewFile(file)" (click)="onSelect(file.fileId)">
+            <div class="file-icons">
+              <img *ngIf="file.fileType === 'application/pdf'" src="../../assets/images/files-icons/pdf.png" />
+              <img *ngIf="file.fileType !== 'application/pdf'" src="../../assets/images/files-icons/default-file.png" />
+            </div>
+            <span matTooltip="{{file.fileName}}">{{ file.fileName }}</span>
+          </li>
+          <li (click)="previewFile(file)" (click)="onSelect(file.fileId)">
+            {{ file.fileOwner }}
+          </li>
+          <li (click)="previewFile(file)" (click)="onSelect(file.fileId)">
+            {{ file.fileTime | date }}
+          </li>
+          <li (click)="previewFile(file)" (click)="onSelect(file.fileId)">
+            {{ file.fileSize }}
+          </li>
+          <li class="text-right"><a data-toggle="dropdown" role="button">...</a>
+            <ul class="dropdown-menu photo-drop-down" *ngIf="Header !== 'Messages'">
+              <li (click)="openShareModal(file, 'file')" *ngIf="Header !== 'Shared with me'">
+                <a class="openbtn"><img src="../../assets/images/action-icons/share.svg"/>Share</a>
+              </li>
+              <li (click)="openMoveToModal(file, 'file')" *ngIf="Header !== 'Shared with me'">
+                <a class="openbtn"><img src="../../assets/images/action-icons/move.svg"/>Move To</a>
+              </li>
+              <li (click)="rename(file, 'file')" *ngIf="Header !== 'Shared with me'">
+                <a class="openbtn"><img src="../../assets/images/action-icons/rename.svg"/>Rename</a>
+              </li>
+              <li (click)="downloadFile(file, i)">
+                <a class="openbtn"><img src="../../assets/images/action-icons/download.svg"/>Download</a>
+              </li>
+              <li *ngIf="Header !== 'Shared with me'">
+                <a class="openbtn" *ngIf="!file.fileDeleted" (click)="removeFile(file.fileId)"><img src="../../assets/images/action-icons/remove.svg"/>Remove</a>
+              </li>
+              <li *ngIf="Header !== 'Shared with me'">
+                <a class="openbtn" *ngIf="file.fileDeleted" (click)="restoreFile(file.fileId)"><img src="../../assets/images/action-icons/link.svg"/>Restore</a>
+              </li>
+            </ul>
+            <ul class="dropdown-menu photo-drop-down" *ngIf="Header === 'Messages'">
+              <li (click)="downloadFile(file, i)">
+                <a class="openbtn"><img src="../../assets/images/action-icons/download.svg"/>Download</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+        <!-- Display files end -->
+        <!-- No data found start -->
+        <div class="no-data-found" *ngIf="files.length === 0 && folders.length === 0">
+          <span>No data found</span>
+          <img src="../../assets/images/no-data.jpg"/>
+        </div>
+        <!-- No data found end -->
+
+      </div>
+	  <div *ngIf="selectedTab === 0" class="files-list res-files-list">
+		<!-- <div class="files-list"> -->
+		  <!-- Display folders start -->
+		  <ul *ngFor="let folder of folders" [ngClass]="{'selection': (selected && selectedId === folder.folderId)}">
+		<li (click)="getFoldersData(folder)" (click)="onSelect(folder.folderId)" style="width: 90%;">
+		  <div class="file-icons"><img src="../../assets/images/files-icons/research-icon.svg"/></div>
+			<span matTooltip="{{ folder.folderName }}">{{ folder.folderName }}</span>
+			<span matTooltip="{{ folder.folderName }}">{{ folder.folderOwner}}, {{ folder.folderTime | date }}, {{ folder.folderSize }}</span>
+			</li>
+
+			<li class="text-right" style="width: 10%;"> <a data-toggle="dropdown" role="button" *ngIf="(folder.folderType !== 'message' && Header !== 'Shared with me')">...</a>
+			  <ul class="dropdown-menu photo-drop-down">
+				<li (click)="openShareModal(folder, 'folder')">
+				  <a class="openbtn"><img src="../../assets/images/action-icons/share.svg"/>Share</a>
+				</li>
+				<li (click)="openMoveToModal(folder, 'folder')">
+				  <a class="openbtn"><img src="../../assets/images/action-icons/move.svg"/>Move To</a>
+				</li>
+				<li (click)="rename(folder, 'folder')">
+				  <a class="openbtn"><img src="../../assets/images/action-icons/rename.svg"/>Rename</a>
+				</li>
+
+				<li>
+				  <a class="openbtn" *ngIf="!folder.folderDeleted" (click)="removeFolder(folder)"><img src="../../assets/images/action-icons/remove.svg"/>Remove</a>
+				</li>
+				<li>
+				  <a class="openbtn" *ngIf="folder.folderDeleted" (click)="restoreFolder(folder)"><img src="../../assets/images/action-icons/link.svg"/>Restore</a>
+				</li>
+			  </ul>
+			</li>
+		  </ul>
+		  <!-- Display folders end -->
+
+		  <!-- Display files start -->
+		  <ul *ngFor="let file of files; let i = index" [ngClass]="{'selection': (selected && selectedId === file.fileId)}">
+			<li (click)="previewFile(file)" (click)="onSelect(file.fileId)" style="width: 90%;">
+			  <div class="file-icons">
+				<img *ngIf="file.fileType === 'application/pdf'" src="../../assets/images/files-icons/pdf.png" />
+				<img *ngIf="file.fileType !== 'application/pdf'" src="../../assets/images/files-icons/default-file.png" />
+			  </div>
+			  <span matTooltip="{{file.fileName}}">{{ file.fileName }}</span>
+			  <span>{{ file.fileOwner }}, {{ file.fileTime | date }}, {{ file.fileSize }}</span>
+			</li>
+
+			<li class="text-right" style="width: 10%;"  ><a data-toggle="dropdown" role="button">...</a>
+        <ul class="dropdown-menu photo-drop-down" *ngIf="Header !== 'Messages'">
+				<li (click)="openShareModal(file, 'file')" *ngIf="Header !== 'Shared with me'">
+				  <a class="openbtn"><img src="../../assets/images/action-icons/share.svg"/>Share</a>
+				</li>
+				<li (click)="openMoveToModal(file, 'file')" *ngIf="Header !== 'Shared with me'">
+				  <a class="openbtn"><img src="../../assets/images/action-icons/move.svg"/>Move To</a>
+				</li>
+				<li (click)="rename(file, 'file')" *ngIf="Header !== 'Shared with me'">
+				  <a class="openbtn"><img src="../../assets/images/action-icons/rename.svg"/>Rename</a>
+				</li>
+				<li (click)="downloadFile(file, i)">
+				  <a class="openbtn"><img src="../../assets/images/action-icons/download.svg"/>Download</a>
+				</li>
+				<li *ngIf="Header !== 'Shared with me'">
+				  <a class="openbtn" *ngIf="!file.fileDeleted" (click)="removeFile(file.fileId)"><img src="../../assets/images/action-icons/remove.svg"/>Remove</a>
+				</li>
+				<li *ngIf="Header !== 'Shared with me'">
+				  <a class="openbtn" *ngIf="file.fileDeleted" (click)="restoreFile(file.fileId)"><img src="../../assets/images/action-icons/link.svg"/>Restore</a>
+				</li>
+			  </ul>
+			  <ul class="dropdown-menu photo-drop-down" *ngIf="Header === 'Messages'">
+				<li (click)="downloadFile(file, i)">
+				  <a class="openbtn"><img src="../../assets/images/action-icons/download.svg"/>Download</a>
+				</li>
+
+			  </ul>
+			</li>
+		  </ul>
+		  <!-- Display files end -->
+		  <!-- No data found start -->
+		  <div class="no-data-found" *ngIf="files.length === 0 && folders.length === 0">
+			<span>No data found</span>
+			<img src="../../assets/images/no-data.jpg"/>
+		  </div>
+		  <!-- No data found end -->
+
+		</div>
+
+      <!-- My Files tab content ends -->
+
+      <!-- People's files content starts -->
+      <div  class="files-list" style="display: none;">
+        <ul class="file-list-title">
+          <li>
+            Name
+          </li>
+          <li>
+            Owner
+          </li>
+          <li>
+            Last Modified
+          </li>
+          <li>
+            File Size
+          </li>
+        </ul>
+
+        <!-- Display folders start -->
+        <ul *ngFor="let folder of folders" [ngClass]="{'selection': (selected && selectedId === folder.folderId)}">
+          <li (click)="getFoldersData(folder)" (click)="onSelect(folder.folderId)">
+            <div class="file-icons"><img src="../../assets/images/files-icons/research-icon.svg"/></div>
+            <span matTooltip="{{ folder.folderName }}">{{ folder.folderName }}</span>
+          </li>
+          <li (click)="getFoldersData(folder)" (click)="onSelect(folder.folderId)">
+            {{ folder.folderOwner }}
+          </li>
+          <li>
+            {{ folder.folderTime | date }}
+          </li>
+          <li  (click)="getFoldersData(folder)" (click)="onSelect(folder.folderId)">
+            {{ folder.folderSize }}
+          </li>
+          <li class="text-right"> <a data-toggle="dropdown" role="button" *ngIf="folder.folderType !== 'message' || Header !== 'Shared with me'">...</a>
+            <ul class="dropdown-menu photo-drop-down">
+              <li (click)="rename(folder, 'folder')" *ngIf="loginUser === folder.folderOwner">
+                <a class="openbtn"><img src="../../assets/images/action-icons/rename.svg"/>Rename</a>
+              </li>
+              <!-- <li>
+                <a class="openbtn"><img src="../../assets/images/action-icons/download.svg"/>Download</a>
+              </li> -->
+              <li>
+                <a class="openbtn" *ngIf="!folder.folderDeleted" (click)="removeFolder(folder)"><img src="../../assets/images/action-icons/remove.svg"/>Remove</a>
+              </li>
+              <li>
+                <a class="openbtn" *ngIf="folder.folderDeleted"  (click)="restoreFolder(folder)"><img src="../../assets/images/action-icons/link.svg"/>Restore</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+        <!-- Display folders end -->
+
+        <!-- Display files start -->
+        <ul *ngFor="let file of files; let i = index" [ngClass]="{'selection': (selected && selectedId === file.fileId)}">
+          <li (click)="previewFile(file)" (click)="onSelect(file.fileId)">
+            <div class="file-icons">
+              <img *ngIf="file.fileType === 'application/pdf'" src="../../assets/images/files-icons/pdf.png" />
+              <img *ngIf="file.fileType !== 'application/pdf'" src="../../assets/images/files-icons/default-file.png" />
+            </div>
+            <span matTooltip="{{file.fileName}}">{{ file.fileName }}</span>
+          </li>
+          <li (click)="previewFile(file)" (click)="onSelect(file.fileId)">
+            {{ file.fileOwner }}
+          </li>
+          <li (click)="previewFile(file)" (click)="onSelect(file.fileId)">
+            {{ file.fileTime | date }}
+          </li>
+          <li (click)="previewFile(file)" (click)="onSelect(file.fileId)">
+            {{ file.fileSize }}
+          </li>
+          <li class="text-right"><a data-toggle="dropdown" role="button">...</a>
+            <ul class="dropdown-menu photo-drop-down">
+              <li *ngIf="loginUser === file.fileOwner" (click)="rename(file, 'file')">
+                <a class="openbtn">Rename</a>
+              </li>
+              <li (click)="downloadFile(file, i)">
+                <a class="openbtn">Download</a>
+              </li>
+              <li *ngIf="loginUser === file.fileOwner">
+                <a class="openbtn" *ngIf="!file.fileDeleted" (click)="removeFile(file.fileId)">Remove</a>
+              </li>
+              <li *ngIf="loginUser === file.fileOwner">
+                <a class="openbtn" *ngIf="file.fileDeleted" (click)="restoreFile(file)">Restore</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+        <!-- Display files end -->
+
+        <!-- No data found start -->
+      <div class="no-data-found" *ngIf="files.length === 0 && folders.length === 0">
+      <span>No data found</span>
+      <img src="../../assets/images/no-data.jpg"/>
+    </div>
+        <!-- <p *ngIf="files.length === 0 && folders.length === 0">No data found</p> -->
+        <!-- No data found end -->
+      </div>
+	  <div *ngIf="selectedTab === 1" class="files-list" style="display: none;">
+
+
+        <!-- Display folders start -->
+        <ul *ngFor="let folder of folders" [ngClass]="{'selection': (selected && selectedId === folder.folderId)}">
+          <li (click)="getFoldersData(folder)" (click)="onSelect(folder.folderId)">
+            <div class="file-icons"><img src="../../assets/images/files-icons/research-icon.svg"/></div>
+            <span matTooltip="{{ folder.folderName }}">{{ folder.folderName }}</span>
+          </li>
+          <li (click)="getFoldersData(folder)" (click)="onSelect(folder.folderId)">
+            {{ folder.folderOwner }}
+          </li>
+          <li>
+            {{ folder.folderTime | date }}
+          </li>
+          <!-- <li  (click)="getFoldersData(folder)" (click)="onSelect(folder.folderId)">
+            {{ folder.folderSize }}
+          </li> -->
+          <li class="text-right"> <a data-toggle="dropdown" role="button" *ngIf="folder.folderType !== 'message' || Header !== 'Shared with me'">...</a>
+            <ul class="dropdown-menu photo-drop-down">
+              <li (click)="rename(folder, 'folder')" *ngIf="loginUser === folder.folderOwner">
+                <a class="openbtn"><img src="../../assets/images/action-icons/rename.svg"/>Rename</a>
+              </li>
+              <!-- <li>
+                <a class="openbtn"><img src="../../assets/images/action-icons/download.svg"/>Download</a>
+              </li> -->
+              <li>
+                <a class="openbtn" *ngIf="!folder.folderDeleted" (click)="removeFolder(folder)"><img src="../../assets/images/action-icons/remove.svg"/>Remove</a>
+              </li>
+              <li>
+                <a class="openbtn" *ngIf="folder.folderDeleted"  (click)="restoreFolder(folder)"><img src="../../assets/images/action-icons/link.svg"/>Restore</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+        <!-- Display folders end -->
+
+        <!-- Display files start -->
+        <ul *ngFor="let file of files; let i = index" [ngClass]="{'selection': (selected && selectedId === file.fileId)}">
+          <li (click)="previewFile(file)" (click)="onSelect(file.fileId)">
+            <div class="file-icons">
+              <img *ngIf="file.fileType === 'application/pdf'" src="../../assets/images/files-icons/pdf.png" />
+              <img *ngIf="file.fileType !== 'application/pdf'" src="../../assets/images/files-icons/default-file.png" />
+            </div>
+            <span matTooltip="{{file.fileName}}">{{ file.fileName }}</span>
+          </li>
+          <li (click)="previewFile(file)" (click)="onSelect(file.fileId)">
+            {{ file.fileOwner }}
+          </li>
+          <li (click)="previewFile(file)" (click)="onSelect(file.fileId)">
+            {{ file.fileTime | date }}
+          </li>
+          <!-- <li (click)="previewFile(file)" (click)="onSelect(file.fileId)">
+            {{ file.fileSize }}
+          </li> -->
+          <li class="text-right"><a data-toggle="dropdown" role="button">...</a>
+            <ul class="dropdown-menu photo-drop-down">
+              <li *ngIf="loginUser === file.fileOwner" (click)="rename(file, 'file')">
+                <a class="openbtn">Rename</a>
+              </li>
+              <li (click)="downloadFile(file, i)">
+                <a class="openbtn">Download</a>
+              </li>
+              <li *ngIf="loginUser === file.fileOwner">
+                <a class="openbtn" *ngIf="!file.fileDeleted" (click)="removeFile(file.fileId)">Remove</a>
+              </li>
+              <li *ngIf="loginUser === file.fileOwner">
+                <a class="openbtn" *ngIf="file.fileDeleted" (click)="restoreFile(file)">Restore</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+        <!-- Display files end -->
+
+        <!-- No data found start -->
+      <div class="no-data-found" *ngIf="files.length === 0 && folders.length === 0">
+      <span>No data found</span>
+      <img src="../../assets/images/no-data.jpg"/>
+    </div>
+        <!-- <p *ngIf="files.length === 0 && folders.length === 0">No data found</p> -->
+        <!-- No data found end -->
+      </div>
+      <!-- People's files content ends -->
+    </div>
+  </div>
+  <!-- File content ends -->
+  <!-- Right side panel starts -->
+  <div class="drive-right user-left-side-panel">
+    <ul *ngIf="selectedTab === 0">
+      <li (click)="fileUpload.click()" *ngIf="Header !== 'Messages'" style="cursor: pointer;">
+        <input #fileUpload type="file" (click)="fileUpload.value = null" (change)="uploadFiles($event)" style="display:none;" multiple>
+        <img src="../../assets/images/upload-files-icon.svg"/>
+        <label style="cursor: pointer;">
+          Upload Files
+        </label>
+      </li>
+      <li (click)="folderUpload.click()" *ngIf="Header !== 'Messages'" style="cursor: pointer;">
+        <input #folderUpload type="file" (click)="folderUpload.value = null" (change)="uploadFolder($event)" style="display:none;" webkitdirectory directory>
+        <img src="../../assets/images/upload-files-icon.svg"/>
+        <label style="cursor: pointer;">
+          Upload Folder
+        </label>
+      </li>
+      <li (click)="createNewFolder()" *ngIf="Header !== 'Messages'">
+        <img src="../../assets/images/new-folder-icon.svg"/>
+        <label>New Folder</label>
+      </li>
+      <li *ngIf="isPrivateSite && isOwner" (click)="managePermissions()">
+        <img src="../../assets/images/manage-permissions-icon.svg"/>
+        <label>Manage Permissions</label>
+      </li>
+    </ul>
+
+    <ul *ngIf="folderType === 'people' && selectedTab === 1" style="cursor: pointer;">
+      <li (click)="openShareFilesModal()">
+        Share Files
+      </li>
+	</ul>
+	<div class="storeg-box">
+		<h2><img src="../../assets/images/chat-icons/storege-icon.svg"> Storage</h2>
+		<!-- <mat-progress-bar mode="determinate" [value]="percentageUsed" ></mat-progress-bar> -->
+		<mat-progress-bar mode="determinate" [value]="percentageUsed"></mat-progress-bar>
+		<p>{{ (storageUsed/1000).toFixed(2) }} GB of {{ storageLimit/1000 }} GB Used</p>
+	</div>
+  </div>
+
+  <div class="foot-respon">
+	<div class="storeg-box">
+
+		<h2><img src="../../assets/images/chat-icons/storege-icon.svg"> Storage</h2>
+		<!-- <mat-progress-bar mode="determinate" [value]="percentageUsed" ></mat-progress-bar> -->
+		<mat-progress-bar mode="determinate" [value]="percentageUsed"></mat-progress-bar>
+		<p>{{ (storageUsed/1000).toFixed(2) }} GB of {{ storageLimit/1000 }} GB Used</p>
+	</div>
+  <!-- <div class="bottomlist">
+    <ul class="bottomlist-ul" style="width:100%">
+        <li class="bottom-list-items" style="width:33%"><span><img src="../../assets/images/files-icons/share-icon.svg"/></span>Share</li>
+        <li class="bottom-list-items"  style="width:34%"><span><img src="../../assets/images/files-icons/move-icon.svg"/></span>Move To</li>
+        <li class="bottom-list-items"  style="width:33%"><span><img src="../../assets/images/files-icons/remove-icon.svg"/></span>Remove</li>
+    </ul>
+</div> -->
+  </div>
+  <!-- Right side panel ends -->
+
+</div>
+<!-- File sharing content ends -->
+
+<!-- File sharing responsive content starts -->
+<div *ngIf="authorized" class="main-wrap-file-sharing-responsive">
+  <!-- Left side menu starts -->
+  <div class="left-side-menu user-left-side-panel-responsive" *ngIf="showMenu">
+    <mat-tab-group (selectedTabChange)="tabClick($event)">
+      <mat-tab label="My Files" style="color:white">
+        <!-- My files starts -->
+        <div class="file-name">
+          <ul>
+            <li [ngClass]="{'bg-colo-grey': (Header === 'My Files')}">
+              <div (click)="getMyFilesTabData()">
+                <img src="../../assets/images/files-icon.svg" alt="File" style="margin: 0 8px;"/>
+							  <span style="color:white">Files</span>
+              </div>
+            </li>
+            <li [ngClass]="{'bg-colo-grey': (Header === 'Shared with me')}">
+              <div (click)="getSharedFiles()">
+                <img src="../../assets/images/chat-icons/shared-icon.svg" alt="Shared with me" style="margin: 0 8px;"/>
+							  <span style="color:white">Shared with me</span>
+              </div>
+            </li>
+            <li [ngClass]="{'bg-colo-grey': (Header === 'Trash')}">
+              <div (click)="getTrashData()">
+                <img src="../../assets/images/chat-icons/trash-icon.svg" alt="Trash" style="margin: 0 9px;"/>
+							  <span style="color:white">Trash</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <!-- My files ends -->
+        <div class="total-items">
+          {{ totalItems }} items
+        </div>
+      </mat-tab>
+      <mat-tab label="People's Files" style="color:white">
+        <!-- Groups files starts -->
+        <div class="user-group">
+          <h4>Groups</h4>
+          <ul>
+            <li *ngFor="let group of groupsList; let i = index"
+            [ngClass]="{'bg-colo-grey': (group._id === selectedGroupId)}">
+              <div (click)="getFilesInGroup(group._id)">
+                <img src="{{group.groupIcon}}" *ngIf="group.groupIcon && group.groupIcon !== 'null'" alt=""/>
+							  <img src="../../assets/images/noimage.png" *ngIf="!group.groupIcon || group.groupIcon=='null'"/>
+							  <span style="color:white"> {{group.groupName | titlecase}} </span>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <!-- Groups files ends -->
+
+        <!-- People's files starts -->
+        <div class="user-group">
+          <h4>People</h4>
+          <ul>
+            <li *ngFor="let user of peoplesList; let i = index"
+            [ngClass]=" {'bg-colo-grey': (user._id === selectedUserId)}">
+              <div (click)="getFilesBetweenUsers(user)" *ngIf="user._id !== loginUser">
+                <img src="{{user.profilePicture}}"
+								*ngIf="user.profilePicture && user.profilePicture !== 'null'" alt="" />
+                <img src="../../assets/images/noimage.png"
+                  *ngIf="!user.profilePicture || user.profilePicture === 'null'" />
+                <span style="color:white"> {{user.firstName | titlecase}} {{user.lastName | titlecase}} </span>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <!-- People's files ends-->
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+  <!-- Left side menu ends -->
+  <!-- File content starts -->
+  <div class="file-content-drive" *ngIf="!showMenu">
+    <!-- Drag and drop upload container starts -->
+	  <div *ngIf="dragover" class="drop-files-hear">
+      <div class="drop-box">
+        <div class="">
+          <i class='bx bxs-cloud-upload'></i>
+          <p>Drop Files to instantly upload them to : </p>
+          <h5>{{ Header }}</h5>
+        </div>
+      </div>
+	  </div>
+    <!-- Drag and drop upload container ends -->
+    <div *ngIf="!dragover">
+      <div>
+
+        <h2 class="pull-left mt-2 text-capitalize">
+			<a class="lap-displat-none back-arrow" (click)="goToHomeScreen()" *ngIf="Header === 'My Files' || Header === 'Shared with me' || Header === 'Trash' || Header === 'Peoples Files'"><i class='bx bx-arrow-back'></i></a>
+			<img *ngIf="Header !== 'My Files' && Header !== 'Shared with me' && Header !== 'Trash' && Header !== 'Peoples Files'"
+          (click)="goToPreviousFolder()" src="../../assets/images/back-arrow.svg" style="margin-right: 10px; cursor: pointer;"> {{ Header }} </h2>
+      <!-- <div class="sort-icon">
+      <button type="button">Sort <img src="../../assets/images/sort-icon.svg" alt=""></button>
+    </div> -->
+      <div class="search-list">
+        <input type="text" label="search" placeholder="search" (input)="onSearchValueChange($event.target.value)"/>
+      </div>
+
+      </div>
+      <!-- My Files tab content starts -->
+      <div  class="files-list desk-myfiles" >
+      <!-- <div class="files-list"> -->
+        <ul class="file-list-title">
+          <li>
+            Name
+          </li>
+          <li>
+            Owner
+          </li>
+          <li>
+            Last Modified
+          </li>
+          <li>
+            File Size
+          </li>
+        </ul>
+
+        <!-- Display folders start -->
+        <ul *ngFor="let folder of folders" [ngClass]="{'selection': (selected && selectedId === folder.folderId)}">
+          <li (click)="getFoldersData(folder)" (click)="onSelect(folder.folderId)">
+        <div class="file-icons"><img src="../../assets/images/files-icons/research-icon.svg"/></div>
+          <span matTooltip="{{ folder.folderName }}">{{ folder.folderName }}</span>
+          </li>
+          <li (click)="getFoldersData(folder)" (click)="onSelect(folder.folderId)">
+            {{ folder.folderOwner }}
+          </li>
+          <li (click)="getFoldersData(folder)" (click)="onSelect(folder.folderId)">
+            {{ folder.folderTime | date }}
+          </li>
+          <li (click)="getFoldersData(folder)" (click)="onSelect(folder.folderId)">
+            {{ folder.folderSize }}
+          </li>
+          <li class="text-right"> <a role="button" *ngIf="(folder.folderType !== 'message' && Header !== 'Shared with me')">...</a>
+          </li>
+        </ul>
+        <!-- Display folders end -->
+
+        <!-- Display files start -->
+        <ul *ngFor="let file of files; let i = index" [ngClass]="{'selection': (selected && selectedId === file.fileId)}">
+          <li (click)="previewFile(file)" (click)="onSelect(file.fileId)">
+            <div class="file-icons">
+              <img *ngIf="file.fileType === 'application/pdf'" src="../../assets/images/files-icons/pdf.png" />
+              <img *ngIf="file.fileType !== 'application/pdf'" src="../../assets/images/files-icons/default-file.png" />
+            </div>
+            <span matTooltip="{{file.fileName}}">{{ file.fileName }}</span>
+          </li>
+          <li (click)="previewFile(file)" (click)="onSelect(file.fileId)">
+            {{ file.fileOwner }}
+          </li>
+          <li (click)="previewFile(file)" (click)="onSelect(file.fileId)">
+            {{ file.fileTime | date }}
+          </li>
+          <li (click)="previewFile(file)" (click)="onSelect(file.fileId)">
+            {{ file.fileSize }}
+          </li>
+          <li class="text-right"><a data-toggle="dropdown" role="button">...</a>
+          </li>
+        </ul>
+        <!-- Display files end -->
+        <!-- No data found start -->
+        <div class="no-data-found" *ngIf="files.length === 0 && folders.length === 0">
+          <span>No data found</span>
+          <img src="../../assets/images/no-data.jpg"/>
+        </div>
+        <!-- No data found end -->
+
+      </div>
+	  <div *ngIf="selectedTab === 0" class="files-list res-files-list" >
+		<!-- <div class="files-list"> -->
+		  <!-- Display folders start -->
+		  <ul *ngFor="let folder of folders" [ngClass]="{'selection': (selected && selectedId === folder.folderId)}">
+		<li (click)="getFoldersData(folder)" (click)="onSelect(folder.folderId)" style="width: 90%;">
+		  <div class="file-icons"><img src="../../assets/images/files-icons/research-icon.svg"/></div>
+			<span matTooltip="{{ folder.folderName }}">{{ folder.folderName }}</span>
+			<span matTooltip="{{ folder.folderName }}">{{ folder.folderOwner}}, {{ folder.folderTime | date }}, {{ folder.folderSize }}</span>
+			</li>
+
+			<li class="text-right" style="width: 10%;"> <a data-toggle="dropdown" role="button" *ngIf="(folder.folderType !== 'message' && Header !== 'Shared with me')" data-toggle="modal" data-target="#modalPBottom" (click)="storeData(folder, 'folder')">...</a>
+			</li>
+		  </ul>
+		  <!-- Display folders end -->
+
+		  <!-- Display files start -->
+		  <ul *ngFor="let file of files; let i = index" [ngClass]="{'selection': (selected && selectedId === file.fileId)}">
+			<li (click)="previewFile(file)" (click)="onSelect(file.fileId)" style="width: 90%;">
+			  <div class="file-icons">
+				<img *ngIf="file.fileType === 'application/pdf'" src="../../assets/images/files-icons/pdf.png" />
+				<img *ngIf="file.fileType !== 'application/pdf'" src="../../assets/images/files-icons/default-file.png" />
+			  </div>
+			  <span matTooltip="{{file.fileName}}">{{ file.fileName }}</span>
+			  <span>{{ file.fileOwner }}, {{ file.fileTime | date }}, {{ file.fileSize }}</span>
+			</li>
+
+			<li class="text-right" style="width: 10%;"  ><a data-toggle="dropdown" role="button" data-toggle="modal" data-target="#modalPBottom" (click)="storeData(file, 'file')">...</a>
+        <ul class="dropdown-menu photo-drop-down" *ngIf="Header !== 'Messages'">
+				<li (click)="openShareModal(file, 'file')" *ngIf="Header !== 'Shared with me'">
+				  <a class="openbtn"><img src="../../assets/images/action-icons/share.svg"/>Share</a>
+				</li>
+				<li (click)="openMoveToModal(file, 'file')" *ngIf="Header !== 'Shared with me'">
+				  <a class="openbtn"><img src="../../assets/images/action-icons/move.svg"/>Move To</a>
+				</li>
+				<li (click)="rename(file, 'file')" *ngIf="Header !== 'Shared with me'">
+				  <a class="openbtn"><img src="../../assets/images/action-icons/rename.svg"/>Rename</a>
+				</li>
+				<li (click)="downloadFile(file, i)">
+				  <a class="openbtn"><img src="../../assets/images/action-icons/download.svg"/>Download</a>
+				</li>
+				<li *ngIf="Header !== 'Shared with me'">
+				  <a class="openbtn" *ngIf="!file.fileDeleted" (click)="removeFile(file.fileId)"><img src="../../assets/images/action-icons/remove.svg"/>Remove</a>
+				</li>
+				<li *ngIf="Header !== 'Shared with me'">
+				  <a class="openbtn" *ngIf="file.fileDeleted" (click)="restoreFile(file.fileId)"><img src="../../assets/images/action-icons/link.svg"/>Restore</a>
+				</li>
+			  </ul>
+			  <ul class="dropdown-menu photo-drop-down" *ngIf="Header === 'Messages'">
+				<li (click)="downloadFile(file, i)">
+				  <a class="openbtn"><img src="../../assets/images/action-icons/download.svg"/>Download</a>
+				</li>
+
+			  </ul>
+			</li>
+		  </ul>
+		  <!-- Display files end -->
+		  <!-- No data found start -->
+		  <div class="no-data-found" *ngIf="files.length === 0 && folders.length === 0">
+			<span>No data found</span>
+			<img src="../../assets/images/no-data.jpg"/>
+		  </div>
+		  <!-- No data found end -->
+
+		</div>
+
+    <div *ngIf="selectedTab === 1" class="files-list res-files-list" >
+      <!-- <div class="files-list"> -->
+        <!-- Display folders start -->
+        <ul *ngFor="let folder of folders" [ngClass]="{'selection': (selected && selectedId === folder.folderId)}">
+      <li (click)="getFoldersData(folder)" (click)="onSelect(folder.folderId)" style="width: 90%;">
+        <div class="file-icons"><img src="../../assets/images/files-icons/research-icon.svg"/></div>
+        <span matTooltip="{{ folder.folderName }}">{{ folder.folderName }}</span>
+        <span matTooltip="{{ folder.folderName }}">{{ folder.folderOwner}}, {{ folder.folderTime | date }}, {{ folder.folderSize }}</span>
+        </li>
+  
+        <li class="text-right" style="width: 10%;"> <a data-toggle="dropdown" role="button" *ngIf="(folder.folderType !== 'message' && Header !== 'Shared with me')" data-toggle="modal" data-target="#modalPBottom" (click)="storeData(folder, 'folder')">...</a>
+        </li>
+        </ul>
+        <!-- Display folders end -->
+  
+        <!-- Display files start -->
+        <ul *ngFor="let file of files; let i = index" [ngClass]="{'selection': (selected && selectedId === file.fileId)}">
+        <li (click)="previewFile(file)" (click)="onSelect(file.fileId)" style="width: 90%;">
+          <div class="file-icons">
+          <img *ngIf="file.fileType === 'application/pdf'" src="../../assets/images/files-icons/pdf.png" />
+          <img *ngIf="file.fileType !== 'application/pdf'" src="../../assets/images/files-icons/default-file.png" />
+          </div>
+          <span matTooltip="{{file.fileName}}">{{ file.fileName }}</span>
+          <span>{{ file.fileOwner }}, {{ file.fileTime | date }}, {{ file.fileSize }}</span>
+        </li>
+  
+        <li class="text-right" style="width: 10%;"  ><a data-toggle="dropdown" role="button" data-toggle="modal" data-target="#modalPBottom" (click)="storeData(file, 'file')">...</a>
+          <ul class="dropdown-menu photo-drop-down" *ngIf="Header !== 'Messages'">
+          <li (click)="openShareModal(file, 'file')" *ngIf="Header !== 'Shared with me'">
+            <a class="openbtn"><img src="../../assets/images/action-icons/share.svg"/>Share</a>
+          </li>
+          <li (click)="openMoveToModal(file, 'file')" *ngIf="Header !== 'Shared with me'">
+            <a class="openbtn"><img src="../../assets/images/action-icons/move.svg"/>Move To</a>
+          </li>
+          <li (click)="rename(file, 'file')" *ngIf="Header !== 'Shared with me'">
+            <a class="openbtn"><img src="../../assets/images/action-icons/rename.svg"/>Rename</a>
+          </li>
+          <li (click)="downloadFile(file, i)">
+            <a class="openbtn"><img src="../../assets/images/action-icons/download.svg"/>Download</a>
+          </li>
+          <li *ngIf="Header !== 'Shared with me'">
+            <a class="openbtn" *ngIf="!file.fileDeleted" (click)="removeFile(file.fileId)"><img src="../../assets/images/action-icons/remove.svg"/>Remove</a>
+          </li>
+          <li *ngIf="Header !== 'Shared with me'">
+            <a class="openbtn" *ngIf="file.fileDeleted" (click)="restoreFile(file.fileId)"><img src="../../assets/images/action-icons/link.svg"/>Restore</a>
+          </li>
+          </ul>
+          <ul class="dropdown-menu photo-drop-down" *ngIf="Header === 'Messages'">
+          <li (click)="downloadFile(file, i)">
+            <a class="openbtn"><img src="../../assets/images/action-icons/download.svg"/>Download</a>
+          </li>
+  
+          </ul>
+        </li>
+        </ul>
+        <!-- Display files end -->
+        <!-- No data found start -->
+        <div class="no-data-found" *ngIf="files.length === 0 && folders.length === 0">
+        <span>No data found</span>
+        <img src="../../assets/images/no-data.jpg"/>
+        </div>
+        <!-- No data found end -->
+  
+      </div>
+      
+	  <div *ngIf="selectedTab === 1" class="files-list" style="display: none;">
+
+
+        <!-- Display folders start -->
+        <ul *ngFor="let folder of folders" [ngClass]="{'selection': (selected && selectedId === folder.folderId)}">
+          <li (click)="getFoldersData(folder)" (click)="onSelect(folder.folderId)">
+            <div class="file-icons"><img src="../../assets/images/files-icons/research-icon.svg"/></div>
+            <span matTooltip="{{ folder.folderName }}">{{ folder.folderName }}</span>
+          </li>
+          <li (click)="getFoldersData(folder)" (click)="onSelect(folder.folderId)">
+            {{ folder.folderOwner }}
+          </li>
+          <li>
+            {{ folder.folderTime | date }}
+          </li>
+          <!-- <li  (click)="getFoldersData(folder)" (click)="onSelect(folder.folderId)">
+            {{ folder.folderSize }}
+          </li> -->
+          <li class="text-right"> <a data-toggle="dropdown" role="button" *ngIf="folder.folderType !== 'message' || Header !== 'Shared with me'">...</a>
+            <ul class="dropdown-menu photo-drop-down">
+              <li (click)="rename(folder, 'folder')" *ngIf="loginUser === folder.folderOwner">
+                <a class="openbtn"><img src="../../assets/images/action-icons/rename.svg"/>Rename</a>
+              </li>
+             <!-- <li>
+                <a class="openbtn"><img src="../../assets/images/action-icons/download.svg"/>Download</a>
+              </li> -->
+              <li>
+                <a class="openbtn" *ngIf="!folder.folderDeleted" (click)="removeFolder(folder)"><img src="../../assets/images/action-icons/remove.svg"/>Remove</a>
+              </li>
+              <li>
+                <a class="openbtn" *ngIf="folder.folderDeleted"  (click)="restoreFolder(folder)"><img src="../../assets/images/action-icons/link.svg"/>Restore</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+         <!-- Display folders end -->
+
+        <!-- Display files start -->
+        <ul *ngFor="let file of files; let i = index" [ngClass]="{'selection': (selected && selectedId === file.fileId)}">
+          <li (click)="previewFile(file)" (click)="onSelect(file.fileId)">
+            <div class="file-icons">
+              <img *ngIf="file.fileType === 'application/pdf'" src="../../assets/images/files-icons/pdf.png" />
+              <img *ngIf="file.fileType !== 'application/pdf'" src="../../assets/images/files-icons/default-file.png" />
+            </div>
+            <span matTooltip="{{file.fileName}}">{{ file.fileName }}</span>
+          </li>
+          <li (click)="previewFile(file)" (click)="onSelect(file.fileId)">
+            {{ file.fileOwner }}
+          </li>
+          <li (click)="previewFile(file)" (click)="onSelect(file.fileId)">
+            {{ file.fileTime | date }}
+          </li>
+           <!-- <li (click)="previewFile(file)" (click)="onSelect(file.fileId)">
+            {{ file.fileSize }}
+          </li> -->
+          <li class="text-right"><a data-toggle="dropdown" role="button">...</a>
+            <ul class="dropdown-menu photo-drop-down">
+              <li *ngIf="loginUser === file.fileOwner" (click)="rename(file, 'file')">
+                <a class="openbtn">Rename</a>
+              </li>
+              <li (click)="downloadFile(file, i)">
+                <a class="openbtn">Download</a>
+              </li>
+              <li *ngIf="loginUser === file.fileOwner">
+                <a class="openbtn" *ngIf="!file.fileDeleted" (click)="removeFile(file.fileId)">Remove</a>
+              </li>
+              <li *ngIf="loginUser === file.fileOwner">
+                <a class="openbtn" *ngIf="file.fileDeleted" (click)="restoreFile(file)">Restore</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+         <!-- Display files end -->
+
+        <!-- No data found start -->
+      <div class="no-data-found" *ngIf="files.length === 0 && folders.length === 0">
+      <span>No data found</span>
+      <img src="../../assets/images/no-data.jpg"/>
+    </div>
+          <!-- <p *ngIf="files.length === 0 && folders.length === 0">No data found</p> -->
+        <!-- No data found end -->
+      </div>
+      <!-- People's files content ends -->
+    </div>
+  </div>
+  <!-- File content ends -->
+  <!-- Right side panel starts -->
+  <div class="drive-right user-left-side-panel">
+    <ul *ngIf="selectedTab === 0">
+      <li (click)="fileUpload.click()" *ngIf="Header !== 'Messages'" style="cursor: pointer;">
+        <input #fileUpload type="file" (click)="fileUpload.value = null" (change)="uploadFiles($event)" style="display:none;" multiple>
+        <img src="../../assets/images/upload-files-icon.svg"/>
+        <label style="cursor: pointer;">
+          Upload Files
+        </label>
+      </li>
+      <li (click)="folderUpload.click()" *ngIf="Header !== 'Messages'" style="cursor: pointer;">
+        <input #folderUpload type="file" (click)="folderUpload.value = null" (change)="uploadFolder($event)" style="display:none;" webkitdirectory directory>
+        <img src="../../assets/images/upload-files-icon.svg"/>
+        <label style="cursor: pointer;">
+          Upload Folder
+        </label>
+      </li>
+      <li (click)="createNewFolder()" *ngIf="Header !== 'Messages'">
+        <img src="../../assets/images/new-folder-icon.svg"/>
+        <label>New Folder</label>
+      </li>
+      <li *ngIf="isPrivateSite && isOwner" (click)="managePermissions()">
+        <img src="../../assets/images/manage-permissions-icon.svg"/>
+        <label>Manage Permissions</label>
+      </li>
+    </ul>
+
+    <ul *ngIf="folderType === 'people' && selectedTab === 1" style="cursor: pointer;">
+      <li (click)="openShareFilesModal()">
+        Share Files
+      </li>
+	</ul>
+	<div class="storeg-box">
+		<h2><img src="../../assets/images/chat-icons/storege-icon.svg"> Storage</h2>
+		<!-- <mat-progress-bar mode="determinate" [value]="percentageUsed" ></mat-progress-bar> -->
+		<mat-progress-bar mode="determinate" [value]="percentageUsed"></mat-progress-bar>
+		<p>{{ (storageUsed/1000).toFixed(2) }} GB of {{ storageLimit/1000 }} GB Used</p>
+	</div>
+  </div>
+
+  <div class="foot-respon">
+    <div class="storeg-box">
+      <img class="add-file" src="../../assets/images/plus-sub.png"  data-toggle="modal" data-target="#modalUploadBottom">
+
+      <h2><img src="../../assets/images/chat-icons/storege-icon.svg"> Storage</h2>
+      <mat-progress-bar mode="determinate" [value]="percentageUsed"></mat-progress-bar>
+      <p>{{ (storageUsed/1000).toFixed(2) }} GB of {{ storageLimit/1000 }} GB Used</p>
+    </div>
+    <!-- <div class="bottomlist">
+      <ul class="bottomlist-ul" style="width:100%">
+          <li class="bottom-list-items" style="width:33%"><span><img src="../../assets/images/files-icons/share-icon.svg"/></span>Share</li>
+          <li class="bottom-list-items"  style="width:34%"><span><img src="../../assets/images/files-icons/move-icon.svg"/></span>Move To</li>
+          <li class="bottom-list-items"  style="width:33%"><span><img src="../../assets/images/files-icons/remove-icon.svg"/></span>Remove</li>
+      </ul>
+    </div> -->
+  </div>
+  <!-- Right side panel ends -->
+</div>
+<!-- File sharing responsive content ends -->
+
+<!-- OTP content starts -->
+	<div *ngIf="!authorized" class="otp-form">
+    <div  *ngIf="!phone" class="phone-verfied">
+      <div class="form-group">
+        <label>Verify your phone number to use File sharing</label>
+        <mat-form-field [formGroup]="contactForm">
+          <input class="form-control input-two"
+            matInput
+            ng2TelInput
+            [ng2TelInputOptions]="{initialCountry: 'us'}"
+            formControlName="formControlPhone"
+            (hasError)="hasError($event)"
+            (countryChange)="countryChange($event)" />
+          <mat-error
+            *ngIf="
+            !contactForm.get('formControlPhone').valid">
+            This is an <strong>invalid</strong> phone number.
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <mat-error *ngIf="error" style="text-align: center;">{{ error }}</mat-error>
+      <div class="text-center"><button (click)="sendOtp()"  class="btn btn-primary">Send OTP</button></div>
+    </div>
+    <div *ngIf="phone" class="phone-not-verified">
+      <div class="form-group">
+        <label>Please enter code sent to {{ phoneNumber }}</label>
+        <otp [setting]="settings"  (onValueChange)="onOtpChange($event)"></otp>
+        <mat-error *ngIf="error" style="text-align: center;">{{ error }}</mat-error>
+      </div>
+      <div class="text-center">
+        <button type="submit" (click)="verifyOtp()" class="btn btn-primary">Verify OTP</button>
+      </div>
+    </div>
+  </div>
+<!-- OTP content ends -->
+
+<!-- Loader div starts -->
+<div *ngIf="loading" id="loaderDiv" >
+	<img src="../../assets/images/loading.gif" class="ajax-loader" />
+  <p class="loder-text" *ngIf="uploading">Please wait while your data is being uploaded...</p>
+</div>
+<!-- Loader div ends -->
+
+<!-- modal starts -->
+
+<div class="modal fade modal-p-bottom" id="modalPBottom">
+  <div class="modal-dialog">
+    <div class="modal-content">
+    <div class="bottomsheet share" >
+        <ul>
+            <li class="list-items" (click)="share()"><span><img src="../../assets/images/files-icons/share-icon.svg"/></span>Share</li>
+            <li class="list-items" (click)="move()"><span><img src="../../assets/images/files-icons/move-icon.svg"/></span>Move To</li>
+            <li class="list-items" (click)="renameResponsive()"><span><img src="../../assets/images/files-icons/rename-icon.svg"/></span>Rename</li>
+            <li class="list-items" (click)="download()" *ngIf="type && type === 'file'"><span><img src="../../assets/images/files-icons/download-icon.svg"/></span>Download</li>
+            <li class="list-items" (click)="remove()"><span><img src="../../assets/images/files-icons/remove-icon.svg"/></span>Remove</li>
+            <!-- <li class="list-items" (click)="remove()"><span><img src="../../assets/images/files-icons/remove-icon.svg"/></span>Remove</li> -->
+        </ul>
+    </div>
+      
+    </div>
+  </div>
+</div>
+
+<div class="modal fade modal-p-bottom" id="modalUploadBottom">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="bottomsheet" >
+        <ul>
+            <li 
+            (click)="fileUpload.click()" class="list-items"
+            ><span><img src="../../assets/images/files-icons/upload-icon.svg"/></span>Upload
+              <input #fileUpload type="file" (click)="fileUpload.value = null" (change)="uploadFiles($event)" style="display:none;" multiple>
+            </li>
+            <li class="list-items" 
+            (click)="createNewFolder()" *ngIf="Header !== 'Messages'"
+            ><span><img src="../../assets/images/files-icons/new-folder-icon.svg"/></span>New Folder</li>
+            <li class="list-items"
+            *ngIf="isPrivateSite && isOwner" (click)="managePermissions()"
+            ><span><img src="../../assets/images/files-icons/manage-permission-icon.svg"/></span>Manage Permissions</li>
+        </ul>
+    </div>
+    </div>
+  </div>
+</div>

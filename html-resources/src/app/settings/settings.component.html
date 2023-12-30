@@ -1,0 +1,344 @@
+<div class="container stng-page-top">
+  <google-ad [adType]="'home'" *ngIf="displayAds"></google-ad>
+  <div class="col-sm-12 col-xs-12">
+    <div class="row">
+      <div class="settings-page">
+        <div class="categori">
+          <h1>Settings</h1>
+          <ul class="margin-top-10">
+            <!-- <li>
+              <div class="clear"></div>
+              <div class="yutb-setng-mdl margin-top-30">
+                <div class="yut-lv-strms">
+                  <h4>Youtube settings</h4>
+                </div>
+                <form  [formGroup]="YoutubeForm" name="youtube_form" (ngSubmit)="processYoutubeForm()">
+                  <div class="yutbe-svng-lvstrm">
+                    <div class="advance-setngs">
+                      <div class="sav-yutb-vdo">
+                        <p class="round">
+                          <input type="checkbox" name="youtube_save1"  formControlName="youtube_save" id="checkbox1" />
+                          <label for="checkbox"></label>
+                          <img src="../../assets/images/yutbe-img.png"> Save video on youtube</p>
+                      </div>
+                      <div class="prvcy-setng only-prvcy-setng" id="myDIV">
+                        <h4>Privacy settings</h4>
+
+                        <div class="prvcy-setngs col-lg-4 col-md-12 col-xs-12 col-sm-12"
+                          (click)="youtube_status_val='private'">
+                          <div  class="anchr" [ngClass]="{'active':youtube_status_val=='private'}">
+                            <input type="radio" name="youtube_status1" [ngModelOptions]="{standalone: true}"
+                            [(ngModel)]="youtube_status_val" value="private"
+                              class="hdn-rdo-btn">
+                            <div class="dfrnt-prvcy-setng">
+                              <img src="../../assets/images/prvatds.png" alt="images">
+                              <p class="sml-prgph">Private</p>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="prvcy-setngs col-lg-4 col-md-12 col-xs-12 col-sm-12"
+                          (click)="youtube_status_val='public'">
+                         ng-class="{active: youtube_status=='public'}"
+                          <div class="anchr" [ngClass]="{'active':youtube_status_val=='public'}">
+                            <input type="radio" name="youtube_status1" [ngModelOptions]="{standalone: true}"
+                            [(ngModel)]="youtube_status_val" value="public"
+                              class="hdn-rdo-btn">
+                            <div class="dfrnt-prvcy-setng">
+                              <img src="../../assets/images/publcds.png" alt="images">
+                              <p class="sml-prgph">Public</p>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="prvcy-setngs col-lg-4 col-md-12 col-xs-12 col-sm-12"
+                          (click)="youtube_status_val='unlisted'">
+                          <div  class="anchr" [ngClass]="{'active':youtube_status_val=='unlisted'}">
+                            <input type="radio" name="youtube_status1" [ngModelOptions]="{standalone: true}"
+                            [(ngModel)]="youtube_status_val" value="unlisted"
+                              class="hdn-rdo-btn">
+                            <div class="dfrnt-prvcy-setng">
+                              <img src="../../assets/images/untitldds.png" alt="images">
+                              <p class="sml-prgph">Unlisted</p>
+                            </div>
+                        </div>
+                        </div>
+                      </div>
+
+                      <div class="sav-yutb-vdo">
+                        <p class="round">
+                          <input type="checkbox" name="dont_show_box" id="checkbox" [ngModelOptions]="{standalone: true}"
+                          [(ngModel)]="dont_show" />
+                          <label for="checkbox"></label>
+                          <span>Don't show this dialogue box again</span></p>
+                      </div>
+
+                    </div>
+                   <p class="inf-msg"><img src="../images/info-img.png"> By default video will be saved to Trunums website</p>
+                    <div class="yutb-btns">
+                      <button type="submit" class="btn btn-primary">Save</button>
+                     <button type="button" class="btn btn-secondary" ng-click="cancel()" data-dismiss="modal">Discard</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </li> -->
+            <li class="active" *ngIf="(privateSiteOwner === false) && (loginType === 'normal') && (isPrivateSite === false)">
+              <div class="clear"></div>
+              <div class="form-for-pswd">
+                <a>
+                  Change Password
+                </a>
+                <form [formGroup]="ResetPasswordForm">
+                  <input type="text" autocomplete="username" [hidden]="true">
+                  <!-- <div class="form-group" style="position: relative;">
+                    <input class="form-control"  placeholder="Enter old password" type="password"
+                  formControlName="oldpassword" autocomplete="current-password"/>
+                  </div> -->
+
+                  <div class="form-group" style="position: relative;">
+                    <input class="form-control" autocomplete="current-password" *ngIf="loginType !== 'social'" placeholder="Enter old password"
+                      type="password" formControlName="oldpassword" />
+                    <input class="form-control" *ngIf="loginType==='social'" placeholder="Enter old password" type="password" formControlName="oldpassword"
+                    />
+
+                    <a *ngIf="loginType==='social'" (click)="sendForgotPwdEmail()" style="position: absolute;
+                  left: 53%;
+                  top: 48px;
+                  font-size: 12px;cursor:pointer;
+                  color: #3F93C2;">Forgot Old Password</a>
+                  </div>
+
+                  <div class="form-group">
+                    <input class="form-control" autocomplete="new-password" placeholder="Enter new password" type="password" formControlName="newpassword"
+                      required />
+                    <p *ngIf="ResetPasswordForm.controls['newpassword'].errors?.minlength" class="error-msg">Pleaset enter minimum of 8 characters</p>
+                  </div>
+                  <div class="form-group">
+                    <input class="form-control" formControlName="confirmpassword" autocomplete="new-password" placeholder="Re-enter new password"
+                      type="password" required />
+                  </div>
+                  <p *ngIf="ResetPasswordForm.controls['newpassword'].errors?.minlength" class="error-msg">Please enter minimum of 8 characters</p>
+                  <p *ngIf="ResetPasswordForm.controls['newpassword'].value !== ResetPasswordForm.controls['confirmpassword'].value" class="error-msg">Passwords doesn't match</p>
+                  <p *ngIf="ResetPasswordForm.controls['newpassword'].value === ResetPasswordForm.controls['oldpassword'].value &&(ResetPasswordForm.controls['newpassword'].value.length>1)"
+                    class="error-msg">New Password is same. Please change the password</p>
+
+                  <p *ngIf="oldPasswordMatch === 'Password updated successfully'" style="color:#468c78" class="error-msg">{{oldPasswordMatch}}</p>
+                  <p *ngIf="oldPasswordMatch !== 'Password updated successfully'" class="error-msg">{{oldPasswordMatch}}</p>
+                  <button type="button" (click)="processResetPassword()" class="save sign-in">SAVE</button>
+                </form>
+              </div>
+            </li>
+            <li>
+              <div class="clear"></div>
+              <div class="yutb-setng-mdl margin-top-30">
+                <mat-tab-group mat-align-tabs="start" animationDuration="0ms">
+                  <mat-tab label="Private site settings" *ngIf="isPrivateSiteOwner">
+                      <form [formGroup]="privateSettingsForm" #form="ngForm" name="privateSettingsForm" (ngSubmit)="savePrivateSettingsForm($event)">
+                      <div class="yutbe-svng-lvstrm">
+                        <div class="advance-setngs">
+                          <!-- <div class="sav-yutb-vdo fr-this-only" *ngIf="privateSiteOwner === false"> -->
+                          <div class="sav-yutb-vdo fr-this-only" [ngClass]="{'pointerEvents': !createPrivateSite }">
+                            <p class="round">
+                              <input type="checkbox" [disabled]="true" formControlName="checkPrivate"
+                                name="MakePrivateSite" id="checkbox3" [checked]="" data-toggle="modal" (change)="changePrivateSiteSettings($event)">
+                              <label [ngStyle]="{'background':setPrivateSite==='true' && subscribersList && subscribersList.length>0 ? '#ccc' : '#fff' }"
+                                [ngClass]="{'check-video' : MakePrivateSite , 'pichak' : !MakePrivateSite }" for="checkbox"></label>
+                              <span>Create Private Site
+                              </span>
+                            </p>
+                          </div>
+                          <div class="form-group" *ngIf="MakePrivateSite">
+                            <div class="sav-yutb-vdo" style="margin:0px">
+                              <p class="round">
+                                <input type="checkbox" name="dont_show_box" id="checkbox" (change)="changeDontShow($event,'subscriber')" formControlName="privateForNonSubscribers"
+                                />
+                                <label for="checkbox"></label>
+                                <span>Allow subscribers to view data in trunums.com
+                                </span>
+                              </p>
+                            </div>
+                          </div>
+                          <div class="form-group" *ngIf="MakePrivateSite">
+                            <div class="sav-yutb-vdo" style="margin:0px">
+                              <p class="round">
+                                <input type="checkbox"  name="dont_show_box1" id="checkbox1" (change)="automaticSubscription($event,'message')" formControlName="messagePermission"
+                                />
+                                <label for="checkbox1"></label>
+                                <span>Allow Automatic Subscriptions
+                                </span>
+                              </p>
+                            </div>
+                          </div>
+                          <div class="form-group" *ngIf="MakePrivateSite">
+                            <div class="sav-yutb-vdo" style="margin:0px">
+                              <p class="round">
+                                <input type="checkbox" [checked]="privateTopicsPublicView" name="dont_show_box1" id="checkbox1" (change)="privateTopicsPublicView = !privateTopicsPublicView; saveValidity = false;" formControlName="messagePermission"
+                                />
+                                <label for="checkbox1"></label>
+                                <span>Allow public topics to be visible to everyone</span>
+                              </p>
+                            </div>
+                          </div>
+                          <div class="prvcy-setng only-prvcy-setng" *ngIf="MakePrivateSite" id="myDIV">
+                            <h4>Private Site Name</h4>
+
+                            <input type="text" autocomplete="username" [hidden]="true">
+                            <div class="form-group">
+                              <input class="form-control" placeholder="Enter Private Site Name" [attr.disabled]="privateSiteOwner ? '' : null" (blur)="checkPrivateSiteName()" formControlName="websitename"
+                                (input)="enableSave()" required/>
+                              <div class="error-msg" role="alert">
+                                <div *ngIf="privateSettingsForm.controls['websitename'].errors?.required && privateSettingsForm.controls['websitename'].touched" style="color:#DF6164">Please enter Private Sitename</div>
+                                <div *ngIf="privateSettingsForm.controls['websitename'].errors?.pattern && privateSettingsForm.controls['websitename'].touched" style="color:#DF6164">Please enter a valid Private sitename</div>
+                                <div *ngIf="pexists" style="color:#DF6164">Private Sitename already exists</div>
+
+                              </div>
+                            </div>
+                            <div class="profile-pic">
+                              <div class="comment-upload box-02" style="width: auto">
+                                <input style="width: 100%" type="file" accept="image/*" (change)='onFileChange($event)' max-size="max_file_size"
+                                  max-files="10" class="inputfile-3 file" (input)="enableSave()" name="file" />
+                                <label>
+                                  <img src="../../assets/images/photo-icon.png">
+                                  <span> Private Site Logo*</span>
+                                </label>
+                              </div>
+                              <label for="pic" style="margin-left: 20px" class="add-img-new">
+                                <img [src]="webSiteLogoPic" style="height:70px;width: 70px;" *ngIf="webSiteLogoPic && webSiteLogoPic !== 'null'" alt="" />
+                                <img style="height:70px;width: 70px;" src="../../assets/images/noimage.png" *ngIf="!webSiteLogoPic || webSiteLogoPic=='null'"
+                                />
+                              </label>
+                              <div *ngIf="isProfilepicError" style="color:#DF6164"> Please provide profile picture</div>
+                            </div>
+                            <div class="form-group">
+                              <h4>Private Site Description</h4>
+
+                              <textarea class="form-control" style="height: 104px" placeholder="About myown private site" formControlName="websitedescription"
+                                (input)="enableSave()" required></textarea>
+                            </div>
+                            <div class="form-group">
+                              <h4>Private Site Contact</h4>
+
+                              <input class="form-control" placeholder="Contact Information" formControlName="websitecontact" required (input)="enableSave()"
+                              />
+                            </div>
+
+                            <p *ngIf="save && (privateSettingsForm.controls['websitename'].errors?.required || privateSettingsForm.controls['websitedescription'].errors?.required || privateSettingsForm.controls['websitecontact'].errors?.required || isProfilepicError)"
+                              class="error-msg">Please enter all the fields</p>
+                          </div>
+
+                        </div>
+                        <div class="yutb-btns">
+                          <button type="submit" (keydown)="savePrivateSettingsForm($event)" [disabled]="saveValidity" class="btn btn-primary">Save</button>
+                        </div>
+                      </div>
+                    </form>
+                  </mat-tab>
+                  <mat-tab label="Manage Subscribers" *ngIf="isPrivateSite">
+					          <div class="over-srol">
+                      <table class="table table-bordered" *ngIf="subscribers">
+                        <thead>
+                          <tr>
+                            <th>Name</th>
+                            <th>isAdmin</th>
+                            <th></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let subscriber of subscribers">
+                            <td> {{ subscriber["firstName"] + " " + subscriber["lastName"]}} </td>
+                            <td><mat-checkbox (change)="addToAdminsList(subscriber['_id'], $event)" [checked]="subscriber['isAdmin']"></mat-checkbox></td>
+                            <td>
+                              <div class="dropdown truna-drop">
+                                <a class="dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class='bx bx-dots-horizontal' style="cursor: pointer;"></i>
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                  <li (click)="removeFromSite(subscriber['_id'])" style="cursor: pointer;">Remove from site</li>
+                                </ul>
+                              </div>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+				            </div>
+                  </mat-tab>
+                  <mat-tab label="Manage Storage" *ngIf="isPrivateSite">
+					          <div class="over-srol">
+                      <table class="table table-bordered" *ngIf="subscribers">
+                        <thead>
+                          <tr>
+                            <th>Name</th>
+                            <th>File Operations</th>
+                            <th>Upload</th>
+                            <th>Download</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let subscriber of subscribers; let i = index">
+                            <td> {{ subscriber["firstName"] + " " + subscriber["lastName"]}} </td>
+                            <td>
+                              <mat-checkbox (change)="addToBlockedFileAccessList(subscriber['_id'], i, $event)" [checked]="!blockedFileAccess.includes(subscriber['_id'])"></mat-checkbox>
+                            </td>
+                            <td>
+                              <mat-checkbox (change)="addToBlockedFileUploadList(subscriber['_id'], i,  $event)" [checked]="!blockedUpload.includes(subscriber['_id'])"></mat-checkbox>
+                            </td>
+                            <td>
+                              <mat-checkbox (change)="addToBlockedFileDownloadList(subscriber['_id'], i,  $event)" [checked]="!blockedDownload.includes(subscriber['_id'])"></mat-checkbox>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+				            </div>
+                    <div class="yutb-btns">
+                      <button type="submit" (click)="saveFileSettings()" class="btn btn-primary">Save</button>
+                    </div>
+                  </mat-tab>
+                  <!-- <div class="yutb-btns">
+                    <button type="submit" (click)="saveFileSettings()" [disabled]="saveValidity" class="btn btn-primary">Save</button>
+                  </div>
+                  <div>
+                    <button mat-raised-button (click)="saveFileSettings()">Save</button>
+                  </div> -->
+                </mat-tab-group>
+                <div class="yut-lv-strms">
+                  <!-- <h4>Private site settings</h4> -->
+                </div>
+
+              </div>
+            </li>
+            <li>
+              <a *ngIf="!isPrivateSite" (click)="deactivateModal()">Deactivate Account</a>
+              <div *ngIf="isOwner">
+                <a (click)="changePrivateSiteStatus()" style="height: 25px; width: auto;">Deactivate This PrivateSite</a>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- <div *ngIf="loading" id="loaderDiv">
+  <img src="../../assets/images/loading.gif" class="ajax-loader" />
+</div> -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <span>Do You Want To Continue Creating Private Site</span>
+        <!-- <form>
+          <input type="text" autocomplete="username" [hidden]="true">
+          <div class="form-group" style="margin-top: 11px">
+            <input class="form-control" [(ngModel)]="passwordConfirmation" [ngModelOptions]="{standalone: true}" autocomplete="new-password"
+              placeholder="Enter Yes to continue" type="text" required (keydown.enter)="functionForModal === 'PrivateSite' ? continuePrivateSite($event) : continueChangeDontShow()"
+            />
+          </div>
+          <p *ngIf="ErrorMessageForPrivateSite !== undefined" class="error-msg">{{ErrorMessageForPrivateSite}}</p>
+        </form> -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" (click)="continuePrivateSite($event)">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="functionForModal === 'PrivateSite' ? continuePrivateSite($event) : continueChangeDontShow()">Continue</button>
+      </div>
+    </div>
+  </div>
+</div>

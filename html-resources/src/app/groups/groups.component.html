@@ -1,0 +1,179 @@
+<!-- users-left-side start -->
+<div class="users-left-side" *ngIf="leftMenu==='groups'">
+	<div class="search-user">
+		<input type="search" placeholder="Groups, People & Messages">
+	</div>
+	<div class="list-users">
+		<div class="user-group">
+			<h4>Groups</h4>
+			<ul>
+					<li *ngFor="let group of groupsList; let i = index">
+					<!-- <img src="../../assets/images/my-poll.png" />
+					<span>{{item}}</span> -->
+					<div (click)="addMember(group)">
+							<img src="{{group.groupIcon}}" *ngIf="group.groupIcon && group.groupIcon !== 'null'" alt="" />
+							<img src="../../assets/images/noimage.png" *ngIf="!group.groupIcon || group.groupIcon=='null'" />
+							<h2 style="color:white">{{group.groupName}}
+							</h2>
+						</div>
+				</li>
+			</ul>
+			<div class="create-group">
+				<a (click)="creategroupFun('creategroup')">
+					<img src="../../assets/images/create-group.svg" />
+					<span>CREATE GROUP</span>
+				</a>
+			</div>
+		</div>
+		<div class="user-group">
+			<h4>People</h4>
+			<!-- <ul>
+				<li *ngFor="let itemsList of itemsList">
+					<img src="../../assets/images/my-poll.png" />
+					<span>{{itemsList}}</span>
+				</li>
+			</ul> -->
+			<ul>
+					<li *ngFor="let user of usersList; let i = index">
+					<!-- <img src="../../assets/images/my-poll.png" />
+					<span>{{item}}</span> -->
+					<div (click)="addMember(user)">
+							<img src="{{user.profilePicture}}" *ngIf="user.profilePicture && user.profilePicture !== 'null'" alt="" />
+							<img src="../../assets/images/noimage.png" *ngIf="!user.profilePicture || user.profilePicture=='null'" />
+							<h2 style="color:white">{{user.firstName}} {{user.lastName}}
+							</h2>
+						</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+<div class="users-left-side" *ngIf="leftMenu==='creategroup'" style="background:white; ">
+	<form [formGroup]="groupForm" name="groupForm" (ngSubmit)="addNewGroup()">
+
+		<div class="form-group">
+			<input class="form-control" placeholder="Name this group" formControlName="groupName" (input)="enableSave()" required />
+		</div>
+		<div class="profile-pic">
+			<div class="comment-upload box-02" style="width: auto">
+				<label for="pic" style="margin-left: 20px" class="add-img-new">
+					<img [src]="groupLogoPic" style="height:30px;width: 30px;" alt="" />
+					<img style="height:30px;width: 30px;" src="../../assets/images/noimage.png" *ngIf="!groupLogoPic || groupLogoPic=='null'"
+					/>
+				</label>
+				<input style="width: 100%" type="file" accept="audio/*,video/*,image/*" (change)='onFileChange($event)' max-size="max_file_size"
+				 max-files="10" class="inputfile-3 file" (input)="enableSave()" name="file" />
+				<label>
+					<span>Add Photo</span>
+				</label>
+			</div>
+		</div>
+		<div class="list-users">
+			<div class="user-group">
+				<h4>Select Members</h4>
+				<ul>
+					<li *ngFor="let user of usersList; let i = index">
+						<!-- <img src="{{user.profilePicture}}" />
+					<span>{{user.firstName}}</span> -->
+
+						<!-- <a (click)="profileRedirect(user._id,user.userName)"><img src="{{user.profilePicture}}"
+								*ngIf="user.profilePicture && user.profilePicture !== 'null'" alt="" />
+							  <img src="../../assets/images/noimage.png"
+								*ngIf="!user.profilePicture || user.profilePicture=='null'" /></a>
+								<a (click)="profileRedirect(user._id,user.userName)">
+										<h2>{{user.firstName}}
+										  {{user.lastName}}</h2>
+									  </a> -->
+						<div (click)="addMember(user)">
+							<img src="{{user.profilePicture}}" *ngIf="user.profilePicture && user.profilePicture !== 'null'" alt="" />
+							<img src="../../assets/images/noimage.png" *ngIf="!user.profilePicture || user.profilePicture=='null'" />
+							<h2>{{user.firstName}} {{user.lastName}}
+							</h2>
+						</div>
+						<a (click)="removeMember(i)" *ngIf="memberArray.indexOf(user._id)>-1">Remove</a>
+					</li>
+				</ul>
+			</div>
+			<div>
+				<button type="submit" class="btn-bg-white margin-top-20">Create</button>
+				<button type="button" (click)="creategroupFun('groups')" class="btn-bg-white pull-right margin-top-20">Cancel</button>
+			
+			</div>
+		</div>
+	</form>
+</div>
+<!-- users-left-side End -->
+<!-- chat-content start -->
+<div class="chat-content">
+	<div class="chat-main-box">
+		<h2>Bay Area Astronomy</h2>
+		<!-- user-chat start -->
+		<div class="user-chat">
+			<h5>Yesterday</h5>
+			<div class="days-chat">
+				<div class="img-user">
+					<img src="../../assets/images/my-poll.png" />
+				</div>
+				<div class="chat-msg">
+					<div class="name-date">
+						<h4>Zaiden Hammond
+							<span>At 10.30 am</span>
+						</h4>
+						<ul>
+							<li>
+								<img src="../../assets/images/chat-icons/applause.svg" /> </li>
+							<li>
+								<img src="../../assets/images/chat-icons/reply-ic.svg" /> </li>
+							<li>
+								<img src="../../assets/images/chat-icons/forward-ic.svg" /> </li>
+							<li>
+								<img src="../../assets/images/chat-icons/path.svg" />
+							</li>
+							<li>
+								<img src="../../assets/images/chat-icons/more.svg" />
+							</li>
+
+						</ul>
+					</div>
+					<div class="clear"></div>
+					<p>Are you talking about an alignment of all eight planets?</p>
+					<p> Because for a start Uranus and Neptune are not visible to the naked eye.
+						<br/> Astronomers posit that while a “full system alignment” is hypothetically possible, it is mathematically impossible
+						that it has ever occurred during the existence of our solar system.
+						<br/> If you are talking about the alignment of two or three planets, it is possible to see with the naked eye, but you
+						have to know what you are looking for.</p>
+				</div>
+			</div>
+		</div>
+		<!-- user-chat End -->
+	</div>
+	<div class="clear"></div>
+</div>
+<div class="messages-box">
+		<!-- <form [formGroup]="messageForm"  name="messageForm" (ngSubmit)="saveMessage()"> -->
+				
+	<div class="mess-text">
+		<textarea formControlName="message" placeholder="Type a message..."></textarea>
+	</div>
+	<div class="uplode-icons">
+		<ul>
+			<li>
+				<img src="../../assets/images/chat-icons/camera-ic.svg" /> </li>
+			<!-- <li>
+				<img src="../../assets/images/chat-icons/video-ic.svg" /> </li>-->
+			<li> 
+				<img src="../../assets/images/chat-icons/audio-ic.svg" /> </li>
+			<li>
+				<img src="../../assets/images/chat-icons/attachment-ic.svg" />
+			</li>
+			<li>
+				<button type="submit" class="btn-bg-white margin-top-20">
+				<img src="../../assets/images/chat-icons/send.svg" /></button>
+			</li>
+
+		</ul>
+	</div>
+<!-- </form> -->
+
+</div>
+<!-- chat-content End -->

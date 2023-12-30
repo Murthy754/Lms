@@ -1,0 +1,24 @@
+<div class="forgot-bg">
+    <div class="forgot-page">
+      <div class="forgt-logo">
+        <a href="#"><img src="../../assets/images/Overlay_Logo.png" alt="logo"/></a>
+      </div>
+      <div class="clear"></div>
+  
+      <form class="frgt-form" [formGroup]="forgotUserForm" name="usernameForm" (ngSubmit)="sendUsername()">
+        <h3>Forgot Username ?</h3>
+        <div class="form-group" [ngClass]="{'has-error': forgotUserForm.controls['email'].invalid && forgotUserForm.controls['email'].dirty}">
+          <input type="email" class="form-control" formControlName="email" placeholder="Email"  name="email" required/>
+          <p *ngIf="forgotUserForm.controls['email'].errors?.required" > Please enter Email Address</p>
+          <p  *ngIf="forgotUserForm.controls['email'].errors?.email" class="error-msg">
+            Please enter valid email address</p>
+          <p *ngIf="emailErr" class="error-msg">
+            {{emailErr}}</p>
+        </div>
+        <button type="button submit" class="sign-in pull-left">CONFIRM</button>
+        <button type="button" class="sign-in pull-right btn-bg-white" [routerLink] = "['/forgot']" >CANCEL</button>
+      </form>
+  
+    </div>
+  </div>
+  

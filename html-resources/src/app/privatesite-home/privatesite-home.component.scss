@@ -1,0 +1,121 @@
+.tabactiveclass {
+    color: #1E1E1E !important;
+    background: none !important;
+    border: 0 !important;
+    border-bottom: 1px solid #1893C7 !important;
+}
+
+li>a {
+    cursor: pointer !important;
+}
+.container-fuild {
+    padding: 20px;
+    background: white;
+}
+
+.countryactiveclass {
+    background-color: #337ab7 !important;
+}
+
+.container-fuild {
+    padding: 20px;
+    background: white;
+}
+
+.ngx-pagination li {
+
+    color: #428bca !important;
+    cursor: default !important;
+    border: 0.1px solid #dddddd !important;
+    margin: 0% !important;
+    margin-left: -1px !important;
+}
+
+.ngx-pagination li :hover {
+    text-decoration: none !important;
+}
+
+.ngx-pagination .current {
+    color: #428bca !important;
+    cursor: default !important;
+    border: 0.1px solid #dddddd !important;
+    margin: 0% !important;
+    margin-left: -1px !important;
+}
+
+.ngx-pagination .current span {
+    color: white !important;
+}
+
+.right a {
+    border-radius: 0px !important;
+}
+.custom-state-list{
+    float: left;
+    width: auto;
+    a{
+        &:first-child{
+            margin-right: 2px;
+        }
+    }
+    .fa{
+        margin: 0!important;
+        float: none!important;
+        vertical-align: middle;
+    }
+    .dropdown-menu{
+        width: 200px;
+        left: 0;
+        padding: 10px;
+        li{
+            position: relative;
+            &:first-child{
+             .form-control{
+                background: #F4F4F4;
+                position: relative;
+                padding: 6px 25px;
+                height: auto;
+             }
+             i{
+                 position: absolute;
+                 top: 10px;
+                 left: 5px;
+             }
+             margin-bottom: 8px;
+            }
+            &:last-child{
+            height: 200px;
+            float: left;
+            width: 178px;
+            overflow: auto;
+            a{
+                padding: 0 12px;
+                &:hover{
+                    border-radius: 0;
+                    color: #3F93C2;
+                    background: url(/assets/images/tick-drop.png) 0 8px no-repeat;
+
+                }
+            }
+        }
+        }
+    }
+}
+.wrapper-sticky{
+    position: fixed !important;
+    width: 292px !important;
+    top: 0px;
+}
+.width-wrapper{
+    width: 195px !important;
+    position: fixed !important;
+    top: 0px;
+
+}
+
+.private-list {
+    li {
+        width: 100%;
+        float: left;
+    }
+}

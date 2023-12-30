@@ -1,0 +1,35 @@
+ 
+ <div class="user-management">
+    <table mat-table [dataSource]="privateSites" >
+      <ng-container matColumnDef="privateSiteName" sticky>
+        <th mat-header-cell *matHeaderCellDef ><span class="th-mr">Private Site Name</span></th>
+        <td mat-cell *matCellDef="let element">
+          <div class="display-flax">
+            <div class="name-lab">
+              {{element.siteName}}
+            </div>
+          </div>
+        </td>
+      </ng-container>
+
+      <ng-container class="pull-right" matColumnDef="siteStorage" sticky>
+        <th mat-header-cell *matHeaderCellDef ><span class="th-mr">Site Storage</span></th>
+        <td mat-cell *matCellDef="let element">
+          <div class="display-flax" >
+            <div class="name-lab">
+              {{(element.privateSiteStorage/1000).toFixed(2)}} GB
+            </div>
+          </div>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <h3 style="text-align: center; margin-top: 10px;" *ngIf="!data.id.length">No private Sites avaliable</h3>
+    <div class="text-center">
+      <button mat-raised-button (click)="closePopup()" color="warn" class="center mt-10">Close</button>
+    </div>
+
+</div>
+

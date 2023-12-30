@@ -1,0 +1,218 @@
+// .my-modal-dialog {
+//     display: inline-block;
+//     text-align: left;
+// 	vertical-align: middle;
+// }
+.mod-body-cont {
+    float: none;
+    margin: 0 auto;
+    margin-bottom: 0px;
+    width: 350px;
+    position: relative;
+    text-align: center;
+    font-size: 18px;
+    color: #1E1E1E;
+    font-weight: 600;
+
+    p {
+        font-size: 12px;
+        font-weight: $fontweight-bold;
+        color: $primary-color;
+        margin-bottom: 0;
+        position: absolute;
+        top: 10px;
+        left: 0;
+        text-align: center;
+    }
+
+    h2 {
+        color: #a5a5a5;
+    }
+
+    .login-fb {
+        width: 100%;
+        float: left;
+
+        a {
+            width: 100%;
+            height: 45px;
+            line-height: 45px;
+            background: #3B5998;
+            color: $text-color-white;
+            font-size: $fontsize-nav;
+            font-weight: $fontweight-bold;
+            font-family: $font-caps;
+            margin: 12px auto 0;
+            display: inline-block;
+            border-radius: 5px;
+
+        }
+
+        a.log-in-gl {
+            background: #DD4B39;
+        }
+
+
+    }
+
+
+    .forgot-pws {
+        float: right;
+        color: $txtcolor;
+        font-size: $fontSize - 1;
+        margin-top: -5px;
+        font-weight: $fontweight-semibold;
+    }
+
+
+}
+
+.modal-footer {
+    background: $body-bg;
+
+    p {
+        margin-bottom: 0;
+
+        a {
+            font-weight: $fontweight-semibold;
+        }
+    }
+
+}
+
+.poll-model {
+    .modal-header {
+        h1 {
+            font-size: 16px;
+            display: inline-block;
+        }
+    }
+
+    .mod-body-cont {
+        width: 90%;
+        margin: 20px 5%;
+        float: left;
+
+    }
+}
+
+//   retruth modal styles
+.retruth-modal {
+    .modal-dialog {
+        margin: 0;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%) !important;
+
+    }
+
+    .modal-content {
+        padding: 10px;
+
+        .modal-header {
+            padding: 10px !important;
+            border-bottom: 0;
+            text-align: left !important;
+            background: none !important;
+
+            .modal-title {
+                color: #1E1E1E;
+                font-size: 20px;
+                font-weight: 600;
+            }
+
+            .close {
+                height: auto !important;
+                margin: 0 !important;
+
+                &:focus,
+                &:active {
+                    outline: none;
+                }
+            }
+        }
+
+        .modal-body {
+            textarea {
+                width: 100%;
+                padding: 8px 10px;
+                resize: none;
+                border: 1px solid #D8D8D8;
+                border-radius: 3px;
+                color: $btn-bg-dark;
+                font-size: 14px;
+                font-weight: 400;
+            }
+
+            .user-comment {
+                border: 1px solid #D8D8D8;
+                background-color: #F2F2F2;
+                float: left;
+                width: 100%;
+                margin: 20px 0;
+                padding: 15px;
+                border-radius: 4px;
+
+                .user-prfile {
+                    float: left;
+                    height: 48px;
+                    line-height: 48px;
+
+                    img {
+                        width: 48px;
+                        height: auto;
+                    }
+                }
+
+                .user-details {
+                    float: left;
+                    margin-left: 20px;
+
+                    p {
+                        margin: 0;
+                        font-size: 14px;
+                        color: #428BCA;
+                        font-weight: 400;
+
+                        span {
+                            display: block;
+                            font-weight: $fontweight-semibold;
+                            font-size: 11px;
+                            color: $txtcolor;
+                        }
+                    }
+
+                    h5 {
+                        font-size: 14px;
+                        color: #428BCA;
+                        font-weight: $fontweight-semibold;
+                    }
+                }
+            }
+        }
+
+        .modal-footer {
+            text-align: left !important;
+            border-top: 0;
+            background: none;
+            padding: 0 10px;
+
+            .btn {
+                width: 172px;
+                height: 48px;
+                background: #5293BD;
+                border-radius: 0;
+                text-transform: uppercase;
+                font-weight: $fontweight-semibold;
+
+                &:focus,
+                &:active {
+                    outline: none;
+                }
+            }
+        }
+    }
+}
+
+// modal images preview scss

@@ -1,0 +1,31 @@
+<h1 mat-dialog-title class="text-center">Compose Email</h1>
+<div mat-dialog-content style="min-height: 250px;">
+  <div class="form-group send-to" style="margin-top: 5px;">
+    <div class="to">To: </div>
+    <mat-chip-list>
+      <mat-chip *ngFor="let email of emails">
+        {{ email.email }}
+      </mat-chip>
+    </mat-chip-list>
+    <button (click)="copyEmails()" class="clipboard" matTooltip="Copy Clipboard"><img src="../../../assets/images/clipboard.svg" /></button>
+  </div>
+
+  <div class="form-group" style="margin-top: 5px ;">
+    <input placeholder="Subject" class="form-control" [(ngModel)]="subject">
+  </div>
+  <!-- <ngx-editor-menu [editor]="editor"> </ngx-editor-menu>
+  <ngx-editor
+    [editor]="editor"
+    [(ngModel)]="template"
+    [placeholder]="'Type here...'"
+
+  ></ngx-editor> -->
+  <angular-editor style="height: 100vh;" [config]="editorConfig" [(ngModel)]="template"></angular-editor>
+
+</div>
+<div mat-dialog-actions>
+  <div class="text-center footer-btn">
+	  <button type="button" class="btn btn-danger" (click)="onNoClick()">Cancel</button>
+    <button type="submit" class="btn btn-primary" cdkFocusInitial (click)="onBroadcastClick()">Send</button>
+  </div>
+</div>

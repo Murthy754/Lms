@@ -1,0 +1,131 @@
+.forgot-bg {
+	background:url(../assets/images/admin-bg.png) no-repeat 0 0;
+	float: left;
+    height: 100vh;
+    width: 100%;
+	background-size:cover;
+	}
+
+.content-table {
+    text-align: center;
+    position: relative;
+    display: table;
+}
+.content-row {
+    display: table-row;
+}
+.content-cell {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.forgot-page {
+	float: none;
+	margin: 180px auto 0;
+	width: 446px;
+
+h1 {
+	font-size: 20px;
+ color: $blue-color;
+ font-family:$font-caps;
+	margin-bottom: 27px;
+	font-weight: 700;
+	text-align:center;
+	margin-top:70px;
+}
+h4 {
+	color: #FFF;
+	font-size: 16px;
+	line-height: 22px;
+	font-weight: 400;
+	text-align:center;
+	margin-bottom:30px;
+}
+
+ .forgt-logo {
+ text-align:center;
+ width:100%;
+ float:left;
+}
+
+.frgt-links {
+	width: 350px;
+	text-align: center;
+	margin: 20px auto;
+ a {
+ background: #4143CA none repeat scroll 0 0;
+ border-radius: 5px;
+ color: #fff;
+ display: inline-block;
+ font-family: "Raleway", sans-serif;
+ font-size: 12px;
+ font-weight: 700;
+ height: 45px;
+ line-height: 45px;
+ margin: 20px auto 0px;
+ width: 100%;
+ box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+}
+a.color-red {
+	background: #CA4141;
+}
+}
+.frgt-form {
+	width: 350px;
+	text-align: center;
+	margin: 70px auto 30px;
+	a {
+    color: #fff;
+    margin: 10px 0 30px;
+    text-align: right;
+    width: 100%;
+    text-decoration: underline;
+    &:hover {
+    	color:#3f93c2;
+    }
+}
+ h3 {
+ color:#FFF;
+ margin-bottom:20px;
+ font-size:18px;
+}
+p{
+	color:#FFF;
+	margin-bottom:30px;
+}
+
+}
+.sign-in {
+	margin: 5px 0 0;
+}
+.btn-bg-white {
+	background: none;
+}
+}
+#supersized {
+	position: fixed;
+	left: 0;
+	top: 0;
+	overflow: hidden;
+	z-index: -999;
+	height: 100%;
+	width: 100%;
+}
+#supersized img {
+	width: auto;
+	height: auto;
+	position: relative;
+	outline: none;
+	border: none;
+}
+.re-cover {
+ h4 {
+ color:$blue-color !important;
+ font-weight:700 !important;
+}
+p {
+	color: #FFF!important;
+	padding-top: 20px;
+	padding-bottom: 20px;
+}
+}

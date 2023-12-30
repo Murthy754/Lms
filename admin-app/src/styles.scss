@@ -1,0 +1,22 @@
+/* You can add global styles to this file, and also import other style files */
+// @import "../../admin-app/src/app/styles/sc.scss";
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+
+@import "scss-css/_base";
+@import "scss-css/_common";
+@import "scss-css/_header";
+@import "scss-css/_card";
+@import "scss-css/_left-menu";
+@import "scss-css/_modals";
+@import "scss-css/_sign-up";
+@import "scss-css/_create-poll";
+@import "scss-css/_profile";
+@import "scss-css/_forgot-pws";
+@import "scss-css/_forgot-pws";
+@import "scss-css/_404-error";
+@import "scss-css/_user-management";
+@import "scss-css/material";
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

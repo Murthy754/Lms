@@ -1,0 +1,88 @@
+<style>
+    a,
+    a label {
+        cursor: pointer;
+    }
+</style>
+<!-- <div *ngIf="loading" id="loaderDiv">
+    <img src="../../assets/images/loading.gif" class="ajax-loader" />
+</div> -->
+<div class="container">
+    <div class="row">
+        <div class="col-lg-2 col-sm-1 col-md-2 col-xs-12">
+            <div class="row">
+                <div class="margin-right">
+                    <div class="add-box">
+                        <a href="#">
+                            <!--<img src="images/add-img.png" alt="add"/>-->
+                        </a>
+                    </div>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+        <div class="notifications col-lg-7 col-md-7 col-sm-10 col-xs-12">
+            <div class="clear"></div>
+            <div class="margin-top-20">
+                <p class='pull-left heading-text'>All Notifications</p>
+                <a class='pull-right' (click)="markAllAsRead()" *ngIf="notifications.length > 0">Mark all as read</a>
+            </div>
+            <div class="clear"></div>
+            <div class="row">
+                <div class="margin-left-right notification-list">
+                    <div *ngFor='let notification of notifications;let ind=index'>
+                        <div class="notification-box" [ngClass]="notification.isRead ? 'read-notification':'unread-notification'" (click)="goToLink(notification)">
+                            <div class="img-left">
+                                <div class="img-round">
+                                    <a *ngIf="notification.type === 'COMMENT'">
+                                        <img src="../../assets/images/comment-circle.png" />
+                                    </a>
+                                    <a *ngIf="notification.type === 'BROADCAST' || notification.type === 'BROADCAST_REPLY'">
+                                        <img src="../../assets/images/broadcast-circle.png" />
+                                    </a>
+                                    <a *ngIf="notification.type === 'POLL_FOLLOWER' || notification.type==='SUBSCRIBE'">
+                                        <img *ngIf="notification.createdBy.profilePicture" src="{{notification.createdBy.profilePicture}}" />
+                                        <img *ngIf="!notification.createdBy.profilePicture" src="../..//assets/images/noimage.png" />
+                                    </a>
+                                </div>
+                                <div class="Arthur-box">
+                                    <a (click)="goToUserProfile(notification.createdBy.userName,$event)">{{notification.createdBy.firstName}} {{notification.createdBy.lastName}} </a>
+
+                                    <span class='notification-text' *ngIf="notification.type === 'COMMENT'">
+                    has commented on your article
+                  </span>
+                                    <span class='notification-text' *ngIf="notification.type === 'BROADCAST'">
+                    has posted new broadcast message
+                  </span>
+                                    <span class='notification-text' *ngIf="notification.type === 'BROADCAST_REPLY'">
+                    has Replied to your broadcast message
+                  </span>
+                                    <span class='notification-text' *ngIf="notification.type === 'POLL_FOLLOWER'">
+                    Started following your topic
+                  </span>
+                                    <p *ngIf="notification.type === 'SUBSCRIBE'">
+                                        <strong>{{notification.createdBy.firstName}} {{notification.createdBy.lastName}}</strong> {{notification.message}}
+                                    </p>
+
+                                    <div class="date-time-new">{{notification.createdAt | datefromnow}}</div>
+                                </div>
+                                <div class="Action-box" *ngIf="!isMobile() && !notification.isRead">
+                                    <a class='pull-right hover-visible-text' (click)="markOneAsRead(notification,ind)">Mark as read</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class='text-center margin-top-30' *ngIf="notifications.length === 0">
+                        You Don't have Notifications yet
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-hidden">
+            <div class="row">
+
+            </div>
+        </div>
+    </div>
+    <div class="margin-top-30"></div>
+</div>

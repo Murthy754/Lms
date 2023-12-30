@@ -1,0 +1,160 @@
+<div  class="margin-top-30 m-padding">        
+    <div class="row">        
+        <div class="col-lg-6 col-md-6 col-sm-7 col-xs-12">
+            <div class="row">
+                <div class="sign-up-main">
+                    <div class="sign-up-top">
+                        <h1>SIGN UP NOW</h1>
+                        <p>Polls made free and easy</p>
+                        <p *ngIf="SignUpForm.invalid && SignUpForm.touched && SignUpForm" class="error-msg mv-error-msg">Please fill all fields</p>
+                        <p class="error-msg mv-error-msg">{{userExists}}</p>
+                    </div>
+                    <form (ngSubmit)="signup()" class="m-sign-up" [formGroup]="SignUpForm" novalidate>
+                        <div class="form-group" [ngClass]="{'has-error': SignUpForm.controls['email'].invalid && SignUpForm.controls['email'].touched}">
+                            <label>Email</label>
+                            <input type="email" class="form-control" placeholder="Email" formControlName="email" name="email" required />
+                            <div  class="error-msg" role="alert">
+                                <div  *ngIf="SignUpForm.controls['email'].errors?.required && SignUpForm.controls['email'].touched" style="color:#DF6164"  >Please enter Email Address</div>
+                                <div *ngIf="SignUpForm.controls['email'].errors?.email" style="color:#DF6164" >Please enter valid Email Address</div>
+                            </div>
+                        </div>
+                        <div class="form-group"  [ngClass]="{'has-error': SignUpForm.controls['username'].invalid && SignUpForm.controls['username'].touched}">
+                            <label>Username</label>
+                            <input  class="form-control" type="text" placeholder="Username" name ="username" oninput="this.value = this.value.toLowerCase()" formControlName="username" required />
+
+                            <div class="error-msg" role="alert">
+                                <div *ngIf="SignUpForm.controls['username'].errors?.required && SignUpForm.controls['username'].touched" style="color:#DF6164">Please enter Username</div>
+                                <div  *ngIf="SignUpForm.controls['username'].errors?.minlength" style="color:#DF6164">Minimum length is 5 characters</div>
+                                <div  *ngIf="SignUpForm.controls['username'].errors?.maxlength" style="color:#DF6164">Maximum length is 35 characters</div>
+                                <div  *ngIf="SignUpForm.controls['username'].errors?.pattern" style="color:#DF6164">Please enter a valid Username</div>
+                            </div>
+
+                        </div>
+                        <div class="form-group" [ngClass]="{'has-error': SignUpForm.controls['password'].invalid && SignUpForm.controls['password'].touched}" >
+                            <label>Password</label>
+                            <input type="password" class="form-control" placeholder="Password" formControlName="password" name="current-password" required />
+
+                            <div class="error-msg" role="alert">
+                                <div  *ngIf="SignUpForm.controls['password'].errors?.required && SignUpForm.controls['password'].touched">Please enter Password</div>
+                                <div  *ngIf="SignUpForm.controls['password'].errors?.minlength" >Please enter minimum of 8 characters long</div>
+                            </div>
+
+                        </div>
+                        <div class="form-group" [ngClass]="{'has-error': SignUpForm.controls['first_name'].invalid && SignUpForm.controls['first_name'].touched}">
+                            <label>First Name</label>
+                            <input type="text" class="form-control" placeholder="First Name" formControlName="first_name" name="first_name"/>
+
+                            <div class="error-msg" role="alert">
+                                <div  *ngIf="SignUpForm.controls['first_name'].errors?.required && SignUpForm.controls['first_name'].touched">Please enter First Name</div>
+                                <div  *ngIf="SignUpForm.controls['first_name'].errors?.minlength" >Minimum length is 3 characters</div>
+                                <div  *ngIf="SignUpForm.controls['first_name'].errors?.maxlength">Maximum length is 35 characters</div>
+                                <div  *ngIf="SignUpForm.controls['first_name'].errors?.pattern">Please enter valid First Name</div>
+                            </div>
+                        </div>
+                        <div class="form-group" [ngClass]="{'has-error': SignUpForm.controls['last_name'].invalid && SignUpForm.controls['last_name'].touched}">
+                            <label>Last Name</label>
+                            <input type="text"  class="form-control" placeholder="Last Name" formControlName="last_name" name="last_name" required/>
+                            <div  class="error-msg" role="alert">
+                                <div  *ngIf="SignUpForm.controls['last_name'].errors?.required && SignUpForm.controls['last_name'].touched">Please enter Last Name</div>
+                                <div  *ngIf="SignUpForm.controls['last_name'].errors?.minlength" >Minimum length is 3 characters</div>
+                                <div  *ngIf="SignUpForm.controls['last_name'].errors?.maxlength">Maximum length is 35 characters</div>
+                                <div  *ngIf="SignUpForm.controls['last_name'].errors?.pattern">Please enter valid Last Name</div>
+                            </div>
+                        </div>
+
+                        <div class="form-group" [ngClass]="{'has-error': SignUpForm.controls['phoneNumber'].invalid && SignUpForm.controls['phoneNumber'].touched}">
+                            <label>Phone Number</label>
+                            <input style="width: 100%"  class="form-control"
+                              ng2TelInput
+                              [ng2TelInputOptions]="{initialCountry: 'us'}"
+                              formControlName="phoneNumber"
+                              (input)="phonenumberChange()"
+                              (hasError)="hasError($event)"
+                              [readonly]="phoneNumberVerified"
+                              (countryChange)="countryChange($event)"
+                              /> 
+                            <img style="opacity: 0.3;" *ngIf="!enteringPhoneNumber" matTooltip="Verify with your PhoneNumber and signup to get 500GB Drive space" class="info-icon-position" src="../../assets/images/more-info-icon.svg" alt="info" />
+                            <button  class="send-otp-button" (click)="sendOtp()" *ngIf="enteringPhoneNumber && !phoneNumberVerified" type="button" >Send Otp</button>
+                            <button style="color: #3F93C2;background-color: rgb(255, 255, 255) ; border: 2px solid #3F93C2;"  class="send-otp-button" (click)="removeNumber()" *ngIf="phoneNumberVerified" type="button" >Remove</button>
+
+                              <div  class="error-msg" role="alert">
+                                <div
+                                    *ngIf="
+                                    !SignUpForm.get('phoneNumber').valid &&
+                                    SignUpForm.get('phoneNumber').touched">
+                                    This is an <strong>invalid</strong> phone number.
+                                </div>
+                                <div
+                                *ngIf="phoneNumberExist">
+                                    PhoneNumber already Exist
+                            </div>
+                              </div>
+                        </div>
+                        <div class="form-group" >
+                            <label>Country</label>
+                            <div class="select-style sing-up-style">                                
+                                <ng-select [items]="countries" bindLabel="name" [ngModelOptions]="{standalone: true}"
+                                [(ngModel)]="country" placeholder="Select city" [clearable]="false">
+                                </ng-select>
+                            </div>
+                            <div class="error-msg" role="alert">
+                                <!-- <div  >Please select a Country</div> -->
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="reg">
+                                <bdo>
+                                    <input type="radio" value="male" name="gender" formControlName="gender" required>
+                                    <span></span>
+                                    <abbr>
+                                        Male
+                                    </abbr>
+                                </bdo>
+                            </div>
+                            <div class="reg">
+                                <bdo>
+                                    <input type="radio" value="female" name="gender" formControlName="gender" required>
+                                    <span></span>
+                                    <abbr>
+                                        Female
+                                    </abbr>
+                                </bdo>
+                            </div>
+                            <div class="reg">
+                                <bdo>
+                                    <input type="radio" value="Don't mention" name="gender" formControlName="gender" required>
+                                    <span></span>
+                                    <abbr>
+                                        Don't mention
+                                    </abbr>
+                                </bdo>
+                            </div>
+
+                            <div class="error-msg" role="alert">
+                                <!-- <div  >Please select a Country</div> -->
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                        <div class="sign-up-bott">
+                            <button type="button submit" class="sign-in">SIGN UP</button>
+                            <button style="margin-left:3px" type="button" class="sign-in btn-bg-white" (click)="signupCancel()">CANCEL</button>
+                        </div>
+                        <div class="clear"></div>
+                        <p class="margin-top-10">(By clicking on Submit you agree that you are above 13 years of age)
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 col-sm-5 col-md-6 col-xs-hidden">
+            <div class="sign-right">
+                <img src="../../assets/images/sign-up.png" alt="sign-up" />
+                <p>TruNums is a question-and-answer site where questions are asked, answered, edited and organized by
+                    its community of users.</p>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- <div *ngIf="loading" id="loaderDiv">
+    <img src="../../assets/images/loading.gif" class="ajax-loader" />
+</div> -->

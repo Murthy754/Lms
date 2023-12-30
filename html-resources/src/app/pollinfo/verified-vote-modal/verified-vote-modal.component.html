@@ -1,0 +1,46 @@
+<button type="button" class="close" aria-label="Close" (click)="onNoClick()">
+  <span aria-hidden="true">×</span>
+</button>
+<h1 mat-dialog-title style="margin-bottom: 20px; text-align: center;">{{ title }}</h1>
+<div mat-dialog-content class="dialog-phone">
+  <div *ngIf="phoneNumberExists && !otpSent">
+    <label>{{ label }}</label>
+    <label>We'll send a code to {{ phone }}</label>
+  </div>
+  <div *ngIf="phoneNumberExists && otpSent">
+    <label>Enter code sent to {{ phone }}</label>
+    <otp [setting]="settings"  (onValueChange)="onOtpChange($event)"></otp>
+    <mat-error *ngIf="error">{{ error }}</mat-error>
+  </div>
+  <div *ngIf="!phoneNumberExists">
+    <label>{{ label }}</label>
+    <mat-form-field [formGroup]="contactForm" appearance="outline">
+      <input class="form-control input-two"
+        matInput
+        ng2TelInput
+        [ng2TelInputOptions]="{initialCountry: 'us'}"
+        formControlName="formControlPhone"
+        (hasError)="hasError($event)"
+        (countryChange)="countryChange($event)"
+        />
+      <mat-error
+        *ngIf="
+        !contactForm.get('formControlPhone').valid &&
+        contactForm.get('formControlPhone').touched">
+        This is an <strong>invalid</strong> phone number.
+      </mat-error>
+    </mat-form-field>
+    <mat-error *ngIf="error">{{ error }}</mat-error>
+  </div>
+</div>
+<div mat-dialog-actions class="text-center">
+  <button *ngIf="!phoneNumberExists || !otpSent" (click)="sendOtp()"  class="btn btn-primary">Send OTP</button>
+  <button *ngIf="phoneNumberExists && otpSent" type="submit" (click)="verifyOtp()" class="btn btn-primary" style="margin: 0 20px;">Verify OTP</button>
+  <!-- <button *ngIf="phoneNumberExists && otpSent" (click)="resendOTP()" class="btn btn-common">Resend OTP</button> -->
+</div>
+
+<!-- Loader div starts -->
+<!-- <div *ngIf="loading" id="loaderDiv">
+	<img src="../../assets/images/loading.gif" class="ajax-loader" />
+</div> -->
+<!-- Loader div ends -->

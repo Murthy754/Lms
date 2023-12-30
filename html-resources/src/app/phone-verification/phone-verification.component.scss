@@ -1,0 +1,97 @@
+.left-side-menu {
+    position: fixed;
+    background: #1F262E;
+    width: 250px;
+    top: 70px;
+    left: 0;
+    height: 100%;
+    z-index: 2;
+
+    .user-group {
+        width: 100%;
+        float: left;
+        padding: 15px 0;
+
+        h4 {
+            color: #FFF;
+            font-size: 16px;
+            margin-left: 25px;
+        }
+
+        ul {
+            width: 100%;
+            float: left;
+            margin: 10px 0;
+
+            li {
+                float: left;
+                width: 100%;
+                padding: 8px 10px 8px 20px;
+                cursor: pointer;
+                position: relative;
+
+                img {
+                    float: left;
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 50px;
+                }
+
+                span {
+                    float: left;
+                    color: #FFF;
+                    font-weight: 600;
+                    margin: 8px 0 0 10px;
+                    width: 165px;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    font-size: 13px;
+                }
+
+                .remove-icon {
+                    position: absolute;
+                    top: 15px;
+                    right: 10px;
+                    width: 20px;
+                    height: 20px;
+                    border: 1px solid;
+                    text-align: center;
+                    border-radius: 50px;
+                    line-height: 17px;
+                    font-size: 12px;
+                }
+
+                .online-box,
+                .offline-box {
+                    width: 10px;
+                    height: 10px;
+                    background: #08A82D;
+                    border-radius: 10px;
+                    position: absolute;
+                    top: 32px;
+                    left: 53px;
+                }
+
+                .offline-box {
+                    background: #FF810A;
+                }
+            }
+        }
+    }
+}
+
+
+.cdk-overlay-container {
+    position: fixed;
+    z-index: 10000;
+}
+
+.main-wrap-file-sharing {
+    display: flex;
+}
+
+.right-side-panel {
+    background: white;
+    width: 260px;
+}

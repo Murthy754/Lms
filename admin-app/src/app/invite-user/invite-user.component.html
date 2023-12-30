@@ -1,0 +1,45 @@
+<div class="container margin-top-100">
+  <div class="row">
+    <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12 text-center">
+        <!-- <button type="button" class="back-btn">BACK</button> -->
+        <div></div>
+    </div>
+      <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12">
+        <div class="clear"></div>
+        <div class="email-invite text-center">
+          <img src="../../assets/images/email-invite.png" alt="invite"/>
+          <form name="inviteEmail" novalidate>
+            <div class="form-group">
+              <mat-form-field class="example-chip-list" >
+                <mat-label>Enter emails</mat-label>
+                <mat-chip-list #chipList aria-label="Fruit selection">
+                  <mat-chip *ngFor="let email of emails; let i=index" >
+                    {{ email.name }}
+                    <mat-icon matChipRemove *ngIf="removable" (click)="remove(i)">x</mat-icon>
+                  </mat-chip>
+                  <input placeholder="Please enter email..."
+                         [matChipInputFor]="chipList"
+                         [matChipInputAddOnBlur]="addOnBlur"
+                         (matChipInputTokenEnd)="add($event)"
+                         pattern="[^@]+@[^@]+\.[a-zA-Z]{2,6}"
+                         (input)="onInputChange()"
+                         autocomplete="off">
+                </mat-chip-list>
+              </mat-form-field>
+              <mat-error *ngIf="errorMessage">{{ errorMessage }}</mat-error>
+
+            </div>
+            <div class="clear"></div>
+            <button class="sign-in" type="button submit" (click)="sendInvite()">INVITE NEW USER</button>
+          </form>
+        </div>
+        <!-- <h3 class="text-center margin-top-30 " ng-if="!inviteEmail.$submitted" style="color:#DF6164">{{response}}</h3> -->
+        <!-- <div ng-messages="inviteEmail.email.$error" class="text-center margin-top-30" role="alert"> -->
+          <!-- <h3 ng-if="inviteEmail.$submitted" style="color:#DF6164" ng-message="required">Please enter Email</h3> -->
+            <!-- <h3 ng-show="tagError" style="color:#DF6164" >Please enter Valid Email</h3> -->
+        <!-- </div> -->
+      </div>
+    </div>
+    <div class="col-lg-3 col-sm-3 col-md-3 col-xs-12"></div>
+  <!-- </div> -->
+</div>

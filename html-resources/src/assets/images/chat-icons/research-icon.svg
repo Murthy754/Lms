@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24" height="18" viewBox="0 0 24 18">
+  <defs>
+    <clipPath id="clip-path">
+      <rect width="24" height="18" fill="none"/>
+    </clipPath>
+  </defs>
+  <g id="Icons_Content_Picker_Folder" data-name="Icons/Content Picker/Folder" clip-path="url(#clip-path)">
+    <g id="Folder">
+      <path id="Shape" d="M23,18H1a.945.945,0,0,1-1-1V1A.945.945,0,0,1,1,0H9.6L12,2H23a.945.945,0,0,1,1,1V17A.945.945,0,0,1,23,18Z" fill="#efd289"/>
+      <path id="Shape-2" data-name="Shape" d="M21.5,12H.5a.472.472,0,0,1-.5-.5V0H22V11.6A.458.458,0,0,1,21.5,12Z" transform="translate(1 5)" fill="#fdefc1"/>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,34 @@
+<div class="uploadFilePopup" *ngIf="fullScreenView === false">
+  <div class="popup-header">
+    <h3 class="title">Upload a file</h3>
+    <button type="button" class="close" (click)="closeModal()">
+		<i class='bx bx-x'></i>
+    </button>
+  </div>
+  <div class="popup-body">
+    <div><input
+      type="text"
+      class="form-control"
+      placeholder="Add a message about the file"
+      [(ngModel)]=description
+    /></div>
+    <div class="preview">
+      <ul class="attached-list">
+        <li *ngFor="let preview of data['url']; index as ind" >
+          <img [src]="preview['url']" *ngIf="preview.type.includes('image')" class="thumb">
+          <audio controls [src]="preview['url']" *ngIf="preview.type.includes('audio')"></audio>
+          <video controls [src]="preview['url']" *ngIf="preview.type.includes('video')" width="300" height="200" style="outline: none;"></video>
+          <span *ngIf="!preview.type.includes('image') && !preview.type.includes('audio') && !preview.type.includes('video')" class="pdf-name"><i class='bx bxs-file-pdf'></i>{{preview['name']}}</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="popup-footer">
+    <button id="send" class="sign-in" type="submit" (click)="sendMessage()">Send</button>
+  </div>
+</div>
+<div class="image-viewer" *ngIf="fullScreenView === true">
+  <div class="popup-image-view" style="max-height: 70vh;width: 100%;">
+      <img [src]="data['url']" width="100%" height="100%">
+  </div>
+</div>

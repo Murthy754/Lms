@@ -1,0 +1,32 @@
+<div class="retruth-modal" style="padding: 10px;vertical-align: middle">
+    <div class="modal-header">
+        <button type="button submit" class="close" (click)="closeTrunumsModal()">
+            <img src="../../assets/images/canceld.png">
+        </button>
+        <h4 class="modal-title">Retruth this topic to your subscribers</h4>
+    </div>
+    <div class="modal-body">
+        <textarea placeholder="comments" [(ngModel)]="retruth_reason" cols="10" rows="2" width="100%"></textarea>
+        <ul class="user-comment">
+            <li>
+                <div class="user-prfile">
+                    <a *ngIf="userId !== poll.pollster._id">
+                        <img src="{{poll.pollster.profilePicture}}" *ngIf="poll.pollster.profilePicture" />
+                    </a>
+                    <a *ngIf="userId !== poll.pollster._id">
+                        <img src="../../assets/images/noimage.png" *ngIf="!poll.pollster.profilePicture" />
+                    </a>
+                </div>
+                <div class="user-details">
+                    <p>{{poll.pollster.firstName}} {{poll.pollster.lastName}}
+                        <span>{{poll.createdAt | datefromnow }}</span>
+                    </p>
+                    <h5>{{poll.question}}</h5>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary" (click)="retruthTopic(poll)">Retruth</button>
+    </div>
+</div>

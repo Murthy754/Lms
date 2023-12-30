@@ -1,0 +1,924 @@
+<!-- users-left-side start -->
+<div class="main-wrap-msg">
+	<div class="users-icons" *ngIf="leftMenu==='groups'">
+		<!-- <a href="" class="add-users"><img src="../../assets/images/group-users.svg">
+	</a> -->
+		<div class="setting-page" *ngIf="selectedType==='people'">
+			<a data-toggle="dropdown" class="add-users" role="button">
+				<img src="../../assets/images/group-users.svg">
+			</a>
+			<div class="dropdown-menu">
+				<h4>Add to Conversation</h4>
+				<ul class="user-list">
+					<li *ngFor="let user of trunumsUsersList; let i = index">
+						<div (click)="addMember(user)" *ngIf="user._id !== selectedUserId">
+							<img src="{{user.profilePicture}}"
+								*ngIf="user.profilePicture && user.profilePicture !== 'null'" alt="" />
+							<img src="../../assets/images/noimage.png"
+								*ngIf="!user.profilePicture || user.profilePicture=='null'" />
+							<span>{{user.firstName | titlecase}} {{user.lastName | titlecase}}
+							</span>
+						</div>
+						<a (click)="removeMember(i)" *ngIf="memberArray.indexOf(user._id)>-1" class="remove-icon">
+							<i class="fa fa-check" aria-hidden="true"></i>
+						</a>
+					</li>
+				</ul>
+				<div class="lift-side-foot">
+					<button type="submit" (click)="createGroupWithPeople()"
+						class="btn btn-common blue-border">Add</button>
+					<button type="button" (click)="creategroupFun('groups')" class="btn btn-common ">Cancel</button>
+
+				</div>
+			</div>
+		</div>
+		<div class="user-icon" [ngClass]="{'sidebar-two' : siderbarOne}"
+			*ngIf="selectedType!=='people' && enableChatOption">
+			<a data-toggle="dropdown" role="button">
+				<img src="../../assets/images/group-users.svg">
+				<i class="fa fa-angle-right" aria-hidden="true"></i>
+			</a>
+			<ul class="dropdown-menu">
+				<li class="drop-icon-top"></li>
+				<li>
+					<a (click)="siderbarOne = !siderbarOne">Settings</a>
+				</li>
+				<li><a (click)="siderbarOne = !siderbarOne">View Members</a></li>
+				<li><a (click)="siderbarOne = !siderbarOne">Add Members</a></li>
+				<li><a (click)="leaveGroupModal(groupId, groupData)">Leave Group</a></li>
+				<li><a (click)="deleteAllMessagesModal(groupId)">Delete Chat</a></li>
+			</ul>
+		</div>
+	</div>
+	<div class="rigiht-members" [ngClass]="{'sidebar' : siderbarOne}" *ngIf="selectedType!=='people'">
+		<div class="user-icon" [ngClass]="{'sidebar-two' : siderbarOne}"
+			*ngIf="selectedType!=='people' && enableChatOption">
+			<a class="openbtn" (click)="siderbarOne = !siderbarOne; disableForwardOption()">
+				<i class="fa fa-angle-left" aria-hidden="true" style="font-size: 24px;"></i>
+			</a>
+		</div>
+		<!-- <div class="members-main" *ngIf="groupData && showType==='view'" style="display: none;" > -->
+		<div class="members-main" *ngIf="groupData && showType==='view'" [hidden]="enableForward">
+
+			<div class="profile-img text-center">
+				<div *ngIf="!groupedit" class="edit-group-icon">
+					<a (click)="editGroup()" class="edit-link">
+						<!-- <img src="../../assets/images/edit-icon.png" alt="edit" /> -->
+						<i class='bx bxs-edit'></i>
+					</a>
+					<!-- <img src="../../assets/images/my-poll.png" alt="img"/> -->
+					<img class="groupIcon" src="{{groupData.groupIcon}}"
+						*ngIf="groupData && groupData.groupIcon && groupData.groupIcon !== 'null'" alt="" />
+					<img class="groupIcon" src="../../assets/images/noimage.png"
+						*ngIf="!groupData.groupIcon || groupData.groupIcon=='null'" />
+					<h4>{{groupData.groupName}}</h4>
+				</div>
+				<!-- <p>The Bay Area Astronomical Society serves residents and astronomy enthusiasts with events, classes, views of the universe.</p> -->
+				<div class="margin-left-right" *ngIf="groupedit">
+					<h4 style="margin: 0;">Edit Group</h4>
+					<form [formGroup]="editGroupForm" name="editGroupForm" (ngSubmit)="editGroupData(groupData)">
+						<div class="profile-pic">
+							<div class="comment-upload box-02 edit-photo">
+								<label for="pic" class="add-img-new" style="width: 100%;">
+									<!-- <img [src]="groupLogoPic" style="height:30px;width: 30px;" *ngIf="groupLogoPic && groupLogoPic !== 'null'" alt="" />
+									<img style="height:30px;width: 30px;" src="../../assets/images/noimage.png" *ngIf="!groupLogoPic || groupLogoPic=='null'"
+									/> -->
+									<img class="groupIcon" style="height:30px;width: 30px;"
+										src="{{groupData.groupIcon}}"
+										*ngIf="groupData && groupData.groupIcon && groupData.groupIcon !== 'null'"
+										alt="" />
+									<img class="groupIcon" style="height:30px;width: 30px;"
+										src="../../assets/images/noimage.png"
+										*ngIf="!groupData.groupIcon || groupData.groupIcon=='null'" />
+								</label>
+								<span *ngIf="error">{{error}}</span>
+								<input style="width: 100%" type="file" accept="audio/*,video/*,image/*"
+									(change)='onFileChange($event)' max-size="max_file_size" max-files="10"
+									class="inputfile-3 file" (input)="enableSave()" name="file" />
+								<label style="width: 100%;">
+									<span>Edit Photo</span>
+								</label>
+
+							</div>
+						</div>
+						<div class="search-user">
+							<input class="form-control" placeholder="Name this group" formControlName="groupName"
+								(input)="enableSave()" required />
+						</div>
+						<button type="submit" class="btn btn-common blue-border" style="margin-top: 10px;">SAVE</button>
+
+					</form>
+
+
+
+
+				</div>
+
+
+			</div>
+
+			<div class="photo-gal" *ngIf="groupData.groupMembers">
+				<h4>Members ({{groupData.groupMembers.length}})</h4>
+				<button *ngIf="groupData.admins.indexOf(loginUser)>=0"
+					(click)="addMemberToGroup(groupData.groupMembers)">
+					<i class='bx bx-plus-circle'></i>
+					<!-- <img src="../../assets/images/create-group.svg" style="margin: 0 5px 0 0;" /> -->
+					Add member</button>
+				<div class="clear"></div>
+				<ul>
+					<li *ngFor="let member of groupData.groupMembers; let i = index">
+						<a data-toggle="dropdown" role="button">
+							<img src="{{member.profilePicture}}"
+								*ngIf="member.profilePicture && member.profilePicture !== 'null'"
+								alt="{{member.firstName}}" />
+							<img src="../../assets/images/noimage.png"
+								*ngIf="!member.profilePicture || member.profilePicture=='null'"
+								alt="{{member.firstName}}" /> {{member.firstName}}
+						</a>
+						<ul class="dropdown-menu photo-drop-down">
+							<li *ngIf="groupData.admins.indexOf(member._id)<0"
+								(click)="makeAdmin(member._id,groupData._id)">
+								<a style="cursor: pointer;">Make Admin</a>
+							</li>
+							<li *ngIf="groupData.admins.indexOf(member._id)>0"
+								(click)="removeAdmin(member._id,groupData._id)">
+								<a style="cursor: pointer;">Remove Admin</a>
+							</li>
+							<li (click)="removeUserFromGroup(member._id,groupData._id)">
+								<a style="cursor: pointer;">Remove From Group</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<!-- Add Member start -->
+		<div class="add-member" *ngIf="showType==='add'" [hidden]="enableForward">
+			<!-- <div class="add-member" *ngIf="showType==='add' && enableForward"> -->
+			<h4>Add Member</h4>
+			<ul>
+				<li *ngFor="let user of addMemberList; let i = index">
+					<div (click)="addMember(user)">
+						<img src="{{user.profilePicture}}" *ngIf="user.profilePicture && user.profilePicture !== 'null'"
+							alt="" />
+						<img src="../../assets/images/noimage.png"
+							*ngIf="!user.profilePicture || user.profilePicture=='null'" />
+						<span>{{user.firstName | titlecase}} {{user.lastName | titlecase}}
+						</span>
+					</div>
+					<a (click)="removeMember(i)" *ngIf="memberArray.indexOf(user._id)>-1" class="remove-icon">
+						<i class="fa fa-check" aria-hidden="true"></i>
+					</a>
+				</li>
+			</ul>
+			<div class="lift-side-foot">
+				<button type="submit" (click)="addMembersToGroup(groupData)" *ngIf="addMemberList.length>0"
+					class="btn btn-common blue-border">Add</button>
+				<button type="button" (click)="cancelAdd()" class="btn btn-common ">Cancel</button>
+			</div>
+		</div>
+		<!-- Add Member End -->
+		<!-- Filter By start -->
+		<!-- *ngIf="showType==='filter'" -->
+		<div class="add-member" *ngIf="showType==='filter'" [hidden]="enableForward">
+			<h4>Filter By</h4>
+			<ul class="filter-by">
+				<li (click)="addFilter('people')">
+					<img src="../../assets/images/contact-add.svg" />
+					<span>People</span>
+					<a class="remove-icon" *ngIf="filterVal==='people'">
+						<i class="fa fa-check" aria-hidden="true"></i>
+					</a>
+				</li>
+				<li (click)="addFilter('group')">
+					<img src="../../assets/images/group-ic.svg" />
+					<span>Group</span>
+					<a class="remove-icon" *ngIf="filterVal==='group'">
+						<i class="fa fa-check" aria-hidden="true"></i>
+					</a>
+				</li>
+				<li (click)="addFilter('message')">
+					<img src="../../assets/images/messages-ic-new.svg" />
+					<span>Messages</span>
+					<a class="remove-icon" *ngIf="filterVal==='message'">
+						<i class="fa fa-check" aria-hidden="true"></i>
+					</a>
+				</li>
+			</ul>
+			<div class="lift-side-foot">
+				<!-- <button type="submit" (click)="filterMessages()" class="btn btn-common blue-border">Filter</button> -->
+				<button type="button" (click)="cancelFilter()" class="btn btn-common">Cancel</button>
+			</div>
+		</div>
+		<!-- Filter By End -->
+		<div class="mob-list-forw" *ngIf="enableForward" [ngClass]="{'forward-right-side-panel': enableForward}">
+
+			<div class="scroll-box">
+				<h4>Forward To</h4>
+				<ul class="user-list">
+					<li *ngFor="let user of usersList; let i = index">
+
+						<div (click)="addForwardMember(user)" *ngIf="user._id !== selectedUserId">
+							<img style="cursor: pointer;" src="{{user.profilePicture}}"
+								*ngIf="user.profilePicture && user.profilePicture !== 'null'" alt="" />
+							<img style="cursor: pointer;" src="../../assets/images/noimage.png"
+								*ngIf="!user.profilePicture || user.profilePicture=='null'" />
+							<span>{{user.firstName | titlecase}} {{user.lastName | titlecase}}
+							</span>
+						</div>
+						<a style="cursor: pointer;" (click)="removeForwardMember(i)"
+							*ngIf="memberArray.indexOf(user._id)>-1" class="remove-icon">
+							<i class="fa fa-check" aria-hidden="true"></i>
+						</a>
+					</li>
+
+
+				</ul>
+				<div class="lift-side-foot">
+					<button type="button" (click)="forwardMessage(messageMobile._id)" class="btn btn-common blue-border"
+						style="cursor: pointer;">Forward</button>
+					<button type="button" (click)="creategroupFun('groups')" class="btn btn-common"
+						style="cursor: pointer;">Cancel</button>
+
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="users-left-side" *ngIf="leftMenu==='groups'" [ngClass]="{'user-left-side-panel': selectedType}">
+		<div class="search-user">
+			<input type="search" placeholder="Groups, People & Messages" (input)="searchMessages($event.target.value)">
+		</div>
+		<div class="list-users">
+			<div class="user-group" *ngIf="displayType==='all' || displayType==='groups'">
+				<h4>Groups</h4>
+				<ul>
+					<li *ngFor="let group of groupsList; let i = index"
+						[ngClass]=" {'bg-colo-grey': (group._id === selectedId)} ">
+						<div (click)="getgroupDetails(group._id,group)">
+							<img src="{{group.groupIcon}}" *ngIf="group.groupIcon && group.groupIcon !== 'null'"
+								alt="" />
+							<img src="../../assets/images/noimage.png"
+								*ngIf="!group.groupIcon || group.groupIcon=='null'" />
+							<span style="color:white">{{group.groupName | titlecase}}
+
+								<a data-toggle="dropdown" role="button" style="float:right; color:#FFF !important;">
+									...</a>
+								<ul class="dropdown-menu photo-drop-down">
+									<li [ngClass]="{'sidebar-two' : siderbarOne}"
+										*ngIf="group.admins.indexOf(loginUser)>=0">
+										<a class="openbtn" (click)="siderbarOne = !siderbarOne">Settings</a>
+									</li>
+									<li [ngClass]="{'sidebar-two' : siderbarOne}">
+										<a class="openbtn" (click)="siderbarOne = !siderbarOne">View Members</a>
+									</li>
+									<li *ngIf="group.admins.indexOf(loginUser)>=0"
+										[ngClass]="{'sidebar-two' : siderbarOne}">
+
+										<a class="openbtn" (click)="siderbarOne = !siderbarOne">Add Members</a>
+									</li>
+									<li (click)="leaveGroupModal(group._id, group)">
+										<a>Leave Group</a>
+									</li>
+									<li (click)="deleteAllMessagesModal(group._id)"
+										*ngIf="group.admins.indexOf(loginUser)>=0">
+										<a>Delete All Chat</a>
+									</li>
+								</ul>
+							</span>
+						</div>
+
+					</li>
+				</ul>
+				<div class="create-group">
+					<a (click)="creategroupFun('creategroup')">
+						<img src="../../assets/images/create-group.svg" />
+						<span>CREATE GROUP</span>
+					</a>
+				</div>
+			</div>
+			<div class="user-group" *ngIf="displayType==='all' || displayType==='people'">
+				<h4>People</h4>
+				<!-- <ul>
+				<li *ngFor="let itemsList of itemsList">
+					<img src="../../assets/images/my-poll.png" />
+					<span>{{itemsList}}</span>
+				</li>
+			</ul> -->
+				<!-- <ul *ngIf="privateMemberSubscribers.length>0">
+					<li *ngFor="let user of privateMemberSubscribers; let i = index" [ngClass]=" {'bg-colo-grey': (user._id === selectedUserId)}">
+
+						<div (click)="messageBetweenMembers(user.subscriber)" *ngIf="user.subscriber._id!==loginUser">
+							<div class="online-box"></div>
+							<img src="{{user.subscriber.profilePicture}}" *ngIf="user.subscriber.profilePicture && user.subscriber.profilePicture !== 'null'"
+							 alt="" />
+							<img src="../../assets/images/noimage.png" *ngIf="!user.subscriber.profilePicture || user.subscriber.profilePicture=='null'"
+							/>
+							<span style="color:white">{{user.subscriber.firstName | titlecase}} {{user.subscriber.lastName | titlecase}}
+							</span>
+						</div>
+					</li>
+				</ul> -->
+				<ul>
+					<!-- <li *ngFor="let user of usersList; let i = index" [ngClass]=" {'bg-colo-grey': (user.user._id === selectedUserId)}">
+
+						<div (click)="messageBetweenMembers(user.user)" *ngIf="user.user._id!==loginUser">
+							<div class="online-box" *ngIf="user.user.onlineStatus"></div>
+							<div class="offline-box" *ngIf="!user.user.onlineStatus"></div>
+							<img src="{{user.user.profilePicture}}" *ngIf="user.user.profilePicture && user.user.profilePicture !== 'null'" alt="" />
+							<img src="../../assets/images/noimage.png" *ngIf="!user.user.profilePicture || user.user.profilePicture=='null'" />
+							<span style="color:white">{{user.user.firstName | titlecase}} {{user.user.lastName | titlecase}}
+							</span>
+						</div>
+					</li> -->
+					<!-- <li *ngFor="let sub of subscriptionList"> -->
+					<!-- {{ sub.isBlocked | json}} -->
+					<!-- </li> -->
+
+					<li *ngFor="let user of usersList; let i = index"
+						[ngClass]=" {'bg-colo-grey': (user._id === selectedUserId || siteOwnerId)}">
+						<div (click)="messageBetweenMembers(user)" *ngIf="user._id!==loginUser">
+							<div class="online-box" *ngIf="user.onlineStatus"></div>
+							<div class="offline-box" *ngIf="!user.onlineStatus"></div>
+							<img src="{{user.profilePicture}}"
+								*ngIf="user.profilePicture && user.profilePicture !== 'null'" alt="" />
+							<img src="../../assets/images/noimage.png"
+								*ngIf="!user.profilePicture || user.profilePicture=='null'" />
+							<span style="color:white">{{user.firstName | titlecase}} {{user.lastName | titlecase}}
+								<!-- *ngIf="subscriptionList[i].blockedBy === loginUser" -->
+								<a data-toggle="dropdown" role="button" style="float:right; color: #FFF;"
+									*ngIf="subscriptionList[i]['blockedBy'] !== undefined && subscriptionList[i]['blockedBy'] === null || subscriptionList[i]['blockedBy'] === loginUser">...</a>
+								<ul class="dropdown-menu photo-drop-down">
+									<li *ngIf="!subscriptionList[i].isBlocked"
+										(click)="updateBlock(subscriptionList[i]._id, subscriptionList[i].isBlocked, user._id)">
+										<a class="openbtn">Block</a>
+									</li>
+									<li *ngIf="subscriptionList[i].isBlocked"
+										(click)="updateBlock(subscriptionList[i]._id, subscriptionList[i].isBlocked, user._id)">
+										<a class="openbtn">Unblock</a>
+									</li>
+								</ul>
+							</span>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="users-left-side bg-wt-color" *ngIf="leftMenu==='creategroup'"
+		[ngClass]="{'user-left-side-panel': selectedType}">
+
+		<form [formGroup]="groupForm" name="groupForm" (ngSubmit)="addNewGroup()">
+			<div class="profile-pic">
+				<div class="comment-upload box-02" style="width: auto">
+					<label for="pic" style="margin-left: 20px" class="add-img-new">
+						<img [src]="groupLogoPic" style="height:30px;width: 30px;"
+							*ngIf="groupLogoPic && groupLogoPic !== 'null'" alt="" />
+						<img style="height:30px;width: 30px;" src="../../assets/images/noimage.png"
+							*ngIf="!groupLogoPic || groupLogoPic=='null'" />
+					</label>
+					<span *ngIf="error">{{error}}</span>
+					<input style="width: 100%" type="file" accept="audio/*,video/*,image/*"
+						(change)='onFileChange($event)' max-size="max_file_size" max-files="10" class="inputfile-3 file"
+						(input)="enableSave()" name="file" />
+					<label>
+						<span>Add Photo</span>
+					</label>
+				</div>
+			</div>
+			<div class="search-user">
+				<input class="form-control" placeholder="Name this group" formControlName="groupName"
+					(input)="enableSave()" required />
+			</div>
+
+
+
+			<div class="list-users">
+				<div class="user-group">
+					<h4>Select Members</h4>
+					<ul>
+						<li *ngFor="let user of trunumsUsersList; let i = index">
+							<!-- <img src="{{user.profilePicture}}" />
+					<span>{{user.firstName}}</span> -->
+
+							<!-- <a (click)="profileRedirect(user._id,user.userName)"><img src="{{user.profilePicture}}"
+								*ngIf="user.profilePicture && user.profilePicture !== 'null'" alt="" />
+							  <img src="../../assets/images/noimage.png"
+								*ngIf="!user.profilePicture || user.profilePicture=='null'" /></a>
+								<a (click)="profileRedirect(user._id,user.userName)">
+										<h2>{{user.firstName}}
+										  {{user.lastName}}</h2>
+									  </a> -->
+							<div (click)="addMember(user)">
+								<img src="{{user.profilePicture}}"
+									*ngIf="user.profilePicture && user.profilePicture !== 'null'" alt="" />
+								<img src="../../assets/images/noimage.png"
+									*ngIf="!user.profilePicture || user.profilePicture=='null'" />
+								<span>{{user.firstName | titlecase}} {{user.lastName | titlecase}}
+								</span>
+							</div>
+							<a (click)="removeMember(i)" *ngIf="memberArray.indexOf(user._id)>-1" class="remove-icon">
+								<i class="fa fa-check" aria-hidden="true"></i>
+							</a>
+						</li>
+					</ul>
+				</div>
+				<div class="lift-side-foot">
+					<button type="submit" class="btn btn-common blue-border">Create</button>
+					<button type="button" (click)="creategroupFun('groups')" class="btn btn-common">Cancel</button>
+
+				</div>
+			</div>
+		</form>
+	</div>
+	<!-- users-left-side End -->
+	<!-- chat-content start -->
+	<div class="chat-content" #scrollBottom>
+		<app-toaster-container *ngIf="viewToast === true"></app-toaster-container>
+		<a class="lap-displat-none back-arrow" (click)="goToHomeScreen()"><i class='bx bx-arrow-back'></i></a>
+		<!-- <button (click)="showSuccessToaster()">Success</button> -->
+		<!-- <h2 *ngIf="selectedGroupName && !searchMsg">{{selectedGroupName | titlecase}}</h2> -->
+		<!-- <div></div> -->
+		<div *ngIf="selectedGroupName && !searchMsg" style="display: flex; align-items: center;">
+			<div class="img-user img-round">
+				<img style="width:50px;height:50px" src="{{ selectedProfilePicture }}"
+					*ngIf="selectedProfilePicture && selectedProfilePicture !== ''" alt="" />
+				<img style="width:50px;height:50px" src="../../assets/images/noimage.png"
+					*ngIf="!selectedProfilePicture || selectedProfilePicture === ''" />
+			</div>
+			<h2 style="padding-left: 8px;">{{selectedGroupName | titlecase}}</h2>
+		</div>
+
+		<h2 *ngIf="searchMsg">Search Results..</h2>	
+		<div class="chat-main-box" *ngIf="messageInfo && messageInfo.length>0">
+
+			<!-- user-chat start -->
+			<div class="user-chat" #scroll (wheel)="onScroll()">
+				<div class="days-chat mob-displat-none" *ngFor="let msg of messageInfo;">
+					<!-- <div class="img-user img-round"> -->
+						<!-- <img src="../../assets/images/my-poll.png" /> -->
+						<!-- <img style="width:50px;height:50px" src="{{msg.user.profilePicture}}"
+							*ngIf="msg.user.profilePicture && msg.user.profilePicture !== 'null'" alt="" />
+						<img style="width:50px;height:50px" src="../../assets/images/noimage.png"
+							*ngIf="!msg.user.profilePicture || msg.user.profilePicture=='null'" />
+					</div> -->
+					<div class="chat-msg">
+						<div class="name-date">
+
+							<h4 *ngIf="msg.user._id===loginUser" style="color:#3F93C2">
+								You
+								<!-- <span>At 10.30 am</span> -->
+								<span>{{msg.createdAt| datefromnow}}</span>
+							</h4>
+							<h4 *ngIf="msg.user._id!==loginUser">
+								{{msg.user.firstName | titlecase}} {{msg.user.lastName | titlecase}}
+								<span>{{msg.createdAt| datefromnow}}</span>
+
+
+							</h4>
+
+							<ul>
+								<li>
+									<img style="cursor: pointer;"
+										*ngIf="!(msg.likedBy) || (msg.likedBy && (msg.likedBy).indexOf(loginUser) === -1)"
+										src="../../assets/images/chat-icons/applause.svg" (click)="likeMessage(msg)" />
+									<img style="cursor: pointer;"
+										*ngIf="(msg.likedBy) && (msg.likedBy).indexOf(loginUser) > -1"
+										src="../../assets/images/chat-icons/applause.active.svg" /> </li>
+								<!-- (click)="likeMessage(msg._id)" -->
+								<li>
+									<img style="cursor: pointer;" src="../../assets/images/chat-icons/reply-ic.svg"
+										(click)="replyToMessage(msg._id, msg.message)" /> </li>
+								<li class="users-icons-two">
+									<!-- <a data-toggle="dropdown" class="add-users" role="button">
+								<img src="../../assets/images/chat-icons/forward-ic.svg" />
+							</a> -->
+									<div class="setting-page box-positions">
+										<a data-toggle="dropdown" class="add-users" role="button"
+											style="cursor: pointer;">
+											<img src="../../assets/images/chat-icons/forward-ic.svg" />
+
+										</a>
+
+										<div class="dropdown-menu" style="left:0px;">
+											<h4>Forward To</h4>
+											<ul class="user-list">
+												 <!-- Uncomment to forward to groups -->
+												<!-- <li *ngFor="let group of groupsList; let i = index">
+
+													<div (click)="addForwardMember(group)">
+														<img src="{{group.groupIcon}}" *ngIf="group.groupIcon && group.groupIcon !== 'null'" alt="" />
+														<img src="../../assets/images/noimage.png" *ngIf="!group.groupIcon || group.groupIcon==='null'" />
+														<span>{{group.groupName | titlecase}}
+														</span>
+													</div>
+													<a (click)="removeForwardMember(i)" *ngIf="memberArray.indexOf(group._id)>-1" class="remove-icon">
+														<i class="fa fa-check" aria-hidden="true"></i>
+													</a>
+												</li> -->
+												<li *ngFor="let user of usersList; let i = index">
+
+													<div (click)="addForwardMember(user)"
+														*ngIf="user._id !== selectedUserId">
+														<img style="cursor: pointer;" src="{{user.profilePicture}}"
+															*ngIf="user.profilePicture && user.profilePicture !== 'null'"
+															alt="" />
+														<img style="cursor: pointer;"
+															src="../../assets/images/noimage.png"
+															*ngIf="!user.profilePicture || user.profilePicture=='null'" />
+														<span>{{user.firstName | titlecase}}
+															{{user.lastName | titlecase}}
+														</span>
+													</div>
+													<a style="cursor: pointer;" (click)="removeForwardMember(i)"
+														*ngIf="memberArray.indexOf(user._id)>-1" class="remove-icon">
+														<i class="fa fa-check" aria-hidden="true"></i>
+													</a>
+												</li>
+
+											</ul>
+											<div class="lift-side-foot">
+												<button type="button" (click)="forwardMessage(msg._id)"
+													class="btn btn-common blue-border"
+													style="cursor: pointer;">Forward</button>
+												<button type="button" (click)="creategroupFun('groups')"
+													class="btn btn-common" style="cursor: pointer;">Cancel</button>
+
+											</div>
+										</div>
+									</div>
+
+
+
+
+								</li>
+								<li class="right-foot">
+									<div class="card-follow">
+										<a style="cursor: pointer;" [ngbPopover]="popContent" class="icon-follow"></a>
+										<ng-template #popContent>
+											<div>
+												<a style="cursor: pointer;" href="{{shareOrFollow(msg, 'whatsapp')}}"
+													data-action="share/whatsapp/share" class='whatsapp'>
+													<img src="../../assets/images/whats-app.svg" alt="whats-app">
+												</a>
+												<a style="cursor: pointer;" class='face-book'
+													(click)="shareOrFollow(msg, 'facebook')" target="_blank">
+													<img src="../../assets/images/fb-icon.svg" alt="fb-icon">
+												</a>
+												<a style="cursor: pointer;" (click)="shareOrFollow(msg, 'twitter')"
+													target="_blank" class='face-twitter'>
+													<img src="../../assets/images/twitter.svg" alt="twitter">
+												</a>
+												<a style="cursor: pointer;" class='face-envelope'
+													(click)="shareOrFollow(msg, 'envelope')" target="_blank">
+													<img src="../../assets/images/inbox.png" alt="inbox">
+												</a>
+											</div>
+										</ng-template>
+									</div>
+
+								</li>
+
+
+								<!-- </li> -->
+								<li>
+									<!-- <img src="../../assets/images/chat-icons/more.svg" /> -->
+									<a style="cursor: pointer;" (click)="openDeleteModal(msg)">
+										<!-- <img src="../../assets/images/deletec.png" /> -->
+										<i class='bx bx-trash' style="font-size: 18px;"></i>
+									</a>
+								</li>
+
+							</ul>
+						</div>
+
+						<div class="clear"></div>
+						<div>
+							<span *ngIf="msg.replyFor" style="border:1px solid #ccc">
+								{{msg.replyData.message}}
+								<br /> {{msg.replyData.user.firstName | titlecase}}
+								{{msg.replyData.user.lastName | titlecase}}
+								<span>{{msg.replyData.createdAt| datefromnow}}</span>
+							</span>
+							<p>{{msg.message}}</p>
+
+
+							<div class="preview clearfix" *ngIf="msg.files && msg.files.length>0">
+								<ul class="previewDatas based-roles flex-end">
+									<li *ngFor="let article of msg.files">
+										<!-- <img class="img-wdth-hgt" (click)="openImageModal(article.url)" style="vertical-align:middle" *ngIf="article.type === 'image/jpeg' || article.type === 'image/gif' || article.type=='image/jpg' || article.type=='image/png' || article.type=='image/tiff'" -->
+										<!-- src="{{article.url}}" /> -->
+										<img (click)="openImageFullScreen(article.url)" class="img-wdth-hgt"
+											style="vertical-align:middle"
+											*ngIf="article.type === 'image/jpeg' || article.type === 'image/gif' || article.type=='image/jpg' || article.type=='image/png' || article.type=='image/tiff'"
+											src="{{article.url}}" />
+										<audio preload="metadata"  controls *ngIf="(article.type).indexOf('audio')>-1"
+											style=" outline: none;">
+											<source src="{{(article.url)}}" type="{{(article.type)}}">
+										</audio>
+										<video preload="metadata" controls *ngIf="article.url!=null && (article.type).indexOf('video')>-1"
+											src="{{(article.url)}}" style="width: 549px; height: 412px; outline: none; background: black;"></video>
+										<span
+											*ngIf="article.url!=null && (article.type).indexOf('video')==-1 && (article.type).indexOf('audio')==-1 && (article.type).indexOf('image')==-1">{{ article.name }}
+											<a (click)="downloadFile(article)"
+												style="outline: none; cursor: pointer;">Download</a>
+										</span>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="days-chat lap-displat-none" data-toggle="modal" data-target=".bs-example-modal-sm"
+					(click)="getMessageDetails(msg)" *ngFor="let msg of messageInfo;">
+					<!-- <div class="img-user img-round">
+						<img style="width:50px;height:50px" src="{{msg.user.profilePicture}}"
+							*ngIf="msg.user.profilePicture && msg.user.profilePicture !== 'null'" alt="" />
+						<img style="width:50px;height:50px" src="../../assets/images/noimage.png"
+							*ngIf="!msg.user.profilePicture || msg.user.profilePicture=='null'" />
+					</div> -->
+					<div class="chat-msg">
+						<div class="name-date">
+
+							<h4 *ngIf="msg.user._id===loginUser" style="color:#3F93C2">
+								You
+								<!-- <span>At 10.30 am</span> -->
+								<span>{{msg.createdAt| datefromnow}}</span>
+							</h4>
+							<h4 *ngIf="msg.user._id!==loginUser">
+								{{msg.user.firstName | titlecase}} {{msg.user.lastName | titlecase}}
+								<span>{{msg.createdAt| datefromnow}}</span>
+
+
+							</h4>
+
+							<ul>
+								<li>
+									<img style="cursor: pointer;"
+										*ngIf="!(msg.likedBy) || (msg.likedBy && (msg.likedBy).indexOf(loginUser) === -1)"
+										src="../../assets/images/chat-icons/applause.svg" (click)="likeMessage(msg)" />
+									<img style="cursor: pointer;"
+										*ngIf="(msg.likedBy) && (msg.likedBy).indexOf(loginUser) > -1"
+										src="../../assets/images/chat-icons/applause.active.svg" /> </li>
+								<!-- (click)="likeMessage(msg._id)" -->
+								<li>
+									<img style="cursor: pointer;" src="../../assets/images/chat-icons/reply-ic.svg"
+										(click)="replyToMessage(msg._id, msg.message)" /> </li>
+								<li class="users-icons-two">
+									<!-- <a data-toggle="dropdown" class="add-users" role="button">
+								<img src="../../assets/images/chat-icons/forward-ic.svg" />
+							</a> -->
+									<div class="setting-page box-positions">
+										<a data-toggle="dropdown" class="add-users" role="button"
+											style="cursor: pointer;">
+											<img src="../../assets/images/chat-icons/forward-ic.svg" />
+
+										</a>
+
+										<div class="dropdown-menu" style="left:0px;">
+											<h4>Forward To</h4>
+											<ul class="user-list">
+												<li *ngFor="let user of usersList; let i = index">
+
+													<div (click)="addForwardMember(user)"
+														*ngIf="user._id !== selectedUserId">
+														<img style="cursor: pointer;" src="{{user.profilePicture}}"
+															*ngIf="user.profilePicture && user.profilePicture !== 'null'"
+															alt="" />
+														<img style="cursor: pointer;"
+															src="../../assets/images/noimage.png"
+															*ngIf="!user.profilePicture || user.profilePicture=='null'" />
+														<span>{{user.firstName | titlecase}}
+															{{user.lastName | titlecase}}
+														</span>
+													</div>
+													<a style="cursor: pointer;" (click)="removeForwardMember(i)"
+														*ngIf="memberArray.indexOf(user._id)>-1" class="remove-icon">
+														<i class="fa fa-check" aria-hidden="true"></i>
+													</a>
+												</li>
+
+											</ul>
+											<div class="lift-side-foot">
+												<button type="button" (click)="forwardMessage(msg._id)"
+													class="btn btn-common blue-border"
+													style="cursor: pointer;">Forward</button>
+												<button type="button" (click)="creategroupFun('groups')"
+													class="btn btn-common" style="cursor: pointer;">Cancel</button>
+
+											</div>
+										</div>
+									</div>
+
+
+
+
+								</li>
+								<li class="right-foot">
+									<div class="card-follow">
+										<a style="cursor: pointer;" [ngbPopover]="popContent" class="icon-follow"></a>
+										<ng-template #popContent>
+											<div>
+												<a style="cursor: pointer;" href="{{shareOrFollow(msg, 'whatsapp')}}"
+													data-action="share/whatsapp/share" class='whatsapp'>
+													<img src="../../assets/images/whats-app.svg" alt="whats-app">
+												</a>
+												<a style="cursor: pointer;" class='face-book'
+													(click)="shareOrFollow(msg, 'facebook')" target="_blank">
+													<img src="../../assets/images/fb-icon.svg" alt="fb-icon">
+												</a>
+												<a style="cursor: pointer;" (click)="shareOrFollow(msg, 'twitter')"
+													target="_blank" class='face-twitter'>
+													<img src="../../assets/images/twitter.svg" alt="twitter">
+												</a>
+												<a style="cursor: pointer;" class='face-envelope'
+													(click)="shareOrFollow(msg, 'envelope')" target="_blank">
+													<img src="../../assets/images/inbox.png" alt="inbox">
+												</a>
+											</div>
+										</ng-template>
+									</div>
+
+								</li>
+
+
+								<!-- </li> -->
+								<li>
+									<!-- <img src="../../assets/images/chat-icons/more.svg" /> -->
+									<a style="cursor: pointer;" (click)="openDeleteModal(msg)">
+										<!-- <img src="../../assets/images/deletec.png" /> -->
+										<i class='bx bx-trash' style="font-size: 18px;"></i>
+									</a>
+								</li>
+
+							</ul>
+						</div>
+
+						<div class="clear"></div>
+						<div>
+							<span *ngIf="msg.replyFor" style="border:1px solid #ccc">
+								{{msg.replyData.message}}
+								<br /> {{msg.replyData.user.firstName | titlecase}}
+								{{msg.replyData.user.lastName | titlecase}}
+								<span>{{msg.replyData.createdAt| datefromnow}}</span>
+							</span>
+							<p>{{msg.message}}</p>
+
+
+							<div class="preview clearfix" *ngIf="msg.files && msg.files.length>0">
+								<ul class="previewDatas based-roles flex-end">
+									<li *ngFor="let article of msg.files">
+										<!-- <img class="img-wdth-hgt" (click)="openImageModal(article.url)" style="vertical-align:middle" *ngIf="article.type === 'image/jpeg' || article.type === 'image/gif' || article.type=='image/jpg' || article.type=='image/png' || article.type=='image/tiff'" -->
+										<!-- src="{{article.url}}" /> -->
+										<img (click)="openImageFullScreen(article.url)" class="img-wdth-hgt"
+											style="vertical-align:middle"
+											*ngIf="article.type === 'image/jpeg' || article.type === 'image/gif' || article.type=='image/jpg' || article.type=='image/png' || article.type=='image/tiff'"
+											src="{{article.url}}" />
+										<audio preload="metadata" controls *ngIf="(article.type).indexOf('audio')>-1"
+											style="width: 300px; outline: none;">
+											<source src="{{(article.url)}}" type="{{(article.type)}}">
+										</audio>
+										<video preload="metadata" controls *ngIf="article.url!=null && (article.type).indexOf('video')>-1"
+											src="{{(article.url)}}" style="width: 230px; outline: none"></video>
+										<span
+											*ngIf="article.url!=null && (article.type).indexOf('video')==-1 && (article.type).indexOf('audio')==-1 && (article.type).indexOf('image')==-1">{{ article.name }}
+											<a (click)="downloadFile(article)"
+												style="outline: none; cursor: pointer;">Download</a>
+										</span>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+			<!-- user-chat End -->
+		</div>
+		<div class="chat-main-box" *ngIf="messageInfo && messageInfo.length===0 && enableChatOption">
+			<p style="margin: 20px 0 0;">No Messages</p>
+		</div>
+		<div class="clear"></div>
+	</div>
+
+	<div class="messages-box" *ngIf="enableChatOption">
+
+		<form [formGroup]="messageForm" name="messageForm" (ngSubmit)="addMessage()" (keyup.enter)="addMessage()">
+
+			<div class="preview clearfix" style="margin-top: -200px;">
+				<ul class="previewDatas clearfix">
+					<li *ngFor="let previewdata of urls; index as ind">
+						<!-- <img [src]="previewdata.url" *ngIf="previewdata.type.includes('image')" class="thumb"> -->
+						<!-- <audio controls [src]="previewdata.url" *ngIf="previewdata.type.includes('audio')"></audio> -->
+						<!-- <video controls [src]="previewdata.url" *ngIf="previewdata.type.includes('video')" width="150"></video> -->
+						<!-- <span *ngIf="!previewdata.type.includes('image') && !previewdata.type.includes('audio') && !previewdata.type.includes('video')">{{previewdata.name}}</span> -->
+
+						<!-- <div class="previewControlss"> -->
+						<!-- <span (click)="removeFile(i,ind)" class="circle remove"> -->
+						<!-- <i class="fa fa-close"></i> -->
+						<!-- </span> -->
+						<!-- </div> -->
+					</li>
+				</ul>
+
+			</div>
+
+			<!-- Normal message save -->
+
+			<div class="mess-text">
+				<!-- *ngIf="msgType!=='reply'" -->
+				<div>
+					<span *ngIf="replyMessage">{{replyMessage}}</span>
+					<textarea formControlName="message" (paste)="onPaste($event)" placeholder="Type a message..."
+						*ngIf="msgType!=='reply'"></textarea>
+					<textarea formControlName="message" placeholder="Type a Reply..."
+						*ngIf="msgType==='reply'"></textarea>
+
+					<!-- <div *ngIf="urls.length>0" class="preview clearfix">
+						<ul class="previewDatas based-roles comnts-post">
+							<li *ngFor="let data of urls; index as i">
+								<img [src]="data.url" *ngIf="data.type.includes('image')" class="thumb">
+								<audio controls [src]="data.url" *ngIf="data.type.includes('audio')"></audio>
+								<video controls [src]="data.url" *ngIf="data.type.includes('video')" width="150"></video>
+								<span *ngIf="!data.type.includes('image') && !data.type.includes('audio') && !data.type.includes('video')">{{data.url}}</span>
+							</li>
+						</ul>
+					</div> -->
+				</div>
+
+				<!-- <textarea formControlName="replyMessage" placeholder="Type a message..." ></textarea> -->
+
+			</div>
+
+			<div class="uplode-icons">
+				<ul>
+					<li>
+						<!-- <img  src="../../assets/images/chat-icons/camera-ic.svg" /> -->
+						<i (click)="takePhoto()" class='bx bx-camera' style="cursor: pointer;"></i></li>
+					<li>
+						<!-- <img src="../../assets/images/chat-icons/video-ic.svg" (click)="takeVideoAudio('video')" /> -->
+						<i (click)="takeVideoAudio('video')" class='bx bx-video' style="cursor: pointer;"></i>
+					</li>
+					<li>
+						<!-- <img src="../../assets/images/chat-icons/audio-ic.svg" (click)="takeVideoAudio('audio')" /> -->
+						<i (click)="takeVideoAudio('audio')" class='bx bx-microphone' style="cursor: pointer;"></i></li>
+					<li>
+						<div class="box comment-upload">
+							<!-- accept="audio/*,video/*,image/*" -->
+							<input type="file" (change)='onMessageFileChange($event)' class="inputfile-3 file" accept=""
+								name="file" multiple />
+							<label>
+								<span style="margin-left: 0 !important;">
+									<i class='bx bx-paperclip' style="cursor: pointer;"></i>
+									<!-- <img src="../../assets/images/chat-icons/attachment-ic.svg" /> -->
+								</span>
+							</label>
+						</div>
+						<!-- <img src="../../assets/images/chat-icons/attachment-ic.svg" /> -->
+					</li>
+
+					<li>
+						<button type="submit" class="btn-bg-white" style="cursor: pointer;">
+							<img src="../../assets/images/chat-icons/send.svg" />
+						</button>
+					</li>
+
+
+				</ul>
+			</div>
+			<div class="clear"></div>
+			<div class="clear"></div>
+		</form>
+	</div>
+	<div class="messages-box" *ngIf="enableChatOption === false && blockedBy === loginUser">
+		<p style="margin-top: 18px; margin-left: 10px;">This user is blocked</p>
+	</div>
+</div>
+<!-- chat-content End -->
+<!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-sm">Small modal</button> -->
+
+<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+	<div class="modal-dialog modal-sm shere-options" role="document">
+		<div class="modal-content shere-box">
+			<ul>
+				<li> <img style="cursor: pointer;" src="../../assets/images/chat-icons/applause.svg"
+						(click)="likeMessage(messageMobile)" />Applause</li>
+				<!-- <li *ngIf="messageMobile && messageMobile.likedBy">
+			<img style="cursor: pointer;" *ngIf="(messageMobile.likedBy) && (messageMobile.likedBy).indexOf(loginUser) > -1" src="../../assets/images/chat-icons/applause.active.svg"/></li> -->
+				<li (click)="replyToMessage(messageMobile._id, messageMobile.message)"><img style="cursor: pointer;"
+						src="../../assets/images/chat-icons/reply-ic.svg" />Reply</li>
+				<li (click)="siderbarOne = !siderbarOne; enableForwardOption()" data-dismiss="modal"> <img
+						src="../../assets/images/chat-icons/forward-ic.svg" />Forward</li>
+				<li (click)="shareOrFollow(messageMobile, 'facebook')"> <img src="../../assets/images/fb-icon.svg"
+						alt="fb-icon">Facebook</li>
+				<li (click)="shareOrFollow(messageMobile, 'envelope')"> <img src="../../assets/images/inbox.png"
+						alt="inbox"> Envelope</li>
+				<li (click)="shareOrFollow(messageMobile, 'twitter')"> <img src="../../assets/images/twitter.svg"
+						alt="twitter">Twitter</li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<!-- <div *ngIf="loading" id="loaderDiv">
+	<img src="../../assets/images/loading.gif" class="ajax-loader" />
+</div> -->

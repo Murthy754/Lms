@@ -1,0 +1,90 @@
+<div class="trunums-invitation-subscriptons">
+  <div class="modal-header">
+    <button type="button" class="close" (click)="closeTrunumsModal()">
+      <img src="../../assets/images/canceld.png" alt="" srcset="">
+    </button>
+    <h4 class="modal-title">Invite Subscribers</h4>
+  </div>
+  <div class="modal-body">
+    <ul class="nav nav-tabs">
+      <li [ngClass]="{active: currentTrunumUsersTab === 'trunumusers' }" (click)="changeCurrentTab('trunumusers')">
+        <a>TRUNUMS USERS</a>
+      </li>
+      <li [ngClass]="{active: currentTrunumUsersTab === 'emailinvite' }" (click)="changeCurrentTab('emailinvite')">
+        <a>Email-invite</a>
+      </li>
+    </ul>
+    <div class="tab-content">
+      <!-- trunum users -->
+      <div class="tab-pane fade in active">
+        <div *ngIf="currentTrunumUsersTab === 'trunumusers'">
+          <ul class="trunum-selected-items">
+            <li *ngFor="let user of selectTrunumuser; let i = index">
+              <img src="../../assets/images/profiles.png" alt="" srcset="">
+              <span class="text">{{user.firstName}} {{user.lastName}}</span>
+              <span class="right">
+                <a (click)="removeUserFromSelection(i)">&times;</a>
+              </span>
+            </li>
+          </ul>
+          <div class="mg-lft">
+            <input type="text" (input)="textChanged($event.target.value)" placeholder="Type a Name">
+          </div>
+          <div class="emailerrormsg" *ngIf="userErrorMsg">{{userErrorMsg}}</div>
+          <div class="brdr-btms"></div>
+          <ul class="mdl-ul">
+            <li class="mdl-bg-li">Search Results</li>
+            <li *ngFor="let user of users" (click)="selectTrunumsInvite(user)">
+              <input type="checkbox" />
+              <div class="mdl-img img-round">
+                <img src="{{user.profilePicture}}" *ngIf="user.profilePicture && user.profilePicture !== 'null'" />
+                <img src="../../assets/images/noimage.png"
+                  *ngIf="!user.profilePicture || user.profilePicture === 'null'" />
+              </div>
+              <div class="mdl-text-one">
+                <p>{{user.firstName}} {{user.lastName}}</p>
+                <p class="clr">
+                  <img src="../../assets/images/lctnd.png" alt="" srcset="">{{user.address.country}}</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div *ngIf="currentTrunumUsersTab === 'emailinvite'">
+          <div class="mg-lft inline-display">
+            <input class="widthchng" type="email" placeholder="Type Email" [(ngModel)]="inviteemail">
+            <img type="submit" (click)="adduserinvite(inviteemail)" src="../../assets/images/plus-sub.png" alt="" />
+          </div>
+          <div class="emailerrormsg" *ngIf="emailErrorMsg">{{emailErrorMsg}}</div>
+          <div class="brdr-btms"></div>
+          <ul class="trunum-selected-items">
+            <li *ngFor='let email1 of addinvite;let i = index'>
+              <img src="../../assets/images/profiles.png" alt="" srcset="">
+              <span class="text">{{email1}}</span>
+              <span class="right">
+                <a (click)="removeEmailFromSelection(i)">&times;</a>
+              </span>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+
+      <!-- email invite -->
+
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-default" (click)="closeTrunumsModal()">CANCEL</button>
+      <button type="submit" class="btn btn-info btn-blue" [ngClass]="{'btn-blue': (selectTrunumuser.length !==0 || addinvite.length !== 0) }"        
+        (click)="inviteTrunumsModal()">INVITE</button>
+    </div>
+  </div>
+</div>
+<!-- <div *ngIf="loading" id="loaderDiv">
+  <img src="../../assets/images/loading.gif" class="ajax-loader" />
+</div> -->
+
+<style>
+  a {
+    cursor: pointer;
+  }
+</style>

@@ -1,0 +1,85 @@
+.bg-colo-grey{
+    background: grey;
+}
+
+.box-positions {
+    position: relative;
+}
+.groupIcon{
+    width: 80px;
+    height: 80px;
+    border-radius: 50px;
+}
+.right-foot .card-follow .popover-body {
+        padding: 5px 10px !important;
+        a {
+            padding: 0 5px
+    }
+}
+.whatsapp, .face-book, .face-twitter, .face-envelope {
+    padding:10px;
+    float: left;
+}
+
+.toast.toast-success {
+	position: absolute;
+	top: 0;
+
+}
+
+.edit-group-icon {
+	float: left;
+	width: 100%;
+	text-align: left;
+	position: relative;
+
+	.edit-link {
+		float: right;
+		background: none;
+		font-size: 20px;
+		position: absolute;
+		right: 0;
+top: 6px;
+cursor: pointer;
+	}
+	.groupIcon {
+		width: 40px;
+		height: 40px;
+		float: left;
+	}
+	h4 {
+		float: left;
+		width: 185px;
+		margin: 7px 0 0 10px;
+	}
+}
+
+
+.edit-photo:hover {
+	color:#337ab7;
+}
+.modal-dialog.modal-sm.shere-options {
+	.modal-content{
+		border-radius: 15px 15px 0 0;
+	}
+	height: auto;
+bottom: 0;
+position: absolute;
+left: 0;
+right: 0;
+margin: 0 auto;
+ul {
+
+	width: 100%;
+padding: 20px 10px 0;
+li {
+	cursor: pointer;
+	padding: 10px 9px;
+	img {
+		margin-right: 20px;
+	}
+}
+}
+}
+
+

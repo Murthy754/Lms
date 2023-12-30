@@ -1,0 +1,72 @@
+//CSS for notifications page
+.notifications
+{
+  .heading-text
+  {
+    font-size:15px;
+    font-weight:bold;
+    color:#000;
+  }
+  a{
+    color:#3F93C2;
+  }
+  .notification-list
+  {
+    margin-top:10px;
+  }
+  .notification-box
+  {
+    padding:15px;
+    float:left;
+    width:100%;
+    border-bottom:solid #c9c9c9 1px;
+
+    .img-left
+    {
+      .img-round
+      {
+        width: 60px;float:left;
+        background: none;
+      }
+      .Arthur-box
+      {
+        width: 70%;float:left;padding:5px;
+      }
+      .date-time-new
+      {
+        margin-top:5px;
+        font-size: 11px;
+        color: #656565;
+        font-weight: 600;
+      }
+      .Action-box
+      {
+        float:right;
+        padding:15px;
+      }
+    }
+
+
+  }
+  .hover-visible-text
+  {
+    font-size: 11px;
+    color:#656565;
+    visibility: hidden;
+  }
+  .notification-box:hover
+  {
+    .hover-visible-text {
+      visibility: visible;
+    }
+  }
+  .unread-notification
+  {
+    background:white;
+    //font-weight:600;
+  }
+  .read-notification
+  {
+    background: none;
+  }
+}

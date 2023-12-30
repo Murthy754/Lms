@@ -1,0 +1,100 @@
+<h1 mat-dialog-title class="text-center mb-20">Add/Search user and groups</h1>
+<div mat-dialog-content>
+  <mat-form-field style="width: 100%;">
+    <input matInput placeholder="Add user and groups" (input)="onSearch($event.target.value)" autocomplete="off">
+  </mat-form-field>
+
+  <!-- List of users and groups starts-->
+  <div class="groups-div">
+    <mat-chip-list>
+      <mat-chip
+        *ngFor="let group of selectedGroups; let i = index">
+        <img src="{{group.groupIcon}}" *ngIf="group.groupIcon && group.groupIcon !== 'null'" alt=""/>
+        <img src="../../assets/images/noimage.png" *ngIf="!group.groupIcon || group.groupIcon=='null'"/>
+        {{group.groupName | titlecase}}
+        <mat-icon matChipRemove (click)="removeSelectedItem(i, 'group')">x</mat-icon>
+      </mat-chip>
+    </mat-chip-list>
+    <!-- <ul>
+      <li *ngFor="let group of selectedGroups; let i = index">
+        <div>
+          <img src="{{group.groupIcon}}" *ngIf="group.groupIcon && group.groupIcon !== 'null'" alt=""/>
+          <img src="../../assets/images/noimage.png" *ngIf="!group.groupIcon || group.groupIcon=='null'"/>
+          <span style="color:black"> {{group.groupName | titlecase}} </span>
+          <div class="close-icon" (click)="removeSelectedItem(i, 'group')">
+            <img src="../../../../assets/images/close-model.png" alt="close">
+          </div>
+        </div>
+      </li>
+    </ul> -->
+  </div>
+
+
+  <div class="users-div">
+    <mat-chip-list>
+      <mat-chip
+        *ngFor="let user of selectedPeoples; let i = index">
+        <div *ngIf="user._id !== loginUser">
+          <img src="{{user.profilePicture}}"
+            *ngIf="user.profilePicture && user.profilePicture !== 'null'" alt="" />
+          <img src="../../assets/images/noimage.png"
+            *ngIf="!user.profilePicture || user.profilePicture === 'null'" />
+          <span style="color:black"> {{user.firstName | titlecase}} {{user.lastName | titlecase}} </span>
+        </div>
+        <mat-icon matChipRemove (click)="removeSelectedItem(i, 'people')">x</mat-icon>
+      </mat-chip>
+    </mat-chip-list>
+    <!-- <ul>
+      <li *ngFor="let user of selectedPeoples; let i = index">
+        <div *ngIf="user._id !== loginUser">
+          <img src="{{user.profilePicture}}"
+            *ngIf="user.profilePicture && user.profilePicture !== 'null'" alt="" />
+          <img src="../../assets/images/noimage.png"
+            *ngIf="!user.profilePicture || user.profilePicture === 'null'" />
+          <span style="color:black"> {{user.firstName | titlecase}} {{user.lastName | titlecase}} </span>
+		      <div class="close-icon" (click)="removeSelectedItem(i, 'people')">
+			      <img src="../../../../assets/images/close-model.png" alt="close">
+		      </div>
+        </div>
+      </li>
+    </ul> -->
+  </div>
+  <div class="groups-div">
+    <ul>
+      <li *ngFor="let group of groupsFiltered; let i = index">
+        <div (click)="addToShare(group, 'group')">
+          <img src="{{group.groupIcon}}" *ngIf="group.groupIcon && group.groupIcon !== 'null'" alt=""/>
+          <img src="../../assets/images/noimage.png" *ngIf="!group.groupIcon || group.groupIcon=='null'"/>
+          <span style="color:black"> {{group.groupName | titlecase}} </span>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div class="users-div">
+    <ul>
+      <li *ngFor="let user of peoplesFiltered; let i = index">
+        <div (click)="addToShare(user, 'people')" *ngIf="user._id !== loginUser">
+          <img src="{{user.profilePicture}}"
+            *ngIf="user.profilePicture && user.profilePicture !== 'null'" alt="" />
+          <img src="../../assets/images/noimage.png"
+            *ngIf="!user.profilePicture || user.profilePicture === 'null'" />
+          <span style="color:black"> {{user.firstName | titlecase}} {{user.lastName | titlecase}} </span>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <!-- List of users and groups end -->
+
+  <!-- Selected list div starts -->
+
+
+
+  <!-- Selected list div ends -->
+
+</div>
+<div mat-dialog-actions>
+  <div class="text-center footer-btn">
+	<button type="button" class="btn btn-danger" (click)="onNoClick()">Cancel</button>
+    <button type="submit" class="btn btn-primary" cdkFocusInitial (click)="onShareClick()">Share</button>
+  </div>
+</div>

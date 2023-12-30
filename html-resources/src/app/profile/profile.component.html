@@ -1,0 +1,608 @@
+<!-- <div *ngIf="loading" id="loaderDiv">
+    <img src="../../assets/images/loading.gif" class="ajax-loader" />
+</div> -->
+<div class="container">
+    <google-ad [adType]="'home'" *ngIf="displayAds"></google-ad>
+    <div class="row">
+        <div class="col-lg-3 col-md-3 my-hidden">
+            <div class="row">
+                <div class="margin-left">
+                    <div class="ledt-menu">
+                        <div class="categori subsc-poll">
+                            <h2 *ngIf="subscriberlist.length != 1">You have
+                                <span style="font-size: 14px;color: #656565;"> {{subscriberlist.length}} Subscribers in <b>{{location==='current'? currentCountry:location}}</b></span>
+                            </h2>
+                            <h2 *ngIf="subscriberlist.length == 1">You have
+                                    <span style="font-size: 14px;color: #656565;">{{subscriberlist.length}} Subscriber in <b>{{location==='current'? currentCountry:location}}</b></span>
+                            </h2>
+
+                            <ul>
+                                <ul>
+                                    <li>
+                                        <a (click)="changeSubscribers(0)">Subscribers({{subscriberlist.length}})
+                                            <span *ngIf="getStautsPending()"></span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a (click)="changeSubscribers(1)">Subscriptions({{subscriptions.length}})</a>
+                                    </li>
+                                    <li>
+                                        <a (click)="changeSubscribers(2)">Messenger Contacts ({{ messageRequestList.length}})</a>
+                                    </li>
+                                </ul>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="invite-people">
+                        <p>Invite people to Subscribe you.</p>
+                        <button type="button" class="sign-in" (click)="trunumsSubscriptions()">Invite
+                            Subscriber</button>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            </div>
+        </div>
+        <div style="top: 277px" class="col-lg-2 col-md-3 dis-xs-none">
+                <div class="row">
+                        <div style="min-height: 86vh; vertical-align: top; width: 100%;">
+                          <div id="sidebar2" class="" [ngClass]="{'width-wrapper':isWrapperStiky}">
+                            <div class="margin-right margin-top-30">
+                              <div class="ledt-menu">
+                                <div class="categori catagori-new">
+                                  <h2>Categories</h2>
+                                  <div class="cata-search">
+                                    <input type="text" (input)="SearchPolls($event.target.value)" placeholder="Search" />
+                                    <i class="demo-icon icon-search-1">&#xe803;</i>
+                                  </div>
+                                  <div class="cata-second">
+                                    <ul>
+                                      <li *ngFor="let item of categoryfilter;let i = index">
+                                        <a>
+                                          {{item.name}}
+                                          <i (click)="removecategoryPolls(item,i)" class="demo-icon icon-cancel-1">&#xe802;</i>
+                                        </a>
+                                      </li>
+                                    </ul>
+                                  </div>
+                                  <ul style="max-height:400px;overflow:auto">
+                                    <li *ngFor="let item of categoryInfo;let i = index">
+                                      <a tabindex="0" (click)="filterPolls(item,i)">
+                                        {{item.name}}</a>
+                                    </li>
+                                  </ul>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="clear"></div>
+                      </div>
+
+        </div>
+        <div class="col-lg-7 col-md-7 col-sm-10 col-xs-12">
+            <div class="row">
+                <div class="margin-left-right margin-top-30" *ngIf="!profileedit">
+                    <div class="card-main-02">
+                        <div class="profile-pic">
+                            <a>
+                                <img [src]="profilePicture" *ngIf="profilePicture && profilePicture !== 'null'"
+                                    alt="" />
+                                <img src="../../assets/images/noimage.png"
+                                    *ngIf="!profilePicture || profilePicture=='null'" />
+                            </a>
+                        </div>
+                        <div class="profile-cont">
+                            <a *ngIf="!isOwner" (click)="edit()" class="edit-link">
+                                <img src="../../assets/images/edit-icon.png" alt="edit" />
+                            </a>
+                            <h2>{{EditProfile.controls['firstName'].value}} {{EditProfile.controls['lastName'].value}}
+                            </h2>
+                            <h3 *ngIf="!isOwner">{{userName}}</h3>
+                            <ul>
+                                <li>
+                                    <img src="../../assets/images/email-icon.png" alt="email" />
+                                    <span>{{email}}</span>
+                                </li>
+                                <li>
+                                    <img src="../../assets/images/map-icon.png" alt="map" />
+                                    <span>{{countryname}}</span>
+                                </li>
+                                <li *ngIf="phone">
+                                    <img src="../../assets/images/verified-mobile.png" matTooltip="Verified Phone" width="20px" height="20px"/>
+                                    <span>
+                                        {{ phone }} 
+                                        <img src="../../assets/images/editimage.png" matTooltip="Edit phone number" alt="edit" (click)="editNumber()" style="display: inline-block; float: none; margin-left: 10px; cursor: pointer; margin-bottom: 4px;"/>
+                                        <img src="../../assets/images/delete-icon.jpg" matTooltip="Delete phone number" (click)="deleteNumber()" style="display: inline-block; float: none; cursor: pointer; margin-bottom: 4px;"/>
+                                    </span>
+                                </li>
+                                <li *ngIf="!phone">
+                                    <button (click)="addPhoneNumber()" class="sign-in">Add phone number</button>
+                                </li>
+                                <li>
+                                    <button class="btn btn-danger" (click)="removeSubscription()" *ngIf="privateSite && (isOwner === false)">Unsubscribe from {{siteName}}</button>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="margin-left-right margin-top-30" *ngIf="profileedit">
+                    <form [formGroup]="EditProfile" (ngSubmit)="profileSave()" novalidate>
+                        <div class="card-main-02 poll-edit-main">
+                            <div class="profile-pic">
+                                <label for="pic" class="add-img-new">
+                                    <img [src]="profilePicture" *ngIf="profilePicture && profilePicture !== 'null'"
+                                        alt="" />
+                                    <img src="../../assets/images/noimage.png"
+                                        *ngIf="!profilePicture || profilePicture=='null'" />
+                                </label>
+                                <div class="comment-upload box-02">
+                                    <input type="file" (change)='onFileChange($event)' class="inputfile-3 file"
+                                        accept="image/*" name="file" />
+                                    <label>
+                                        <img src="../../assets/images/editimage.png">
+                                        <span style="color:black">Edit</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="profile-cont">
+                                <button type="submit" class="edit-link">SAVE</button>
+                                <div class="form-edit-poll">
+                                    <div class="form-group">
+                                        <input type="text" name="firstName" maxlength="250" placeholder="First Name"
+                                            minlength="3" maxlength="35" class="form-control"
+                                            formControlName="firstName" required capitalize-first />
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" name="lastName" formControlName="lastName" maxlength="250"
+                                            placeholder="Last Name" minlength="3" maxlength="35" class="form-control"
+                                            required capitalize-first />
+                                    </div>
+                                    <ul>
+                                        <li>
+                                            <img src="../../assets/images/email-icon.png" alt="email" />
+                                            <span>{{myInfo[0].email}}</span>
+                                        </li>
+                                    </ul>
+                                    <div class="form-group">
+                                        <div class="select-style sing-up-style">
+                                            <ng-select [items]="countries" bindLabel="name"
+                                                [ngModelOptions]="{standalone: true}" [(ngModel)]="country"
+                                                placeholder="Select city">
+                                            </ng-select>
+                                        </div>
+                                    </div>
+                                    <ul *ngIf="phone">
+                                        <li>
+                                            <img src="../../assets/images/verified-mobile.png" alt="Phone veriried" width="15px" height="15px"/>
+                                            <span>{{ phone }}</span>
+                                        </li>
+                                    </ul>
+                                    <div>
+                                    </div>
+                                    <p *ngIf="EditProfile.controls['firstName'].errors?.pattern && EditProfile.controls['firstName'].dirty"
+                                        class="error-msg">
+                                        Please enter valid First Name
+                                    </p>
+                                    <p *ngIf="EditProfile.controls['firstName'].errors?.minlength" class="error-msg">
+                                        First Name : Maximum length is 35 characters</p>
+                                    <p *ngIf="EditProfile.controls['firstName'].errors?.maxlength" class="error-msg">
+                                        First Name : Minimum length is 3 characters</p>
+                                    <p *ngIf="EditProfile.controls['lastName'].errors?.pattern && EditProfile.controls['lastName'].dirty"
+                                        class="error-msg">Please enter valid Last Name</p>
+                                    <p *ngIf="EditProfile.controls['lastName'].errors?.minlength" class="error-msg">Last
+                                        Name : Maximum length is 35 characters</p>
+                                    <p *ngIf="EditProfile.controls['lastName'].errors?.maxlength" class="error-msg">Last
+                                        Name : Minimum length is 3 characters</p>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="clear"></div>
+                <div class="margin-left-right tabs-menu margin-top-30">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li role="presentation" id="mypolls" [ngClass]="{tabactiveclass : currentTab === 'mytopics'}">
+                            <a (click)="onChangeTab('mytopics')">Topics</a>
+                        </li>
+                        <li role="presentation" [ngClass]="{tabactiveclass : currentTab === 'myvotes'}">
+                            <a (click)="onChangeTab('myvotes')">Votes</a>
+                        </li>
+                        <li role="presentation" [ngClass]="{tabactiveclass : currentTab === 'myfeed'}">
+                            <a (click)="onChangeTab('myfeed')">Feed</a>
+                        </li>
+                        <!-- <li role="presentation" [ngClass]="{tabactiveclass : currentTab === 'mystreams'}">
+                            <a (click)="onChangeTab('mystreams')">Livestreams</a>
+                        </li> -->
+                    </ul>
+                    <div class="tab-right navbar-right">
+                            <div class="dropdown custom-state-list">
+                                <a data-toggle="dropdown">
+                                    <i class="fa fa-angle-down"></i>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li stop-propagation="click">
+                                        <input class="form-control" type="text" [(ngModel)]="searchKey" (input)="getFilterConutries($event.target.value)" autocomplete="off" />
+                                        <i class="demo-icon icon-search-1">&#xe803;</i>
+                                    </li>
+                                    <li>
+                                        <ng-container *ngFor="let item of tempCountryList">
+                                            <a (click)="locationChange(item.name,1);">{{item.name}}</a>
+                                        </ng-container>
+                                    </li>
+                                </ul>
+                            </div>
+                        <a id="loc" class="border-rad-left" [ngClass]="{'active': location !='world' }"
+                            (click)="locationChange(currentCountry,1);setpageNo()">{{currentCountry}}</a>
+                        <a id="world" class="world-select" [ngClass]="{'active': location =='world' }" (click)="
+                        locationChange('world',1);setpageNo()" class="">World </a>
+                    </div>
+                    <div class="m-categ-btn">
+                            <a href="#" class="sign-in" data-toggle="modal" data-target="#myModal2">Categories
+                             (21)</a>
+                    </div>
+                </div>
+                <div class="clear"></div>
+                <div class="col-lg-12">
+                    <div class="row">
+                        <div *ngIf="currentTab == 'mytopics'">
+                            <div class="clear"></div>
+                            <!-- mypollsinfo lenght ===0 -->
+                            <div class="margin-top-10" *ngIf="currentTab == 'mytopics'">
+                                <div *ngIf="PollList && PollList.length===0" class="no-poll-dtls text-center">
+                                    <img src="../../assets/images/no-polls-details.png" alt="" />
+                                    <h2 class="nopolls">There are no topics here yet.
+                                        <br>
+                                        <a (click)="createNewTopic()" class="no-position">Create</a> a Topic now.</h2>
+                                </div>
+
+                                <div *ngIf="PollList &&  PollList.length>0">
+                                    <div class="margin-left-right inifinite-box">
+                                        <div *ngFor="let pollData of PollList">
+                                            <app-pollinfo [poll]="pollData" [coutry]="pollCoutry"
+                                                [urlLocation]="location"></app-pollinfo>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="pollss" *ngIf="currentTab == 'myvotes'">
+                            <div class="main-my-votes">
+                                <!-- votes.lenght === 0 -->
+                                <div class="poll-qus margin-top-10" *ngIf="VotesInfoGroup && VotesInfoGroup.length === 0">
+                                    <div class="no-poll-dtls text-center">
+                                        <img src="../../assets/images/no-polls-details.png" alt="" />
+                                        <h2 class="nopolls">You have no votes to display
+                                        </h2>
+                                    </div>
+                                </div>
+                                <div class="clear"> </div>
+                                <div *ngFor="let value of VotesInfoGroup;let mainindex=index">
+                                    <div class="days-box margin-top-30">
+                                        <span>{{ value.createdAt | datefromnow }}</span>
+                                    </div>
+                                    <div class="clear"></div>
+                                    <div *ngFor="let vote of value.values;let ind=index"
+                                        [ngClass]="(vote.poll.status === 'Expired')? 'card-box margin-top-20 poll-expired' : 'card-box margin-top-20' ">
+                                        <div class="img-left profile-hover-details" id="vf{{ind}}" *ngIf="vote.pollster">
+                                            <div class=" img-round" *ngIf="vote.pollster">
+                                                <a class="dropdown-toggle" data-toggle="dropdown"
+                                                    ui-sref="root.profile({tab: 'mytopics'})"
+                                                    *ngIf="(vote.pollster[0].userStatus !== 'InActive' && vote.pollster[0].userStatus !== 'Blocked')">
+                                                    <img src="{{vote.pollster[0].profilePicture}}"
+                                                        alt="{{vote.pollster[0].profilePicture}}"
+                                                        *ngIf="vote.pollster[0].profilePicture" />
+                                                    <img src="../../assets/images/noimage.png"
+                                                        *ngIf="!vote.pollster[0].profilePicture" />
+                                                </a>
+
+                                                <a class="dropdown-toggle" data-toggle="dropdown"
+                                                    *ngIf="(vote.pollster[0].userStatus === 'InActive' || vote.pollster[0].userStatus === 'Blocked')">
+                                                    <img src="../../assets/images/noimage.png">
+                                                </a>
+                                            </div>
+                                            <div class="Arthur-box" *ngIf="vote.pollster">
+                                                <a (click)="navtoProfile()"
+                                                    *ngIf="userId === vote.pollster[0].id && (vote.pollster[0].userStatus !== 'InActive' && vote.pollster[0].userStatus !== 'Blocked')">
+                                                    <h4>{{vote.pollster[0].firstName +" "+ vote.pollster[0].lastName}} 
+                                                        <a *ngIf="auth.isLoggedIn() && vote.poll.verifiedVote" title="Verified Vote">
+                                                            <img src="../../assets/images/verified-mobile.png" width="30px" height="30px" style="margin: 0px 5px;" class="verified-vote-profile"/>
+                                                        </a>
+                                                    </h4>
+                                                </a>
+                                                <a (click)="navtoUserProfile(vote.pollster[0].userName)"
+                                                    *ngIf="userId !== vote.pollster[0].id && (vote.pollster[0].userStatus !== 'InActive' && vote.pollster[0].userStatus !== 'Blocked')">
+                                                    <h4>{{vote.pollster[0].firstName +" "+ vote.pollster[0].lastName}}
+                                                        <a *ngIf="auth.isLoggedIn() && vote.poll.verifiedVote" title="Verified Vote" class="verified-vote-one">
+                                                            <img src="../../assets/images/verified-mobile.png" width="30px" height="30px" style="margin: 0px 5px;" class="verified-vote-profile"/>
+                                                        </a>
+                                                    </h4>
+                                                </a>
+                                                
+                                                <a
+                                                    *ngIf="(vote.pollster[0].userStatus === 'InActive' || vote.pollster[0].userStatus === 'Blocked')">
+                                                    <h4>TruNums user</h4>
+                                                </a>
+                                                <div class="date-time-new">{{vote.createdAt | datefromnow}}</div>
+                                                <h3 class="questionword">
+                                                    {{vote.poll.question}}</h3>
+                                                <br>
+                                                <h3 *ngIf="vote.poll.privateSite" class="questionword">
+                                                    <span>Topic Created For {{vote.poll.createdFor.siteName}}</span>
+                                                </h3>
+                                                <div class="votes-main">
+                                                    <div *ngIf="vote.poll.pollOptionsType =='Choice'">
+                                                        <div *ngFor="let Option of vote.poll.pollOptions">
+                                                            <div class="yes-vote">
+                                                                <a (click)="votesss(Option, vote,ind,mainindex)"
+                                                                    [ngClass]="{'active' : vote.result === Option}">
+                                                                    <i class="demo-icon icon-ok-circled2">&#xe800;</i>
+                                                                    <!--   added this line to resolve 12942 bug -->
+                                                                    <span
+                                                                        *ngIf="Option.toLowerCase() !== 'dont know'">{{Option}}</span>
+                                                                    <span
+                                                                        *ngIf="Option.toLowerCase() === 'dont know'">DON'T
+                                                                        KNOW</span>
+                                                                </a>
+                                                                <div class="clear"></div>
+                                                                <ng-container>
+                                                                    <p
+                                                                        *ngIf="location !== 'current' && vote.poll.pollCastCountByAnswer[Option]">
+                                                                        {{ vote.poll.pollCastCountByAnswer[Option] }}
+                                                                    </p>
+                                                                    <p
+                                                                        *ngIf="location !== 'current' && !vote.poll.pollCastCountByAnswer[Option]">
+                                                                        {{0}}
+                                                                    </p>
+                                                                </ng-container>
+                                                                <ng-container>
+                                                                    <p
+                                                                        *ngIf="location === 'current' && vote.poll.targetCountryCountByAnswer[Option]">
+                                                                        {{vote.poll.targetCountryCountByAnswer[Option] }}
+                                                                    </p>
+                                                                    <p
+                                                                        *ngIf="location === 'current' && !vote.poll.targetCountryCountByAnswer[Option]">
+                                                                        {{0}}
+                                                                    </p>
+                                                                </ng-container>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                    <div *ngIf="vote.poll.pollOptionsType == 'Slider'">
+                                                        <div class=" slider-full">
+                                                            <div class="slider-low">
+                                                                <p>
+                                                                    {{vote.poll.pollOptions[0]}}
+                                                                </p>
+                                                            </div>
+                                                            <div class="slider-high">
+                                                                <p>
+                                                                    {{vote.poll.pollOptions[1]}}
+                                                                </p>
+                                                            </div>
+                                                            <ng5-slider [(value)]="vote.result"
+                                                                (userChangeEnd)="updateSlider($event,vote,ind,mainindex)" [options]="options">
+                                                            </ng5-slider>
+                                                            <p style="text-align: center"
+                                                                *ngIf="vote.poll.pollOptionsType=='Slider'">
+                                                                <span *ngIf="location !== 'current'"
+                                                                    style="color:#5F93B9">{{vote.poll.pollCastCountByAnswer[vote.result] ? vote.poll.pollCastCountByAnswer[vote.result] : 0 }}</span>
+                                                                <span *ngIf="location === 'current'"
+                                                                    style="color:#5F93B9">{{vote.poll.targetCountryCountByAnswer[vote.result] ? vote.poll.targetCountryCountByAnswer[vote.result] : 0 }}</span>
+                                                                people
+                                                                voted for level {{vote.result}}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    <!-- votes-main End-->
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card-right" *ngIf="vote.pollster">
+                                            <div class="flog-top">
+                                                <span *ngIf="userId === vote.poll.pollster">
+                                                    <a ui-sref="root.editform.start({pollId: vote.poll._id })"
+                                                        class="polledit" (click)="editButton(vote.poll._id)">Edit</a>
+                                                </span>
+                                                <span *ngIf="userId === vote.poll.pollster">
+                                                    <a ng-click="deletepollModal(vote.poll)" class="polledit">Delete</a>
+                                                </span>
+                                                <!-- <span>{{vote.poll.createdAt | datefromnow}}</span> -->
+
+                                                <span (click)="checkFlagModal(vote.poll,mainindex,ind)"
+                                                    *ngIf="userId !== vote.poll.pollster._id" style="float:right;">
+                                                    <i class="demo-icon icon-embassy flag-icon"
+                                                        [ngClass]="{'active':isFlag(vote.poll)}">&#xe814;</i>
+                                                </span>
+                                                <span *ngIf="vote.poll.pollster._id !== userId && !isFollow(vote.poll)"
+                                                    [ngClass]="{'linkDisable':isFlag(vote.poll)}">
+                                                    <a (click)="followpoll(vote.poll,mainindex,ind)">
+                                                        <span style="font-size:8px;">Follow Topic</span>
+                                                    </a>
+                                                </span>
+                                                <span *ngIf="vote.poll.pollster._id !== userId && isFollow(vote.poll)"
+                                                    [ngClass]="{'linkDisable':isFlag(vote.poll)}">
+                                                    <a (click)="Unfollow(vote.poll,mainindex,ind)"
+                                                        class="follow-btn-new-pra">
+                                                        <span style="font-size:8px;">Unfollow Topic</span>
+                                                    </a>
+                                                </span>
+
+                                            </div>
+                                            <div class="vote-total">
+                                                <h4>{{vote.poll.pollCastCount}}</h4>
+                                                <p>Total </p>
+                                            </div>
+                                        </div>
+                                        <div class="card-bott" *ngIf="vote.pollster">
+                                            <div>
+                                            </div>
+                                            <div class="left-foot">
+                                                <ul>
+                                                    <li *ngFor="let task of vote.poll.categories">
+                                                        <a>
+                                                            {{task}}</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="right-foot">
+                                                <div class="card-comment">
+                                                    <a role="button" data-toggle="collapse"
+                                                        data-target="#collapseExample{{vote.poll._id}}"
+                                                        aria-expanded="false" aria-controls="collapseExample">
+                                                        <span>
+                                                            <span
+                                                                class="pls99-icon">{{vote.poll.pollCommentCount}}</span>
+                                                        </span>
+                                                    </a>
+                                                </div>
+                                                <div class="card-follow" *ngIf="vote.poll.pollster._id != userId">
+                                                    <a tabindex="0" role="button" uib-popover-template="'popover.html'"
+                                                        popover-trigger="'outsideClick'" class="icon-follow"></a>
+                                                </div>
+                                                <div class="card-follow" *ngIf="vote.poll.pollster._id == userId">
+                                                    <a tabindex="0" role="button" uib-popover-template="'popover.html'"
+                                                        popover-trigger="'outsideClick'" class="icon-follow"></a>
+                                                </div>
+                                                <!-- ng-show="page !== 'pollDetails'" -->
+                                                <span>
+                                                    <a tabindex="0" role="button"
+                                                        (click)="pollOverlay(vote.poll._id,'BROADCAST')"
+                                                        class="icon-boardcasts"></a>
+                                                    <a (click)="pollOverlay(vote.poll._id,'MORE_INFO')" tabindex="0"
+                                                        role="button" class="icon-more"></a>
+                                                </span>
+                                            </div>
+                                            <div class="clear"></div>
+                                            <div class="collapse" id="collapseExample{{vote.poll._id}}">
+                                                <h1>Comments Here</h1>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="clear"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="myfees" *ngIf="currentTab == 'myfeed'">
+                            <div class="clear"></div>
+                            <!-- myfeed lenght >0 -->
+                            <div class="poll-qus margin-top-10" *ngIf="currentTab == 'myfeed'">
+                                <div *ngIf="FeedPollsList.length===0" class="no-poll-dtls text-center">
+                                    <img src="../../assets/images/no-polls-details.png" alt="" />
+                                    <h2 class="nopolls">There are no topics here yet.
+                                        <br>
+                                    </h2>
+                                </div>
+                            </div>
+                            <div *ngIf="FeedPollsList && FeedPollsList.length>0">
+                                <div class="margin-left-right inifinite-box">
+                                    <div *ngFor="let pollData of FeedPollsList">
+                                        <app-pollinfo [poll]="pollData" [coutry]="pollCoutry" [urlLocation]="location">
+                                        </app-pollinfo>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="mystream" *ngIf="currentTab == 'mystreams'">
+                            <div class="clear"></div>
+                            <div class="poll-qus margin-top-10" *ngIf="currentTab == 'mystreams'">
+                                <div class="no-poll-dtls text-center">
+                                    <img src="../../assets/images/no-polls-details.png" alt="" />
+                                    <h2 class="nopolls">There are no live streams here yet.
+                                        <br>
+                                    </h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <ng-container *ngIf="itemcountFeed>20 && (currentTab=='myfeed')">
+                        <ul style="margin-top: 10px;">
+                            <li
+                                *ngFor="let item of VotesInfo | paginate: { itemsPerPage: 20, currentPage: currentPageFeed,totalItems:itemcountFeed }">
+                            </li>
+                        </ul>
+                        <pagination-controls style="margin-top: 10px;" previousLabel="" nextLabel=""
+                            (pageChange)="changePagforFeed($event)">
+                        </pagination-controls>
+                    </ng-container>
+                    <ng-container *ngIf="itemcountFeed>20 && (currentTab=='mytopics')">
+                            <ul style="margin-top: 10px;">
+                                <li
+                                    *ngFor="let item of PollList | paginate: { itemsPerPage: 20, currentPage: currentPageFeed,totalItems:itemcountFeed }">
+                                </li>
+                            </ul>
+                            <pagination-controls style="margin-top: 10px;" previousLabel="" nextLabel=""
+                                (pageChange)="changePage($event)">
+                            </pagination-controls>
+                        </ng-container>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-hidden">
+            <div class="row">
+                <div class="margin-left">
+                    <div class="ledt-menu">
+                        <div class="categori subsc-poll">
+                            <h2 *ngIf="subscriberlist.length !=1">You have
+                                    <span style="font-size: 14px;color: #656565;">{{subscriberlist.length}} Subscribers in <b>{{location==='current'? currentCountry:location}}</b></span>
+                            </h2>
+                            <h2 *ngIf="subscriberlist.length == 1">You have
+                                    <span style="font-size: 14px;color: #656565;">{{subscriberlist.length}} Subscriber in <b>{{location==='current'? currentCountry:location}}</b></span>
+                            </h2>
+                            <ul>
+                                <ul>
+                                    <li>
+                                        <a (click)="changeSubscribers(0)">Subscribers({{subscriberlist.length}})
+                                            <span *ngIf="getStautsPending()"></span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a (click)="changeSubscribers(1)">Subscriptions ({{subscriptions.length}})</a>
+                                    </li>
+                                    <li>
+                                        <a (click)="changeSubscribers(2)">Messenger Contacts ({{ messageRequestList.length}})</a>
+                                    </li>
+                                </ul>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="invite-people">
+                        <p>Invite people to Subscribe you.</p>
+                        <button type="button" class="sign-in" (click)="trunumsSubscriptions()">Invite
+                            Subscriber</button>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            </div>
+        </div>
+        <div class="margin-top-30"></div>
+    </div>
+    <div id="myModal2" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+              <!-- Modal content-->
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" (click)="getTopics();currentPageFeed=1">&times;</button>
+                  <h4 class="modal-title">Categories</h4>
+                </div>
+                <div class="modal-body">
+                  <ul>
+                    <li *ngFor="let item of categoryInf">
+                      <span>
+                        <a [ngClass]="{'active':checkCategory(item.name)}" tabindex="0" (click)="mobilecategoryPolls(item.name)">
+                          {{item.name}}</a>
+                      </span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <style>
+            a {
+              cursor: pointer !important;
+            }
+          </style>

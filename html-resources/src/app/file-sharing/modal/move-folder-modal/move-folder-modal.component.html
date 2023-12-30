@@ -1,0 +1,59 @@
+<h1 mat-dialog-title class="text-center mb-20">Move To</h1>
+<div mat-dialog-content>
+  <!-- Folders Data Starts -->
+
+  <!-- Folders Data Ends -->
+
+  <!-- File content starts -->
+  <div class="file-content-drive move-file-model" >
+    <div *ngIf="previousFolder" class="go-back">
+      <span (click)="goBackFolder()"><img src="../../../../assets/images/back-arrow.svg"/></span>
+    </div>
+    <div class="folder-list">
+    <!-- People's files content starts -->
+    <div class="files-list">
+      <!-- Display folders start -->
+      <ul >
+        <li  *ngFor="let folder of folders" (dblclick)="getFoldersData(folder)" (click)="selectFolder(folder)" [ngClass]="{'file-opacity': (folder.folderId === parentFolder), 'folder-selected': (folderSelected && selectedFolder === folder.folderId)}">
+		      <div class="file-icons"><img src="../../../assets/images/files-icons/research-icon.svg"/></div>
+		      <span>{{ folder.folderName }}</span>
+          <!-- <span >{{ folder === folder.folderId }}</span> -->
+			  <i (click)="getFoldersData(folder)" class="fa fa-angle-right" aria-hidden="true"></i>
+        </li>
+      </ul>
+      <!-- Display folders end -->
+
+      <!-- Display files start -->
+      <ul >
+        <li *ngFor="let file of files; let i = index" class="file-opacity">
+          <div class="file-icons">
+			      <img *ngIf="file.fileType === 'application/pdf'" src="../../../assets/images/files-icons/pdf.png" />
+			      <img *ngIf="file.fileType !== 'application/pdf'" src="../../../assets/images/files-icons/default-file.png" />
+		      </div>
+			   <span> {{ file.fileName }}</span>
+        </li>
+      </ul>
+      <!-- Display files end -->
+
+      <!-- No data found start -->
+      <p *ngIf="files.length === 0 && folders.length === 0">This folder is empty</p>
+      <!-- No data found end -->
+    </div>
+    <!-- People's files content ends -->
+  </div>
+  <!-- File content ends -->
+  <!-- Files Data Starts -->
+  <!-- Files Data Ends -->
+</div>
+<div mat-dialog-actions>
+  <div class="text-center footer-btn">
+	<button type="button" class="btn btn-danger" (click)="onNoClick()">Cancel</button>
+    <button type="submit" class="btn btn-primary" cdkFocusInitial (click)="onMoveClick()">Move Here</button>
+  </div>
+</div>
+
+<!-- Loader div starts -->
+<!-- <div *ngIf="loading" id="loaderDiv">
+	<img src="../../assets/images/loading.gif" class="ajax-loader" />
+</div> -->
+<!-- Loader div ends -->

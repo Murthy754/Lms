@@ -1,0 +1,100 @@
+<div class="container margin-top-100">
+    <mat-card>
+        <mat-card-title>GLOBAL CONFIGURATIONS</mat-card-title>
+        <mat-card-content>
+            <form (ng-submit)="saveConfigurations()">
+                <!-- Main site storage field -->
+                <mat-form-field style="width: 48%;" appearance="fill">
+                    <mat-label>Main Site Storage</mat-label>
+                    <input type="number" matInput [formControl]="mainSiteStorageFormControl" min="0" (input)="validate('main_site_storage')" autocomplete="off">
+                    <mat-error *ngIf="mainSiteStorageFormControl.hasError('required')">
+                      This field is <strong>required</strong>
+                    </mat-error>
+                    <mat-error *ngIf="mainSiteStorageFormControl.hasError('incorrect')">
+                        Main site storage cannot be less than <strong>20 GB</strong>
+                      </mat-error>
+                </mat-form-field>
+                
+                <!-- Private site storage field -->
+                <mat-form-field style="width: 48%; float: right;" appearance="fill">
+                    <mat-label>Private Site Storage</mat-label>
+                    <input type="number" matInput [formControl]="privateSiteStorageFormControl" min="0" (input)="validate('private_site_storage')" autocomplete="off">
+                    <mat-error *ngIf="privateSiteStorageFormControl.hasError('required')">
+                      This field is <strong>required</strong>
+                    </mat-error>
+                    <mat-error *ngIf="privateSiteStorageFormControl.hasError('incorrect')">
+                        Private site storage cannot be less than <strong>100 GB</strong>
+                    </mat-error>
+                </mat-form-field>
+
+                <!-- Topics per page field -->
+                <mat-form-field class="example-full-width" appearance="fill">
+                    <mat-label>Topics Per Page</mat-label>
+                    <input type="number" matInput [formControl]="topicsPerPageFormControl" min="1" (input)="validate('topics_per_page')" autocomplete="off">
+                    <mat-error *ngIf="topicsPerPageFormControl.hasError('required')">
+                      This field is <strong>required</strong>
+                    </mat-error>
+                    <mat-error *ngIf="topicsPerPageFormControl.hasError('incorrect')">
+                      Topics per page cannot be less than <strong>1</strong>
+                    </mat-error>
+                </mat-form-field>
+
+                <!-- Private site subscriber limit field -->
+                <mat-form-field class="example-full-width" appearance="fill">
+                  <mat-label>Private site subscriber limit</mat-label>
+                  <input type="number" matInput [formControl]="privateSiteSubscriberLimitFormControl" min="1" (input)="validate('private_site_subscriber_limit')" autocomplete="off">
+                  <mat-error *ngIf="privateSiteSubscriberLimitFormControl.hasError('required')">
+                    This field is <strong>required</strong>
+                  </mat-error>
+                  <mat-error *ngIf="privateSiteSubscriberLimitFormControl.hasError('incorrect')">
+                    Privaite subscribers limit cannot be less than <strong>0</strong>
+                  </mat-error>
+                </mat-form-field>
+
+                <!-- Private site limit field -->
+                <mat-form-field class="example-full-width" appearance="fill">
+                  <mat-label>Private sites limit</mat-label>
+                  <input type="number" matInput [formControl]="privateSitesLimitFormControl" min="1" (input)="validate('private_sites_limit')" autocomplete="off">
+                  <mat-error *ngIf="privateSitesLimitFormControl.hasError('required')">
+                    This field is <strong>required</strong>
+                  </mat-error>
+                  <mat-error *ngIf="privateSitesLimitFormControl.hasError('incorrect')">
+                    Private sites limit cannot be less than <strong>1</strong>
+                  </mat-error>
+                </mat-form-field>
+
+                <!-- Show Google ads field -->
+                <div>
+                    <mat-label>
+                      <span style="float: left;">Show Google Ads</span>
+                    <mat-slide-toggle (input)="validate('')" [formControl]="showGoogleAdsFormControl" style="margin-left: 20px;margin-top: -3px;"></mat-slide-toggle></mat-label>
+                </div>
+
+                <!-- Feed at index field -->
+                <mat-form-field class="example-full-width" appearance="fill" *ngIf="showGoogleAdsFormControl.value">
+                    <mat-label>Feed AD Index</mat-label>
+                    <input type="number" matInput [formControl]="feedAdIndexFormControl" min="1" (input)="validate('feed_ad_index')" autocomplete="off">
+                    <mat-error *ngIf="feedAdIndexFormControl.hasError('required')">
+                      This field is <strong>required</strong>
+                    </mat-error>
+                    <mat-error *ngIf="feedAdIndexFormControl.hasError('incorrect')">
+                      Feed ad index cannot be less than <strong>1</strong>
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="mt-10" style="width: 70%;" appearance="fill">
+                  <mat-label>Tab Preference</mat-label>
+                  <mat-select (selectionChange)="validate('tabPreference')" [formControl]="tabPreference" >
+                    <mat-option  *ngFor="let tab of tabs" [value]="tab">{{tab}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+            </form>
+        </mat-card-content>
+        <mat-card-actions>
+          <div class="text-center">
+            <button mat-button (click)="saveConfigurations()" class="sign-in" [disabled]="disableSave">SAVE</button>
+          </div>
+        </mat-card-actions>
+    </mat-card>
+</div>

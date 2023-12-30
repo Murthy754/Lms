@@ -1,0 +1,12 @@
+<h1 mat-dialog-title class="text-center mb-20">Rename {{ type }}</h1>
+<div mat-dialog-content>
+  <mat-form-field style="width: 100%;">
+    <input matInput placeholder="Enter {{ type }} name" [(ngModel)]="renameString" autocomplete="off">
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <div class="text-center footer-btn">
+	<button type="button" class="btn btn-danger" (click)="onNoClick()">Cancel</button>
+    <button type="submit" class="btn btn-primary" cdkFocusInitial (click)="onCreateClick()">Create</button>
+  </div>
+</div>
